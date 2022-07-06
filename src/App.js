@@ -7,7 +7,7 @@ import './App.css'
 const App=()=>
 {
   return (
-    <div style={{backgroundColor:'rgb(248,248,248)'}}>
+    <div style={{backgroundColor:'rgb(247,248,248)'}}>
     <Routes>
       <Route path="/login" element={<Login_browser></Login_browser>}/>
       <Route path="/main" element={<MainComponent></MainComponent>}/>
