@@ -1,0 +1,88 @@
+@mixin AppbarStyle{
+    position: fixed;
+    width: 100vw;
+    height: 10vh;
+    text-align: center;
+    font-size: 50px;
+    transition: all ease 0.3s;
+    display:block;
+    box-shadow:0px 0px 10px rgb(173, 173, 173);
+}
+@font-face {
+    font-family: "ImperialScript";
+    font-weight: 50;
+    src: url("./fonts/ImperialScript-Regular.ttf") format("truetype");
+  }
+
+
+.Appbar{
+    $normal-color: rgb(0, 0, 0);
+    $normal-text-color: rgb(255, 255, 255);
+    $active-color: rgb(248, 248, 248);
+    $active-text-color: black;
+    
+    &-normal{
+        background-color: $normal-color;
+        color: $normal-text-color;
+        a:visited{
+            color:rgb(255, 255, 255);
+
+        }
+        @include AppbarStyle;
+    }
+    &-active{
+        background-color: $active-color;
+        color: $active-text-color;
+        a:visited{
+            color:black;
+
+        }
+        @include AppbarStyle;
+    }
+    &-grid{ 
+        
+    }
+    &-icon{
+        text-align: left;
+        float: left;
+        transform: translate(20px);
+        font-family: 'ImperialScript';
+       
+    }
+    &-login_require{
+        float: right;
+        text-align: right;
+        font-size: 13pt;
+        transform: translate(-20px,100%);
+    }
+    &-user_profile{
+    
+        float: right;
+        text-align: right;
+        font-size: 13pt;
+        transform: translate(-20px,55%);
+        border-radius: 100px;
+
+    }
+}
+@mixin InviteUserStyle{
+    padding:5px 20px 5px 20px;
+    border-radius: 10px;
+    transition: all ease 0.05s;
+}
+.InviteUser{
+    float: right;
+    transform: translate(-40px,55%);
+    font-size: 13pt;
+    &-body-normal{
+        border: 1px solid rgb(255, 255, 255);
+        @include InviteUserStyle
+    }
+    &-body-active{
+        border: 1px solid rgb(0, 132, 255);
+        color: rgb(0, 132, 255);
+        @include InviteUserStyle
+        
+    }
+
+}
