@@ -4,7 +4,7 @@ const Modal=(props)=>
     const listopen=props.listopen;
     return(
         <div className={listopen==1?"Modal-active" : "Modal-hidden"}>
-            {k.map((a)=>{return(<div style={{fontSize:"20px", margin:'20px'}}>{a}</div>)})}
+            {k.map((a)=>{return(<div className="Modal-menu">{a}</div>)})}
 
         </div>
     )
