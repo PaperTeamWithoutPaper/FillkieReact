@@ -10,7 +10,7 @@ const Login_browser=()=>
         const OATUH_HOST = 'https://accounts.google.com/o/oauth2/auth';
         const client_id = process.env.REACT_APP_CID;
         // api의 callback 주소로 code를 받을 시 돌아옴
-        const redirect_uri = 'https://c4d1-221-148-248-129.jp.ngrok.io/user/oauth/google/callback';
+        const redirect_uri = '3.37.117.44/user/oauth/google/callback';
         
         const response_type = "code";
         const scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email ';

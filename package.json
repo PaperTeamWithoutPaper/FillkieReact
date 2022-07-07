@@ -16,6 +16,7 @@
     "react-google-login": "^5.2.2",
     "react-oauth2-auth-code-flow": "^1.0.2",
     "react-redux": "^8.0.2",
+    "react-responsive": "^9.0.0-beta.10",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "redux": "^4.2.0",
