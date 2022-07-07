@@ -15,7 +15,8 @@
     transform: translateY(-15%);
     width:180px;
     margin: 0 auto;
-    overflow-y: auto;    
+    overflow-y: auto;   
+    overflow-x: hidden; 
 }
 .MainGrid{
     display:grid;
@@ -98,15 +99,14 @@
         background-color: rgb(255, 255, 255);
     }
     &-menu-active{
+        cursor: pointer;
         flex:1;
         padding:13px;
         width:100%;
         font-size: 15px;
-        color:rgb(1, 152, 252);
+        color:rgb(10, 138, 223);
         background-color: rgb(255, 255, 255);
     }
-
-    
 }
 .TeamCreate{
     width:60px;
