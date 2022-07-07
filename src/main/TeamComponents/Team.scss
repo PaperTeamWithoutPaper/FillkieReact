@@ -19,8 +19,15 @@
     overflow-x: hidden; 
 }
 .MainGrid{
-    display:grid;
-    grid-template-columns: 60px 230px 1fr;
+    &-big{
+        display:grid;
+        grid-template-columns: 60px 230px 1fr;
+    }
+    &-small{
+        display:grid;
+        grid-template-columns: 60px 1fr;
+    }
+
 }
 .TeamComponent{
     &-body{

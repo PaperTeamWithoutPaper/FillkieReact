@@ -9,6 +9,8 @@ import ProjectComponent from './ProjectComponents/ProjectComponent';
 import { useMediaQuery } from 'react-responsive'
 const MainComponent=()=>
 {
+    const responsiveTeam = useMediaQuery({ minWidth: 1200 })
+    console.log(responsiveTeam)
       const { user_email, user_profile } = useSelector(state => ({
         user_email: state.user_email,
         user_profile: state.user_profile
@@ -17,9 +19,9 @@ const MainComponent=()=>
     return(
         <div style={{overflow:'hidden'}}>
              <Appbar type={1}></Appbar>
-             <div className="MainGrid">
+             <div className={responsiveTeam?"MainGrid-big":"MainGrid-small"}>
               <TeamCreate></TeamCreate>
-              <TeamComponent></TeamComponent>
+              {responsiveTeam?<TeamComponent></TeamComponent>:null}
               <ProjectComponent></ProjectComponent>
              </div>
              
