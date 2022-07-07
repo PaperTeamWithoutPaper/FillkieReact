@@ -6,6 +6,7 @@ const ProjectComponent=()=>
         <div className="ProjectComponent">
             <div className="ProjectComponent-desc">Your Project</div>
             <CreateButton></CreateButton>
+            <CreateButton></CreateButton>
         </div>
     )
 }
