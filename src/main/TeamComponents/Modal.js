@@ -1,6 +1,6 @@
 const Modal=(props)=>
 {
-    const k=['team profile','users']
+    const k=['team profile','users','test']
     const listopen=props.listopen;
     return(
         <div className={listopen==1?"Modal-active" : "Modal-hidden"}>
