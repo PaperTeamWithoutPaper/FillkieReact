@@ -89,13 +89,21 @@
         transition: all ease 0.3s;
         transform: translateY(-26px) scale(0.8,0.8) ;   
     }
-    &-menu{
+    &-menu-normal{
         flex:1;
         padding:13px;
         width:100%;
         font-size: 15px;
+        color:black;
         background-color: rgb(255, 255, 255);
-
+    }
+    &-menu-active{
+        flex:1;
+        padding:13px;
+        width:100%;
+        font-size: 15px;
+        color:rgb(1, 152, 252);
+        background-color: rgb(255, 255, 255);
     }
 
     
