@@ -4,10 +4,11 @@
     src: url("./fonts/tway_air.ttf") format("truetype");
   }
 .ProjectComponent{
+
     height:90vh;
     transform: translateY(10vh);
-    padding: 30px;
     &-desc{
+        padding: 30px;
         font-family: "Tway";
         font-size: 30px;
         color:rgb(75, 75, 75);
@@ -15,7 +16,8 @@
 
     }
 }
-.CreateButton{
+.Card{
+    position: relative;
     $opacity:0;
     &-body{
         width:200px;
@@ -65,5 +67,12 @@
         background-color: rgba(0, 0, 0, 0);
         border-radius: 10px 10px 0px 0px;
         transition: all ease 0.3s;
+    }
+}
+.DirectoryPath{
+    &-body{
+        background-color: rgba(255, 255, 255, 0);
+        //color:black;
+        height:100vh;
     }
 }
