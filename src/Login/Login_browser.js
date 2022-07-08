@@ -3,14 +3,16 @@ import axios from "axios";
 import qs from "querystring";
 import { useEffect } from "react";
 import Appbar from "../Appbar/Appbar";
+import cid from '../config';
 const Login_browser=()=>
 {
     const onLogin=()=>{
         
         const OATUH_HOST = 'https://accounts.google.com/o/oauth2/auth';
-        const client_id = process.env.REACT_APP_CID;
+        const client_id = cid;
+        console.log(client_id)
         // api의 callback 주소로 code를 받을 시 돌아옴
-        const redirect_uri = 'https://c4d1-221-148-248-129.jp.ngrok.io/user/oauth/google/callback';
+        const redirect_uri = 'https://api.fillkie.com/user/oauth/google/callback';
         
         const response_type = "code";
         const scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email ';
