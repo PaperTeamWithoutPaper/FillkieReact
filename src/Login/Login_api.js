@@ -10,7 +10,7 @@ const Login_api=()=>
     if(q["?token"]!=undefined)
     {
         window.localStorage.setItem("token", q["?token"]);
-        fetch('https://c4d1-221-148-248-129.jp.ngrok.io/user/test', {
+        fetch('https://api.fillkie.com/user/test', {
         method: "GET",
         headers: {
             'Authorization': `${localStorage.getItem('token')}`,
