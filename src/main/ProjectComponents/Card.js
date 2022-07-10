@@ -3,33 +3,11 @@ import useDrag from "./useDrag";
 const Card=(props)=>
 {
     const [ishover,setIshover]=useState(0)
-    const divRef = useRef();
-
-    const [translate, setTranslate] = useState({ x: 0, y: 0 ,zindex:10 });
-
-    const handleDrag = (e) => {
-        setTranslate({
-        x: translate.x + e.movementX,
-        y: translate.y + e.movementY,
-        zindex: translate.zindex
-        });
-    };
-    const handlePointerDown = (e) => {
-        setTranslate({
-        x: translate.x + e.movementX,
-        y: translate.y + e.movementY,
-        zindex: translate.zindex+1
-        });
-    };
-    const drag = useDrag(divRef, [translate], {
-        onDrag: handleDrag,
-        onPointerDown: handlePointerDown
-    });
+   
 
     return(
         <div 
-            ref={divRef} 
-            style={{position: 'relative', zIndex: `${translate.zindex}`, transform: `translateX(${translate.x}px) translateY(${translate.y}px)`}}
+            style={{position: 'relative', }}
             className="Card-body" 
             onMouseOver={()=>{setIshover(1)}} 
             onMouseOut={()=>{setIshover(0)}}>

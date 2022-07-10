@@ -13,15 +13,17 @@ const Login_browser=()=>
         console.log(client_id)
         // api의 callback 주소로 code를 받을 시 돌아옴
         const redirect_uri = 'https://api.fillkie.com/user/oauth/google/callback';
-        
         const response_type = "code";
         const scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email ';
-
+        const access_type= "offline";
+        const prompt= "consent";
         const AUTHORIZE_URI = `${OATUH_HOST}?${qs.stringify({
             client_id,
             redirect_uri,
             response_type,
-            scope
+            scope,
+            access_type,
+            prompt,
         })}`;
         window.location.href = AUTHORIZE_URI;
         
