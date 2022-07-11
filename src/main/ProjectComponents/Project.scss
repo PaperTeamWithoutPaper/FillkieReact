@@ -4,20 +4,22 @@
     src: url("./fonts/tway_air.ttf") format("truetype");
   }
 .ProjectComponent{
-
+    
     height:90vh;
     transform: translateY(10vh);
     &-desc{
-        padding: 30px;
+        padding-top: 30px;
         font-family: "Tway";
         font-size: 30px;
         color:rgb(75, 75, 75);
         text-indent: 10px;
-
+    }
+    &-flex{
+        display:flex;
+        flex-wrap: wrap;
     }
 }
 .Card{
-    position: relative;
     $opacity:0;
     &-body{
         width:200px;
@@ -26,6 +28,16 @@
         border-radius: 10px;
         box-shadow: 0px 2px 3px lightgray;
         margin:10px;
+    }
+    &-body-over{
+        width:200px;
+        height:250px;
+        background-color: rgb(230, 230, 230);
+        border-radius: 10px;
+        box-shadow: 0px 2px 3px lightgray;
+        outline: solid 1px rgb(104, 104, 104);
+        margin:10px;
+
     }
     &-body:hover{
         cursor: pointer;

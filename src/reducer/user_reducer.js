@@ -9,7 +9,7 @@ const initialState={
     user_email:'asd',
     user_profile:'asd',
 }
-export default function reducer(state=initialState, action)
+export default function user_reducer(state=initialState, action)
 {
     switch (action.type)
     {

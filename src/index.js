@@ -6,9 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux'
-import reducer from './reducer/user_reducer';
+import reducer from './reducer/root_reducer';
 const store=createStore(reducer)
 export default store
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

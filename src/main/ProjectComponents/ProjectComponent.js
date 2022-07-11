@@ -1,15 +1,21 @@
 import Card from "./Card"
 import DirectoryPath from "./DirectoryPath"
 import "./Project.scss"
+import {useSelector, useDispatch} from 'react-redux'
+import project_reducer from '../../reducer/project_reducer'
 const ProjectComponent=()=>
 {
+    //0:폴더 1:파일 2:프로젝트
+    const project_data=useSelector(
+        state=> state.project_reducer.projects
+    )
+    
     return(
-        <div className="ProjectComponent" style={{position:'relative', /*display:'grid',gridTemplateColumns: '170px 1fr'*/}}>
+        <div className="ProjectComponent">
             {/*<DirectoryPath></DirectoryPath>*/}
-            <div>
-                <div className="ProjectComponent-desc">Your Project</div>
-                <Card type={1} thumbnail="" title="File" desc="Note1"></Card>
-                <Card type={0} thumbnail="" title="Directory" desc="폴더"></Card>
+            <div className="ProjectComponent-desc">Your Project</div>
+            <div className="ProjectComponent-flex">
+                {project_data.map((data)=>{return(<Card type={data.type} thumbnail={data.thumbnail} title={data.title} desc={data.desc}></Card>)})}
             </div>
         </div>
     )
