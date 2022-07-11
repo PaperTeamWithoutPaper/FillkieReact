@@ -82,7 +82,10 @@
         border: 1px solid rgb(0, 132, 255);
         color: rgb(0, 132, 255);
         @include InviteUserStyle
-        
+    }
+    &-body-active:hover{
+        cursor: pointer;
+        background-color: rgb(247, 247, 247);
     }
 
 }
