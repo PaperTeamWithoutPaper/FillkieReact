@@ -1,19 +1,31 @@
 import './CreateTeamModal.scss';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import { IsCreateTeam } from '../../reducer/team_reducer';
 const CreateTeamModal=(props)=>
 {
+    const removeComponent=()=>
+    {
+        dispatch(IsCreateTeam(0))
+    }
+    const [loading, setLoading]=useState(0)
+    useEffect(()=>{
+        setLoading(1)
+    },[])
     const dispatch=useDispatch()
     return(
-        <div className="CreateTeamModal-bg" onClick={()=>{dispatch(IsCreateTeam(0)); console.log('a')}}>
-            <div className= "CreateTeamModal-body">
-                <div className="CreateTeamModal-title">팀 생성하기</div>
-                <div className="CreateTeamModal-title">팀 이름을 정해주세요.</div>
-                <input></input>
-                <div>확인</div>
-                <div>취소</div>
+        <div className="CreateTeamModal-box">
+            <div className={loading?"CreateTeamModal-bg":"CreateTeamModal-bg-loading"} onClick={()=>{ setLoading(0);setTimeout(()=>removeComponent(),300)}}></div>
+            <div className= {loading?"CreateTeamModal-body":"CreateTeamModal-body-loading"} onClick={()=>{console.log('a')}}>
+                <div className="CreateTeamModal-title">Create Team</div>
+                <div className="CreateTeamModal-desc">Set your team name</div>
+                <input placeholder="Enter team name" className="CreateTeamModal-teaminput"></input>
+                <div className="CreateTeamModal-buttonbox">
+                    <div className="CreateTeamModal-accept">Continue</div>
+                    <div className="CreateTeamModal-no" onClick={()=>{ setLoading(0);setTimeout(()=>removeComponent(),300)}}>Cancel</div>
+                </div>
             </div>
+            
 
         </div>
     )

@@ -20,7 +20,7 @@ const MainComponent=()=>
     const dispatch = useDispatch();
     return(
       <div>
-        {creating?<CreateTeamModal onClick={()=>{dispatch(IsCreateTeam(0)); console.log('a')}}></CreateTeamModal>:null}
+        {creating?<CreateTeamModal></CreateTeamModal>:null}
         <div style={{overflow:'hidden', position:'absolute'}}>
           <Appbar type={1}></Appbar>
           <div className={responsiveTeam?"MainGrid-big":"MainGrid-small"}>
