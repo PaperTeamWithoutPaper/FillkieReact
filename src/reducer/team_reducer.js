@@ -19,9 +19,17 @@ export function IsInviteTeam(toggle)
         toggle
     }
 }
+export function setCurrentTeamID(teamID)
+{
+    return{
+        type: 'SET_CURRENT_TEAMID',
+        teamID
+    }
+}
 const initialState={
     creating:0,
     inviting:0,
+    currentTeamID:0,
     teams:[
         {
             key:1,
@@ -55,6 +63,11 @@ export default function team_reducer(state=initialState, action)
             return{
                 ...state,
                 inviting:action.toggle
+            }
+        case 'SET_CURRENT_TEAMID':
+            return{
+                ...state,
+                currentTeamID:action.teamID
             }
         default:
             return state;
