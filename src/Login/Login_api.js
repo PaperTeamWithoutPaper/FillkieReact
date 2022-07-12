@@ -14,7 +14,6 @@ const Login_api=()=>
         fetch('https://api.fillkie.com/user/test', {
         method: "GET",
         headers: {
-            'access-control-allow-origin': '*',
             'Authorization': `${localStorage.getItem('token')}`,
         }
       }).then((response)=>{
