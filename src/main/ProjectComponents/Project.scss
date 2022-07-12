@@ -15,8 +15,11 @@
         text-indent: 10px;
     }
     &-flex{
+        height:90vh;
         display:flex;
         flex-wrap: wrap;
+
+
     }
 }
 .Card{

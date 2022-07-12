@@ -35,7 +35,9 @@
         color: $active-text-color;
         a:visited{
             color:black;
-
+        }
+        a:link{
+            color:black;
         }
         @include AppbarStyle;
     }

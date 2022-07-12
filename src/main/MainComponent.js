@@ -7,32 +7,26 @@ import TeamComponent from './TeamComponents/TeamComponent';
 import TeamCreate from './TeamComponents/TeamCreate';
 import ProjectComponent from './ProjectComponents/ProjectComponent';
 import { useMediaQuery } from 'react-responsive'
-import CreateTeamModal from '../Modal/CreateTeamModal';
-import { IsCreateTeam } from '../reducer/team_reducer';
-import InviteUserModal from '../Modal/InviteUserModal';
 const MainComponent=()=>
 {
     const responsiveTeam = useMediaQuery({ minWidth: 1200 })
-    const { user_email, user_profile } = useSelector(state => ({
-      user_email: state.user_reducer.user_email,
-      user_profile: state.user_reducer.user_profile
-    }));
-    const creating=useSelector(state=> state.team_reducer.creating)
-    const inviting=useSelector(state=> state.team_reducer.inviting)
+    console.log(responsiveTeam)
+      const { user_email, user_profile } = useSelector(state => ({
+        user_email: state.user_email,
+        user_profile: state.user_profile
+      }));
     const dispatch = useDispatch();
     return(
-      <div>
-        {inviting?<InviteUserModal></InviteUserModal>:null}
-        {creating?<CreateTeamModal></CreateTeamModal>:null}
-        <div style={{overflow:'hidden', position:'absolute'}}>
-          <Appbar type={1}></Appbar>
-          <div className={responsiveTeam?"MainGrid-big":"MainGrid-small"}>
+        <div style={{overflowY:'hidden'}}>
+             <Appbar type={1}></Appbar>
+             <div className={responsiveTeam?"MainGrid-big":"MainGrid-small"}>
               <TeamCreate></TeamCreate>
               {responsiveTeam?<TeamComponent></TeamComponent>:null}
               <ProjectComponent></ProjectComponent>
-          </div>      
+             </div>
+             
+           
         </div>
-      </div>
     )
 }
 export default  MainComponent

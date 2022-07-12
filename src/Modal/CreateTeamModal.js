@@ -16,7 +16,10 @@ const CreateTeamModal=(props)=>
     },[])
     const createTeam=()=>
     {
-        axios.post("https://api.fillkie.com/team/create",{teamName:teamName}).then((response)=>{console.log(response)})
+        axios.post("https://api.fillkie.com/team/create",{teamName:teamName},{
+            'Authorization': `${localStorage.getItem('token')}`,
+        }
+        ).then((response)=>{console.log(response)})
     }
     const dispatch=useDispatch()
     return(
