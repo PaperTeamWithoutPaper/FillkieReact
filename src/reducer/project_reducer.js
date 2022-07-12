@@ -20,6 +20,27 @@ const initialState={
             thumbnail:"",
             title:"Project2",
             desc:"프로젝트",
+        },
+        {
+            key:2,
+            type:2,
+            thumbnail:"",
+            title:"Project2",
+            desc:"프로젝트",
+        },
+        {
+            key:2,
+            type:2,
+            thumbnail:"",
+            title:"Project2",
+            desc:"프로젝트",
+        },
+        {
+            key:2,
+            type:2,
+            thumbnail:"",
+            title:"Project2",
+            desc:"프로젝트",
         }
     ],
 }

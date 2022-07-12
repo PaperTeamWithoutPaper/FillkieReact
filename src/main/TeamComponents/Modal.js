@@ -7,7 +7,6 @@ const Modal=(props)=>
     return(
         <div className={listopen==1?"Modal-active" : "Modal-hidden"}>
             {ModalButtonOption.map((option)=>{return(<ModalButton data={option}></ModalButton>)})}
-
         </div>
     )
 }
