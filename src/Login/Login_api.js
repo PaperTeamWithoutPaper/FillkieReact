@@ -19,6 +19,7 @@ const Login_api=()=>
         }
       }).then((response)=>{
           console.log(response)
+          
           navigate("/main");
         }
       ) 

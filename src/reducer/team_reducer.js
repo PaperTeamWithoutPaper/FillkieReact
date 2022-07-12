@@ -12,8 +12,16 @@ export function IsCreateTeam(toggle)
         toggle
     }
 }
+export function IsInviteTeam(toggle)
+{
+    return{
+        type: 'IS_INVITE_TEAM',
+        toggle
+    }
+}
 const initialState={
     creating:0,
+    inviting:0,
     teams:[
         {
             key:1,
@@ -42,6 +50,11 @@ export default function team_reducer(state=initialState, action)
             return{
                 ...state,
                 creating:action.toggle
+            }
+        case 'IS_INVITE_TEAM':
+            return{
+                ...state,
+                inviting:action.toggle
             }
         default:
             return state;

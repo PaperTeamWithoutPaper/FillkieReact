@@ -7,8 +7,9 @@ import TeamComponent from './TeamComponents/TeamComponent';
 import TeamCreate from './TeamComponents/TeamCreate';
 import ProjectComponent from './ProjectComponents/ProjectComponent';
 import { useMediaQuery } from 'react-responsive'
-import CreateTeamModal from './TeamComponents/CreateTeamModal';
+import CreateTeamModal from '../Modal/CreateTeamModal';
 import { IsCreateTeam } from '../reducer/team_reducer';
+import InviteUserModal from '../Modal/InviteUserModal';
 const MainComponent=()=>
 {
     const responsiveTeam = useMediaQuery({ minWidth: 1200 })
@@ -17,9 +18,11 @@ const MainComponent=()=>
       user_profile: state.user_reducer.user_profile
     }));
     const creating=useSelector(state=> state.team_reducer.creating)
+    const inviting=useSelector(state=> state.team_reducer.inviting)
     const dispatch = useDispatch();
     return(
       <div>
+        {inviting?<InviteUserModal></InviteUserModal>:null}
         {creating?<CreateTeamModal></CreateTeamModal>:null}
         <div style={{overflow:'hidden', position:'absolute'}}>
           <Appbar type={1}></Appbar>

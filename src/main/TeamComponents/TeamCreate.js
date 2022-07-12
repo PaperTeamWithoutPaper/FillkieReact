@@ -1,6 +1,6 @@
 import './Team.scss'
 import {useSelector, useDispatch} from 'react-redux';
-import CreateTeamModal from './CreateTeamModal';
+import CreateTeamModal from '../../Modal/CreateTeamModal';
 import { IsCreateTeam } from '../../reducer/team_reducer';
 const TeamCreate=()=>
 {
