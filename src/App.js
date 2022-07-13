@@ -7,6 +7,7 @@ import './App.css'
 import MeetingComponent from "./Painting/MeetingComponents/MeetingComponent"
 import Alarm from "./Modal/Alarm"
 import InviteComponent from "./Invite/InviteComponent"
+import LoaderComponent from "./FileLoader/LoaderComponent"
 const App=()=>
 {
   return (
@@ -17,6 +18,7 @@ const App=()=>
       <Route path="/loginapi" element={<Login_api></Login_api>}/>
       <Route path="/" element={<MeetingComponent></MeetingComponent>}/>
       <Route exact path="/welcome/:id" element={<InviteComponent></InviteComponent>}/>
+      <Route exact path="/board" element={<LoaderComponent></LoaderComponent>}/>
     </Routes>
     
     </div>
