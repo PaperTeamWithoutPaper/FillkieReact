@@ -1,0 +1,10 @@
+.LoaderComponent{
+    &-box{
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        transform: translateY(65px);
+
+        height: calc(100vh - 65px);
+        width: 100vw;
+    }
+}

@@ -1,7 +1,7 @@
 import './CreateTeamModal.scss';
 import {useState, useEffect} from 'react';
-import {useDispatch} from 'react-redux';
-import { IsCreateTeam } from '../reducer/team_reducer';
+import {useDispatch, useSelector} from 'react-redux';
+import { IsCreateTeam,setCurrentTeamID} from '../reducer/team_reducer';
 import axios from 'axios'
 const CreateTeamModal=(props)=>
 {
@@ -24,13 +24,20 @@ const CreateTeamModal=(props)=>
         },
         body: JSON.stringify({teamName:teamName}),
     }
-        ).then((response)=>{console.log(response)})
+        ).then((response)=>{
+            response.json().then((d)=>{
+            dispatch(setCurrentTeamID(d.data))
+            setLoading(0);
+            setTimeout(()=>removeComponent(),300)
+        })
+
+            })
     }
     const dispatch=useDispatch()
     return(
         <div className="CreateTeamModal-box">
             <div className={loading?"CreateTeamModal-bg":"CreateTeamModal-bg-loading"} onClick={()=>{ setLoading(0);setTimeout(()=>removeComponent(),300)}}></div>
-            <div className= {loading?"CreateTeamModal-body":"CreateTeamModal-body-loading"} onClick={()=>{console.log('a')}}>
+            <div className= {loading?"CreateTeamModal-body":"CreateTeamModal-body-loading"}>
                 <div className="CreateTeamModal-title">Create Team</div>
                 <div className="CreateTeamModal-desc">Set your team name</div>
                 <input onChange={(e)=>{setTeamName(e.target.value)}} value={teamName} placeholder="Enter team name" className="CreateTeamModal-teaminput"></input>

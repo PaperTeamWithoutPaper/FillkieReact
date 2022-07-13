@@ -5,6 +5,7 @@ export function setProjectInfo(projects)
         projects
     }
 }
+
 const initialState={
     projects:[
         {

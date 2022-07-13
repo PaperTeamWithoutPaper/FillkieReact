@@ -1,5 +1,4 @@
 import Card from "./Card"
-import DirectoryPath from "./DirectoryPath"
 import "./Project.scss"
 import {useSelector, useDispatch} from 'react-redux'
 import project_reducer from '../../reducer/project_reducer'
@@ -12,7 +11,6 @@ const ProjectComponent=()=>
     
     return(
         <div className="ProjectComponent" onContextMenu={()=>{console.log('파일 생성 메뉴')}}>
-            {/*<DirectoryPath></DirectoryPath>*/}
             <div className="ProjectComponent-desc">Your Project</div>
             <div className="ProjectComponent-flex">
                 {project_data.map((data)=>{return(<Card type={data.type} thumbnail={data.thumbnail} title={data.title} desc={data.desc}></Card>)})}

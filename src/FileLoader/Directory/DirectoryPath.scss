@@ -1,0 +1,17 @@
+.DirectoryPath{
+    &-body{
+        background-color: rgb(41, 41, 41);
+        //color:black;
+        height:calc(100% - 10px);
+        color:rgb(221, 221, 221);
+        padding:5px;
+        font-size:13px;
+    }
+    &-title{
+        font-weight: bold;
+    }
+    &-object{
+        color:white;
+        margin:5px;
+    }
+}
