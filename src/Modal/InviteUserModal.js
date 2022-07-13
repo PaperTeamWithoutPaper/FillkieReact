@@ -22,9 +22,6 @@ const InviteUserModal=(props)=>
         setLoading(1)
     },[])
 
-    useEffect(()=>{
-        console.log(loading)
-    },[loading])
     return(
         <div className="InviteUserModal-box">
             <div className={loading?"InviteUserModal-bg":"InviteUserModal-bg-loading"} onClick={()=>{ setLoading(0);setTimeout(()=>removeComponent(),300)}}></div>

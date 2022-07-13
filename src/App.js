@@ -6,6 +6,7 @@ import Appbar from './Appbar/Appbar'
 import './App.css'
 import MeetingComponent from "./Painting/MeetingComponents/MeetingComponent"
 import Alarm from "./Modal/Alarm"
+import InviteComponent from "./Invite/InviteComponent"
 const App=()=>
 {
   return (
@@ -15,6 +16,7 @@ const App=()=>
       <Route path="/main" element={<MainComponent></MainComponent>}/>
       <Route path="/loginapi" element={<Login_api></Login_api>}/>
       <Route path="/" element={<MeetingComponent></MeetingComponent>}/>
+      <Route exact path="/welcome/:id" element={<InviteComponent></InviteComponent>}/>
     </Routes>
     
     </div>

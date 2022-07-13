@@ -27,6 +27,8 @@ const CreateTeamModal=(props)=>
         ).then((response)=>{
             response.json().then((d)=>{
             dispatch(setCurrentTeamID(d.data))
+            setLoading(0);
+            setTimeout(()=>removeComponent(),300)
         })
 
             })

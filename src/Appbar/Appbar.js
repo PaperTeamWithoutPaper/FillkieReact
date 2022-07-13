@@ -11,7 +11,6 @@ const Appbar=(props)=>
     const getUrl=()=>
     {
         dispatch(IsInviteTeam(1))
-        console.log(teamID)
         fetch(`https://api.fillkie.com/team/invite?teamId=${teamID}`, {
         method: "GET",
         headers: {
@@ -21,7 +20,6 @@ const Appbar=(props)=>
     }
         ).then((response)=>{
             response.json().then((d)=>{
-            console.log(d)
             dispatch(setInviteUrl(d.data.url))
             
         })
