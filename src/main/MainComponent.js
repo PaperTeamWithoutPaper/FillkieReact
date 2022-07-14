@@ -9,7 +9,7 @@ import TeamCreate from './TeamComponents/TeamCreate';
 import ProjectComponent from './ProjectComponents/ProjectComponent';
 import { useMediaQuery } from 'react-responsive'
 import CreateTeamModal from '../Modal/CreateTeamModal';
-import { IsCreateTeam } from '../reducer/team_reducer';
+import { IsCreateTeam, setTeamInfo, setTeamNum } from '../reducer/team_reducer';
 import InviteUserModal from '../Modal/InviteUserModal';
 import Alarm from '../Modal/Alarm';
 const MainComponent=()=>
@@ -21,7 +21,8 @@ const MainComponent=()=>
     }));
     const creating=useSelector(state=> state.team_reducer.creating)
     const inviting=useSelector(state=> state.team_reducer.inviting)
-    const teamID=useSelector(state=>state.team_reducer.currentTeamID)
+    const teamList=useSelector(state=>state.team_reducer.teams)
+    const teamID=useSelector(state=>state.team_reducer.currentTeam)
     const alarm=useSelector(state=>state.modal_reducer.isCreate)
     const dispatch = useDispatch();
     //User Profile fetch
@@ -36,11 +37,25 @@ const MainComponent=()=>
       },
       }).then((response)=>{
           response.json().then((d)=>{   
-            console.log(d)
             dispatch(setUserInfo(d.data.userName,d.data.userImage))
           })
       })}
     ,[user_email])
+    //Team detail fetch
+    const fetchTeamDetail=()=>
+    {
+      fetch(`https://api.fillkie.com/team/detail?teamId=${teamList[teamID]['teamId']}`, {
+      method: "GET",
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${localStorage.getItem('token')}`,
+      },
+      }).then((response)=>{
+          response.json().then((d)=>{   
+          dispatch(setTeamNum(d.data.headcount))
+          })
+      })}
+    
     //Team List fetch
     const fetchTeamList= useCallback(()=>
     {
@@ -52,40 +67,28 @@ const MainComponent=()=>
       },
       }).then((response)=>{
           response.json().then((d)=>{   
-          console.log(d)
+          if(d.data!=null){
+            dispatch(setTeamInfo(d.data))
+            console.log(teamList)
+            if(teamList.length!=0){
+            fetchTeamDetail()
+            }
+          }
+          
           })
       })}
-    ,[user_email])
-    //Team detail fetch
-    const fetchTeamDetail= useCallback(()=>
-    {
-      fetch(`https://api.fillkie.com/team/detail?${teamID}`, {
-      method: "GET",
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `${localStorage.getItem('token')}`,
-      },
-      }).then((response)=>{
-          response.json().then((d)=>{   
-          console.log(d)
-          })
-      })}
-    ,[user_email])
-
-
-
-
+    ,[teamID])
+    
 
     useEffect(()=>
     {
       fetchUser()
-      fetchTeamList()
-      fetchTeamDetail()
     },[fetchUser])
 
-
-
-
+    useEffect(()=>
+    {
+      fetchTeamList()
+    },[fetchTeamList])
 
     return(
       <div>

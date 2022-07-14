@@ -33,25 +33,22 @@ export function setInviteUrl(url)
         url
     }
 }
+export function setTeamNum(num)
+{
+    return{
+        type: 'SET_TEAM_NUM',
+        num
+    }
+}
 const initialState={
     creating:0,
     inviting:0,
     currentTeam:0,
     inviteUrl:'',
     teams:[
-        {
-            idx:0,
-            id:0,
-            thumbnail:"",
-            title:"asd1",
-        },
-        {
-            idx:1,
-            id:1,
-            thumbnail:"",
-            title:"vsd2",
-        }
+
     ],
+    teamNum:0,
 }
 export default function team_reducer(state=initialState, action)
 {
@@ -81,6 +78,11 @@ export default function team_reducer(state=initialState, action)
             return{
                 ...state,
                 inviteUrl:action.url
+            }
+        case 'SET_TEAM_NUM':
+            return{
+                ...state,
+                teamNum:action.num
             }
         default:
             return state;

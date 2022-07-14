@@ -4,8 +4,13 @@ import {useSelector} from 'react-redux'
 const TeamList=()=>
 {
     const teamList=useSelector(state=>state.team_reducer.teams)
-    const team=useSelector(state=>state.team_reducer.currentTeam)
-    const curTeamName=teamList[team]['title']
+    const teamNum=useSelector(state=>state.team_reducer.teamNum)
+    const teamidx=useSelector(state=>state.team_reducer.currentTeam)
+    var curTeamName=""
+    if(teamList.length!=0)
+    {
+        curTeamName=teamList[teamidx]['teamName']
+    }
     const [listopen,setListopen]=useState(-1)
     return(
         <div>
@@ -15,7 +20,7 @@ const TeamList=()=>
                 <img src={require('./icon/arrow.png')} className={listopen==-1?"TeamList-icon-lower":"TeamList-icon-upper"}></img>
             </div>
             <div className="TeamList-lowerblock">
-                <div className="TeamList-users">8-users</div>
+                <div className="TeamList-users">{teamNum}-users</div>
             </div>
             
         </div>

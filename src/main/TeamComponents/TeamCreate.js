@@ -10,9 +10,8 @@ const TeamCreate=()=>
     const dispatch= useDispatch();
     return(
         <div className="TeamCreate">
-            
-            {team_data.map((team)=>{return(<div onClick={()=>{dispatch(setCurrentTeam(team.idx))}} className="TeamCreate-icon">{team.title.slice(0,2)}</div>)})}
-            <div className="TeamCreate-icon" onClick={()=>{dispatch(IsCreateTeam(1))}}>+</div>
+            {team_data.map((team)=>{return(<div onClick={()=>{dispatch(setCurrentTeam(team.idx))}} className="TeamCreate-icon">{team.teamName.slice(0,2)}</div>)})}
+            <div  className="TeamCreate-icon" onClick={()=>{dispatch(IsCreateTeam(1))}}>+</div>
             
         </div>
     )

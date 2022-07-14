@@ -6,7 +6,7 @@ const Appbar=(props)=>
 {
     const type=props.type
     const scrollY=useScroll()
-    const teamID=useSelector((state)=>state.team_reducer.currentTeamID)
+    const teamID=useSelector((state)=>state.team_reducer.currentTeam)
     const dispatch=useDispatch()
     const getUrl=()=>
     {
