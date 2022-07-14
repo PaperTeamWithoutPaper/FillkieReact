@@ -1,11 +1,15 @@
 import './CreateTeamModal.scss';
-import {useState, useEffect} from 'react';
+import {useCallback,useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import { IsCreateTeam,setCurrentTeamID} from '../reducer/team_reducer';
+import { setTeamInfo,IsCreateTeam,setCurrentTeam} from '../reducer/team_reducer';
 import axios from 'axios'
+import Alarm from './Alarm';
 const CreateTeamModal=(props)=>
 {
+    const teamList=useSelector(state=>state.team_reducer.teams)
+
     const [teamName,setTeamName]=useState("")
+    const teamlength=useSelector(state=>state.team_reducer.teams).length
     const removeComponent=()=>
     {
         dispatch(IsCreateTeam(0))
@@ -14,6 +18,7 @@ const CreateTeamModal=(props)=>
     useEffect(()=>{
         setLoading(1)
     },[])
+
     const createTeam=()=>
     {
         fetch('https://api.fillkie.com/team/create', {
@@ -26,16 +31,29 @@ const CreateTeamModal=(props)=>
     }
         ).then((response)=>{
             response.json().then((d)=>{
-            dispatch(setCurrentTeamID(d.data))
-            setLoading(0);
-            setTimeout(()=>removeComponent(),300)
+            setLoading(0)
         })
+    })}
+    const fetchTeamList=useCallback(()=>
+    {
+      fetch(`https://api.fillkie.com/team/list`, {
+      method: "GET",
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${localStorage.getItem('token')}`,
+      },
+      }).then((response)=>{
+          response.json().then((d)=>{   
+          dispatch(setTeamInfo(d.data))
+          })})},[loading])
+    useEffect(fetchTeamList,[loading])
+    
 
-            })
-    }
+
     const dispatch=useDispatch()
     return(
         <div className="CreateTeamModal-box">
+            
             <div className={loading?"CreateTeamModal-bg":"CreateTeamModal-bg-loading"} onClick={()=>{ setLoading(0);setTimeout(()=>removeComponent(),300)}}></div>
             <div className= {loading?"CreateTeamModal-body":"CreateTeamModal-body-loading"}>
                 <div className="CreateTeamModal-title">Create Team</div>

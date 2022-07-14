@@ -3,24 +3,25 @@ import {useEffect} from 'react'
 const InviteComponent=()=>
 {
     const {id} = useParams()
-    console.log(id)
     useEffect(()=>
     {
-        fetch('https://api.fillkie.com/team/addmember', {
+        console.log('hello')
+        fetch('https://api.fillkie.com/team/invite/accept', {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({id:id}),
+        body: JSON.stringify({url:id}),
     }
         ).then((response)=>{
+            console.log(response)
             response.json().then((d)=>{
             console.log(d)
         })
 
             })
-    })
+    },[])
     return(
         <div>
         {id}

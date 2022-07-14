@@ -19,11 +19,11 @@ export function IsInviteTeam(toggle)
         toggle
     }
 }
-export function setCurrentTeamID(teamID)
+export function setCurrentTeam(idx)
 {
     return{
-        type: 'SET_CURRENT_TEAMID',
-        teamID
+        type: 'SET_CURRENT_TEAM',
+        idx
     }
 }
 export function setInviteUrl(url)
@@ -33,25 +33,22 @@ export function setInviteUrl(url)
         url
     }
 }
+export function setTeamNum(num)
+{
+    return{
+        type: 'SET_TEAM_NUM',
+        num
+    }
+}
 const initialState={
     creating:0,
     inviting:0,
-    currentTeamID:0,
+    currentTeam:0,
     inviteUrl:'',
     teams:[
-        {
-            key:1,
-            type:2,
-            thumbnail:"",
-            title:"A",
-        },
-        {
-            key:2,
-            type:2,
-            thumbnail:"",
-            title:"B",
-        }
+
     ],
+    teamNum:0,
 }
 export default function team_reducer(state=initialState, action)
 {
@@ -72,15 +69,20 @@ export default function team_reducer(state=initialState, action)
                 ...state,
                 inviting:action.toggle
             }
-        case 'SET_CURRENT_TEAMID':
+        case 'SET_CURRENT_TEAM':
             return{
                 ...state,
-                currentTeamID:action.teamID
+                currentTeam:action.idx
             }
         case 'SET_INVITE_URL':
             return{
                 ...state,
                 inviteUrl:action.url
+            }
+        case 'SET_TEAM_NUM':
+            return{
+                ...state,
+                teamNum:action.num
             }
         default:
             return state;

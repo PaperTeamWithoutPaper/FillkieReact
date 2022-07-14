@@ -22,6 +22,13 @@ const initialState={
             title:"File2",
             desc:"파일2",
         },
+        {
+            key:3,
+            type:2,
+            thumbnail:"",
+            title:"Dir1",
+            desc:"폴더1",
+        },
     ],
 }
 export default function team_reducer(state=initialState, action)
