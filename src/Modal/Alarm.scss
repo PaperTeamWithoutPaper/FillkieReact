@@ -1,4 +1,4 @@
-.Alarm{
+@mixin AlarmStyle{
     width:fit-content;
     padding:10px;
     position: absolute;
@@ -6,7 +6,7 @@
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.76);
     color:white;
-    z-index: 1;
+    z-index: 1000;
     top:98vh;
     left:50vw;
     display: flex;
@@ -14,4 +14,13 @@
     justify-items: center;
     text-align: center;
     transform:translate(-50%,-100%);
+    transition: all ease 0.2s
+}
+.Alarm{
+    @include AlarmStyle;
+    &-loading{
+        @include AlarmStyle;
+        transform:translate(-50%,0%);
+        opacity: 0;
+    }
 }

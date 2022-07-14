@@ -1,7 +1,7 @@
 import './CreateTeamModal.scss';
 import {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import { IsCreateTeam,setCurrentTeamID} from '../reducer/team_reducer';
+import { IsCreateTeam,setCurrentTeam} from '../reducer/team_reducer';
 import axios from 'axios'
 import Alarm from './Alarm';
 const CreateTeamModal=(props)=>
@@ -27,7 +27,7 @@ const CreateTeamModal=(props)=>
     }
         ).then((response)=>{
             response.json().then((d)=>{
-            dispatch(setCurrentTeamID(d.data))
+            dispatch(setCurrentTeam(d.data))
             setLoading(0);
             setTimeout(()=>removeComponent(),300)
         })

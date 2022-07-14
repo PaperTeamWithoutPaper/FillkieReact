@@ -3,6 +3,7 @@ import {useState, useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import { IsInviteTeam } from '../reducer/team_reducer';
 import axios from 'axios'
+import { setModalDesc, isCreateAlarm } from '../reducer/modal_reducer';
 const InviteUserModal=(props)=>
 {
     const [loading,setLoading]=useState(0)
@@ -10,6 +11,8 @@ const InviteUserModal=(props)=>
     const url=`https://fillkie.com/welcome/${param}`
     const copyText=()=>
     {
+        dispatch(setModalDesc("복사되었습니다."))
+        dispatch(isCreateAlarm(1))
         navigator.clipboard.writeText(url)
     }
     const removeComponent=()=>
