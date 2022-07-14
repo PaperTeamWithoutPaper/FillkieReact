@@ -12,7 +12,7 @@ const InviteComponent=()=>
             'Content-Type': 'application/json',
             'Authorization': `${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({id:id}),
+        body: JSON.stringify({url:id}),
     }
         ).then((response)=>{
             response.json().then((d)=>{

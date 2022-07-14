@@ -5,7 +5,8 @@
   }
 @mixin ModalStyle{
     position: absolute;
-    top:200px;
+    top:50%;
+    transform: translateY(-50%);
     z-index:101;
     background-color: rgb(255, 255, 255);
     width:400px;
@@ -42,7 +43,7 @@
     }
     &-body-loading{
         @include ModalStyle;
-        transform: scale(0.7,0.7);
+        transform: translateY(-50%) scale(0.7,0.7);
         opacity: 0;
     }
     &-title{

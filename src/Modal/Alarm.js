@@ -1,8 +1,13 @@
 import './Alarm.scss'
-const Alarm=()=>
+const Alarm=(props)=>
 {
+    const desc=props.desc
     return(
-        <div className="Alarm">alarm</div>
+        <div className="Alarm">
+            <div className="Alarm-desc">
+                {desc}
+            </div>
+        </div>
     )
 }
 export default Alarm

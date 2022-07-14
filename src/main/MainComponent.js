@@ -10,6 +10,7 @@ import { useMediaQuery } from 'react-responsive'
 import CreateTeamModal from '../Modal/CreateTeamModal';
 import { IsCreateTeam } from '../reducer/team_reducer';
 import InviteUserModal from '../Modal/InviteUserModal';
+import Alarm from '../Modal/Alarm';
 const MainComponent=()=>
 {
     const responsiveTeam = useMediaQuery({ minWidth: 1200 })
@@ -22,6 +23,7 @@ const MainComponent=()=>
     const dispatch = useDispatch();
     return(
       <div>
+        <Alarm desc="복사되었습니다."></Alarm>
         {inviting?<InviteUserModal></InviteUserModal>:null}
         {creating?<CreateTeamModal></CreateTeamModal>:null}
         <div style={{overflow:'hidden', position:'absolute'}}>

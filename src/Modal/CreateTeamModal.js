@@ -3,6 +3,7 @@ import {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import { IsCreateTeam,setCurrentTeamID} from '../reducer/team_reducer';
 import axios from 'axios'
+import Alarm from './Alarm';
 const CreateTeamModal=(props)=>
 {
     const [teamName,setTeamName]=useState("")
@@ -36,6 +37,7 @@ const CreateTeamModal=(props)=>
     const dispatch=useDispatch()
     return(
         <div className="CreateTeamModal-box">
+            
             <div className={loading?"CreateTeamModal-bg":"CreateTeamModal-bg-loading"} onClick={()=>{ setLoading(0);setTimeout(()=>removeComponent(),300)}}></div>
             <div className= {loading?"CreateTeamModal-body":"CreateTeamModal-body-loading"}>
                 <div className="CreateTeamModal-title">Create Team</div>
