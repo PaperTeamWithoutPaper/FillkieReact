@@ -1,8 +1,10 @@
 import {useParams} from "react-router-dom"
 import {useEffect} from 'react'
+import { useNavigate } from "react-router-dom";
 const InviteComponent=()=>
 {
     const {id} = useParams()
+    const navigate=useNavigate()
     useEffect(()=>
     {
         console.log('hello')
@@ -15,9 +17,8 @@ const InviteComponent=()=>
         body: JSON.stringify({url:id}),
     }
         ).then((response)=>{
-            console.log(response)
             response.json().then((d)=>{
-            console.log(d)
+            navigate('/main')
         })
 
             })
