@@ -6,12 +6,14 @@ const Appbar=(props)=>
 {
     const type=props.type
     const scrollY=useScroll()
-    const teamID=useSelector((state)=>state.team_reducer.currentTeam)
+    const teams=useSelector((state)=>state.team_reducer.teams)
+    const teamIdx=useSelector((state)=>state.team_reducer.currentTeam)
     const dispatch=useDispatch()
     const getUrl=()=>
     {
         dispatch(IsInviteTeam(1))
-        fetch(`https://api.fillkie.com/team/invite?teamId=${teamID}`, {
+
+        fetch(`https://api.fillkie.com/team/invite?teamId=${teams[teamIdx]['teamId']}`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
