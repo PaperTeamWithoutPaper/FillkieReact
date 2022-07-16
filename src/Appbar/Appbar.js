@@ -2,6 +2,7 @@ import './Appbar.scss'
 import useScroll from './useScroll'
 import {useDispatch, useSelector} from 'react-redux';
 import { IsInviteTeam, setInviteUrl } from '../reducer/team_reducer';
+import { getCookie } from '../cookie';
 const Appbar=(props)=>
 {
     const type=props.type
@@ -17,7 +18,7 @@ const Appbar=(props)=>
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `${localStorage.getItem('token')}`,
+            'Authorization': `${getCookie('access')}`,
         },
     }
         ).then((response)=>{
@@ -31,6 +32,7 @@ const Appbar=(props)=>
     return(
         <div className={scrollY>10?"Appbar-normal":"Appbar-active"}>  
             <div className="Appbar-grid">
+            {/*<img className="Appbar-ico" src={require('./Icon/favicon.ico')}></img>*/}
             <a href="/login" className="node" >
             <div className='Appbar-icon' style={{textDecoration:'none'}}>Fillkie</div>
                 </a>

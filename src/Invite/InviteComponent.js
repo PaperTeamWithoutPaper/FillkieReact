@@ -1,6 +1,7 @@
 import {useParams} from "react-router-dom"
 import {useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
+import { getCookie } from "../cookie";
 const InviteComponent=()=>
 {
     const {id} = useParams()
@@ -12,7 +13,7 @@ const InviteComponent=()=>
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `${localStorage.getItem('token')}`,
+            'Authorization': `${getCookie('access')}`,
         },
         body: JSON.stringify({url:id}),
     }

@@ -4,7 +4,7 @@
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "64x32 32x16 24x12 16x8",
       "type": "image/x-icon"
     },
     {
@@ -16,6 +16,11 @@
       "src": "logo512.png",
       "type": "image/png",
       "sizes": "512x512"
+    },
+    {
+      "src": "logo.png",
+      "type": "image/png",
+      "sizes": "200x100"
     }
   ],
   "start_url": ".",

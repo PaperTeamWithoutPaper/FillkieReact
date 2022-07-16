@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import { setTeamInfo,IsCreateTeam,setCurrentTeam} from '../reducer/team_reducer';
 import axios from 'axios'
 import Alarm from './Alarm';
+import { getCookie } from '../cookie';
 const CreateTeamModal=(props)=>
 {
     const teamList=useSelector(state=>state.team_reducer.teams)
@@ -25,7 +26,7 @@ const CreateTeamModal=(props)=>
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `${localStorage.getItem('token')}`,
+            'Authorization': `${getCookie('access')}`,
         },
         body: JSON.stringify({teamName:teamName}),
     }
@@ -40,7 +41,7 @@ const CreateTeamModal=(props)=>
       method: "GET",
       headers: {
           'Content-Type': 'application/json',
-          'Authorization': `${localStorage.getItem('token')}`,
+          'Authorization': `${getCookie('access')}`,
       },
       }).then((response)=>{
           response.json().then((d)=>{   
