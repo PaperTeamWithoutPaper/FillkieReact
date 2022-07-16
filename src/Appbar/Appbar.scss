@@ -41,8 +41,15 @@
         }
         @include AppbarStyle;
     }
-    &-grid{ 
-        
+
+    &-ico{
+        text-align: left;
+        float: left;
+        transform: translate(20px);
+        font-family: 'ImperialScript';
+        width:50px;
+        padding-top: 5px;
+       
     }
     &-icon{
         text-align: left;
@@ -82,8 +89,8 @@
         @include InviteUserStyle
     }
     &-body-active{
-        border: 1px solid rgb(0, 132, 255);
-        color: rgb(0, 132, 255);
+        border: 1px solid rgb(255, 153, 0);
+        color: rgb(255, 153, 0);
         @include InviteUserStyle
     }
     &-body-active:hover{

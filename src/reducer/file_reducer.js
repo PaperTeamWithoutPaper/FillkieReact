@@ -5,8 +5,16 @@ export function setPathTree(files)
         files
     }
 }
+export function setDirWidth(width)
+{
+    return{
+        type: 'SET_DIR_WIDTH',
+        width
+    }
+}
 
 const initialState={
+    width:200,
     files:[
         {
             key:1,
@@ -39,6 +47,11 @@ export default function team_reducer(state=initialState, action)
             return{
                 ...state,
                 files:action.files
+            }
+        case 'SET_DIR_WIDTH':
+            return{
+                ...state,
+                width:action.width
             }
       
         default:

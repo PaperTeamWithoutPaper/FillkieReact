@@ -4,6 +4,7 @@ import qs from "querystring";
 import { useEffect } from "react";
 import Appbar from "../Appbar/Appbar";
 import cid from '../config';
+import './Login.scss'
 const Login_browser=()=>
 {
     const onLogin=()=>{
@@ -34,26 +35,14 @@ const Login_browser=()=>
     return (
     <div>
         <Appbar type={0}></Appbar>
-        <div style={{fontSize:"60px"}}>test</div>
-    <div style={styles.loginButton}onClick={onLogin}>
-        <div style={styles.loginButtonText}>Google Login</div></div>
+        <div className="Login-box">
+            <div className="Login-title">Sign in</div>
+            <div className="Login-button" onClick={onLogin}>
+                <img className="Login-button-logo" src={require('./Icon/googleLogo.png')}></img>
+                <div className="Login-button-desc">Sign in with google</div>
+            </div>
+        </div>
     </div>
     )
 }
 export default Login_browser
-
-const styles=
-{
-    loginButton:{
-        borderRadius:'100px',
-        textAlign:'center',
-        width:'150px',
-        height:'50px',
-        backgroundColor:'orange'
-    },
-    loginButtonText:
-    {
-        color:'white',
-        transform:'translateY(60%)'
-    }
-}

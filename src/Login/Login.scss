@@ -1,0 +1,55 @@
+@font-face {
+    font-family: 'NanumSquareRound';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'GangwonEduPowerExtraBoldA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduPowerExtraBoldA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@mixin ButtonStyle{
+    position: relative;
+    display: flex;
+    width:fit-content;
+    color:rgb(66, 66, 66);
+    font-size: 20px;
+    background-color: rgb(255, 255, 255);
+    padding:10px;
+    border-radius: 10px;
+    border: solid 1px gray;
+    font-family: "NanumSquareRound";
+}
+
+.Login{
+    &-box{
+        transform: translate(calc(50vw - 50% ),calc(50vh - 50% ));
+        position:absolute;
+        width:300px;
+        height:400px;
+        
+    }
+    &-title{
+        width:fit-content;
+        font-size: 40px;
+        font-family: 'NanumSquareRound';
+        color:rgb(48, 48, 48)
+    }
+    &-button{
+        @include ButtonStyle
+    }
+    &-button:hover{
+        cursor: pointer;
+        background-color: rgb(248, 248, 248);
+    }
+    &-button-logo{
+        height:30px;
+        padding-right: 10px;
+    }
+    &-button-desc{
+        padding-top:2px;
+    }
+    
+}

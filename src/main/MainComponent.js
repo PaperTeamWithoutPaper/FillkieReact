@@ -12,6 +12,7 @@ import CreateTeamModal from '../Modal/CreateTeamModal';
 import { IsCreateTeam, setTeamInfo, setTeamNum } from '../reducer/team_reducer';
 import InviteUserModal from '../Modal/InviteUserModal';
 import Alarm from '../Modal/Alarm';
+import { getCookie } from '../cookie';
 const MainComponent=()=>
 {
     const responsiveTeam = useMediaQuery({ minWidth: 1200 })
@@ -33,7 +34,7 @@ const MainComponent=()=>
       method: "GET",
       headers: {
           'Content-Type': 'application/json',
-          'Authorization': `${localStorage.getItem('token')}`,
+          'Authorization': `${getCookie("access")}`,
       },
       }).then((response)=>{
           response.json().then((d)=>{   
@@ -48,7 +49,7 @@ const MainComponent=()=>
       method: "GET",
       headers: {
           'Content-Type': 'application/json',
-          'Authorization': `${localStorage.getItem('token')}`,
+          'Authorization': `${getCookie("access")}`,
       },
       }).then((response)=>{
           response.json().then((d)=>{   
@@ -63,7 +64,7 @@ const MainComponent=()=>
       method: "GET",
       headers: {
           'Content-Type': 'application/json',
-          'Authorization': `${localStorage.getItem('token')}`,
+          'Authorization': `${getCookie("access")}`,
       },
       }).then((response)=>{
           response.json().then((d)=>{   
