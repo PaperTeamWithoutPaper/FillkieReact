@@ -25,7 +25,7 @@ const DirectoryPath=()=>
     
 
     return(
-        <div className="DirectoryPath-body" style={{width:`${pathWidth+5}px`}}>
+        <div className="DirectoryPath-body" style={{width:`${pathWidth+30}px`}}>
             <div 
                 className={dragging?"DirectoryPath-dragbar-active":"DirectoryPath-dragbar"} 
                 draggable 
