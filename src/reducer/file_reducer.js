@@ -20,7 +20,7 @@ const initialState={
             key:1,
             type:1,
             thumbnail:"",
-            title:"File1",
+            title:"Filealsmda123131",
             desc:"파일1",
         },
         {

@@ -29,7 +29,6 @@ const MainComponent=()=>
     //User Profile fetch
     const fetchUser= useCallback(()=>
     {
-      
       fetch(`https://api.fillkie.com/user/profile`, {
       method: "GET",
       headers: {
