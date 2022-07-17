@@ -11,7 +11,7 @@ import LoaderComponent from "./FileLoader/LoaderComponent"
 const App=()=>
 {
   return (
-    <div style={{backgroundColor:'rgb(248,248,248)'}}>
+    <div>
     <Routes>
       <Route path="/login" element={<Login_browser></Login_browser>}/>
       <Route path="/main" element={<MainComponent></MainComponent>}/>
@@ -20,7 +20,6 @@ const App=()=>
       <Route exact path="/welcome/:id" element={<InviteComponent></InviteComponent>}/>
       <Route exact path="/board" element={<LoaderComponent></LoaderComponent>}/>
     </Routes>
-    
     </div>
   )
 }
