@@ -6,6 +6,15 @@
     height:calc(100%);  
     transition:all ease 0.2s;
 }
+@mixin arrowStyle{
+    margin-top:3px;
+    margin-right:3px;
+    filter:invert(0.8);
+    width:10px;
+    height:10px;
+    display:block;
+    transition: all ease 0.2s;
+}
 .DirectoryPath{
     &-body{
         background-color: rgb(41, 41, 41);
@@ -29,7 +38,7 @@
         color:white;
         padding:2px;
     }
-    &-object:hover{
+    &-box:hover{
         cursor: pointer;
         background-color: rgb(53, 53, 53);
     }
@@ -54,14 +63,13 @@
     &-dragbar-active:hover{
         cursor:col-resize
     }
-    &-folder-arrow{
-        margin-top:3px;
-        margin-right:3px;
-        filter:invert(0.8);
-        width:10px;
-        height:10px;
-        display:block;
-        transform: rotate(270deg);
+    &-folder-arrow-normal{
+        @include arrowStyle;
+        transform: rotate(-90deg);
+    }
+    &-folder-arrow-clicked{
+        @include arrowStyle;
+        transform: rotate(0deg);
     }
 
 }

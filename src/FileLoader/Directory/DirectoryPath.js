@@ -3,6 +3,7 @@ import {useSelector,useDispatch} from 'react-redux'
 import DirectoryBar from './DirectoryBar'
 import { useEffect, useState, useCallback } from 'react'
 import { setDirWidth } from '../../reducer/file_reducer'
+import FileBar from './FileBar'
 const DirectoryPath=()=>
 {
     const dispatch=useDispatch()
@@ -37,7 +38,7 @@ const DirectoryPath=()=>
             ></div>
             <div className="DirectoryPath-files">
                 <div className="DirectoryPath-title">PROJECT1</div>
-                {files.map((e)=>{return(<DirectoryBar type={e.type} title={e.title}></DirectoryBar>)})}
+                {files.map((e)=>{if(e.type==2){return(<DirectoryBar depth={0} title={e.title}></DirectoryBar>)}else{return(<FileBar depth={0} title={e.title}></FileBar>)}})}
             </div>
         </div>
     )
