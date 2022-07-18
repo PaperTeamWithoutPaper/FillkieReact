@@ -20,7 +20,7 @@ const initialState={
             key:1,
             type:1,
             thumbnail:"",
-            title:"Filealsmda123131",
+            title:"File1",
             desc:"파일1",
         },
         {
@@ -36,6 +36,61 @@ const initialState={
             thumbnail:"",
             title:"Dir1",
             desc:"폴더1",
+            child:[
+            {
+                key:4,
+                type:1,
+                thumbnail:"",
+                title:"File3",
+                desc:"파일1",
+            },
+            {
+                key:5,
+                type:1,
+                thumbnail:"",
+                title:"File4",
+                desc:"파일2",
+            },
+            {
+                key:6,
+                type:2,
+                thumbnail:"",
+                title:"Dir2",
+                desc:"폴더2",
+                child:[
+                    {
+                        key:7,
+                        type:1,
+                        thumbnail:"",
+                        title:"File5",
+                        desc:"파일1",
+                    },
+                    {
+                        key:8,
+                        type:1,
+                        thumbnail:"",
+                        title:"File6",
+                        desc:"파일2",
+                    },
+                ]
+            },
+            {
+                key:10,
+                type:2,
+                thumbnail:"",
+                title:"Dir1",
+                desc:"폴더1",
+                child:[
+                {
+                    key:4,
+                    type:1,
+                    thumbnail:"",
+                    title:"File3",
+                    desc:"파일1",
+                }
+            ]
+        }
+        ]
         },
     ],
 }

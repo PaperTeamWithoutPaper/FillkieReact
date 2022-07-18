@@ -20,11 +20,9 @@ const DirectoryPath=()=>
     {
         setDragging(1)
         if(e.clientX>100){
-        dispatch(setDirWidth(e.clientX-25))
+        dispatch(setDirWidth(e.clientX-35))
         }
     }
-    
-
     return(
         <div className="DirectoryPath-body" style={{width:`${pathWidth+30}px`}}>
             <div 
@@ -34,11 +32,11 @@ const DirectoryPath=()=>
                 onDrag={setWidth} 
                 onMouseOver={()=>{setDragging(1)}}
                 onMouseOut={()=>{setDragging(0)}}
-                onDragEnd={()=>{setDragging(0)}}
-            ></div>
+                onDragEnd={()=>{setDragging(0)}}>
+            </div>
             <div className="DirectoryPath-files">
                 <div className="DirectoryPath-title">PROJECT1</div>
-                {files.map((e)=>{if(e.type==2){return(<DirectoryBar depth={0} title={e.title}></DirectoryBar>)}else{return(<FileBar depth={0} title={e.title}></FileBar>)}})}
+                {files.map((e)=>{if(e.type==2){return(<DirectoryBar files={e.child} key={e.key} depth={0} title={e.title}></DirectoryBar>)}else{return(<FileBar  key={e.key} depth={0} title={e.title}></FileBar>)}})}
             </div>
         </div>
     )

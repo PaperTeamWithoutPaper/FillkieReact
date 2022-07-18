@@ -11,7 +11,6 @@ const Login_browser=()=>
         
         const OATUH_HOST = 'https://accounts.google.com/o/oauth2/auth';
         const client_id = cid;
-        console.log(client_id)
         // api의 callback 주소로 code를 받을 시 돌아옴
         const redirect_uri = 'https://api.fillkie.com/user/oauth/google';
         const response_type = "code";
@@ -29,9 +28,6 @@ const Login_browser=()=>
         window.location.href = AUTHORIZE_URI;
         
     }
-    
-
-
     return (
     <div>
         <Appbar type={0}></Appbar>

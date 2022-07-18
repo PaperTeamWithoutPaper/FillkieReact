@@ -12,9 +12,6 @@ const Card=(props)=>
     {
         setIsover(0)
     }
-
-   
-
     return(
         <div 
             draggable={props.type!=3?'true':'false'}
@@ -25,8 +22,7 @@ const Card=(props)=>
             onMouseOut={()=>{setIshover(0)}}
             onContextMenu={(e)=>{
                 e.preventDefault();
-                console.log('a')}}
-            >
+                console.log('a')}}>
             <div className="Card-title">{props.type==3?'➕':props.type==2?'🗂':props.type==1?'📝':'📁'} {props.title}</div>
             <div className={ishover?"Card-shadow-active":"Card-shadow-hidden"}></div>
             <div className={ishover?"Card-desc-active":"Card-desc-hidden"}>{props.desc}</div>

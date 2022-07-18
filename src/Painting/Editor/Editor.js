@@ -18,8 +18,7 @@ const Editor=()=>
         const options = {
             apiKey: '',
           };
-        const client=new yorkie.Client('https://api.fillkie.com:11101/app',options)
-        
+        const client=new yorkie.Client('https://api.fillkie.com:8080/',options)
         await client.activate();
         console.log(editor,client)
         const doc=new yorkie.Document('docs','doc1')

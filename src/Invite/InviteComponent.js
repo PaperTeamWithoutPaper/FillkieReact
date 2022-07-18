@@ -16,13 +16,11 @@ const InviteComponent=()=>
             'Authorization': `${getCookie('access')}`,
         },
         body: JSON.stringify({url:id}),
-    }
-        ).then((response)=>{
+        }).then((response)=>
+        {
             response.json().then((d)=>{
             navigate('/main')
-        })
-
-            })
+        })})
     },[])
     return(
         <div>
