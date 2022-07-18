@@ -16,6 +16,7 @@ const Appbar=(props)=>
         await getTeamInviteUrl(teamList[teamIdx]['teamId']).then((response)=>dispatch(setInviteUrl(response.data.url)))
     }
     const user_profile=useSelector(state=>state.user_reducer.user_profile)
+    console.log(user_profile)
     return(
         <div className={scrollY>10?"Appbar-normal":"Appbar-active"}>  
             <div className="Appbar-grid">
