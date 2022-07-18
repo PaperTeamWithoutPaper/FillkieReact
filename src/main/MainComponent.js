@@ -11,7 +11,6 @@ import CreateTeamModal from '../Modal/CreateTeamModal';
 import { IsCreateTeam, setTeamInfo, setTeamNum } from '../reducer/team_reducer';
 import InviteUserModal from '../Modal/InviteUserModal';
 import Alarm from '../Modal/Alarm';
-import { getCookie } from '../cookie';
 import { getUserInfo } from '../apis/api/userInfo';
 import { getTeamList,getTeamDetail } from '../apis/api/team';
 const MainComponent=()=>
@@ -31,12 +30,17 @@ const MainComponent=()=>
     const dispatch = useDispatch();
     //API CALL//
     //User Profile fetch
-
-    useEffect(async ()=>{
-      await getUserInfo().then((response)=>{console.log(response)})
-      await getTeamList().then((response)=>{console.log(response)})
-      //await getTeamDetail(teamList[teamID]["teamId"]).then((response)=>{console.log(response)})
-    },[])
+    useEffect(()=>{
+      if(teamList.length!=0){
+        if(teamList[teamID]["teamId"]!="null")
+        {
+      getTeamDetail(teamList[teamID]["teamId"]).then((response)=>{dispatch(setTeamNum(response.data.headcount))})}
+    }},[teamList])
+    useEffect(()=> {async function fetchData(){
+      await getUserInfo().then((response)=>{dispatch(setUserInfo(response.data.userName,response.data.userImage))})
+      await getTeamList().then((response)=>{dispatch(setTeamInfo(response.data))})}
+      fetchData();
+    },[teamID])
 
     return(
       <div>

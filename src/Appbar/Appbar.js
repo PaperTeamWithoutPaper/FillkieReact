@@ -2,26 +2,18 @@ import './Appbar.scss'
 import useScroll from './useScroll'
 import {useDispatch, useSelector} from 'react-redux';
 import { IsInviteTeam, setInviteUrl } from '../reducer/team_reducer';
-import { getCookie } from '../cookie';
+import { getTeamInviteUrl } from '../apis/api/team';
 const Appbar=(props)=>
 {
     const type=props.type
     const scrollY=useScroll()
-    const teams=useSelector((state)=>state.team_reducer.teams)
+    const teamList=useSelector((state)=>state.team_reducer.teams)
     const teamIdx=useSelector((state)=>state.team_reducer.currentTeam)
     const dispatch=useDispatch()
-    const getUrl=()=>
+    const getUrl= async ()=>
     {
         dispatch(IsInviteTeam(1))
-        fetch(`https://api.fillkie.com/team/invite?teamId=${teams[teamIdx]['teamId']}`, {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${getCookie('access')}`,
-        }}).then((response)=>{
-            response.json().then((d)=>{
-            dispatch(setInviteUrl(d.data.url))
-        })})
+        await getTeamInviteUrl(teamList[teamIdx]['teamId']).then((response)=>dispatch(setInviteUrl(response.data.url)))
     }
     const user_profile=useSelector(state=>state.user_reducer.user_profile)
     return(

@@ -2,6 +2,7 @@ import {useParams} from "react-router-dom"
 import {useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "../cookie";
+import './Invite.scss'
 const InviteComponent=()=>
 {
     const {id} = useParams()
@@ -19,12 +20,16 @@ const InviteComponent=()=>
         }).then((response)=>
         {
             response.json().then((d)=>{
-            navigate('/main')
+            //navigate('/main')
         })})
     },[])
     return(
-        <div>
-        {id}
+        <div className="Invite-box">
+            <div className="Invite-title">INVITE</div>
+            <div className="Invite-desc">These team is inviting you :)</div>
+            <div className="Invite-team-title">dump</div>
+            <div className="Invite-team-thumbnail"></div>
+            <div className="Invite-accept-button"></div>
         </div>
     )
 }

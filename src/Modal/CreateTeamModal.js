@@ -5,12 +5,14 @@ import { setTeamInfo,IsCreateTeam,setCurrentTeam} from '../reducer/team_reducer'
 import axios from 'axios'
 import Alarm from './Alarm';
 import { getCookie } from '../cookie';
+import { getTeamList, postCreateTeam } from '../apis/api/team';
+
 const CreateTeamModal=(props)=>
 {
     const teamList=useSelector(state=>state.team_reducer.teams)
-
     const [teamName,setTeamName]=useState("")
-    const teamlength=useSelector(state=>state.team_reducer.teams).length
+    const [createEnd,setCreateEnd]=useState(0)
+    const teamlength=teamList.length
     const removeComponent=()=>
     {
         dispatch(IsCreateTeam(0))
@@ -19,35 +21,20 @@ const CreateTeamModal=(props)=>
     useEffect(()=>{
         setLoading(1)
     },[])
-
-    const createTeam=()=>
+    const createTeam= async ()=> 
     {
-        fetch('https://api.fillkie.com/team/create', {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${getCookie('access')}`,
-        },
-        body: JSON.stringify({teamName:teamName}),
+        await postCreateTeam(teamName).then((response)=>{console.log(response)})
+        await getTeamList().then((response)=>{dispatch(setTeamInfo(response.data))})
+        setLoading(0)
+        setCreateEnd(1)
+        setTimeout(()=>removeComponent(),300)
     }
-        ).then((response)=>{
-            response.json().then((d)=>{
-            setLoading(0)
-        })
-    })}
-    const fetchTeamList=useCallback(()=>
-    {
-      fetch(`https://api.fillkie.com/team/list`, {
-      method: "GET",
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `${getCookie('access')}`,
-      },
-      }).then((response)=>{
-          response.json().then((d)=>{   
-          dispatch(setTeamInfo(d.data))
-          })})},[loading])
-    useEffect(fetchTeamList,[loading])
+
+    useEffect(()=>{
+        if(createEnd==1){
+            dispatch(setCurrentTeam(teamlength-1))
+        }
+    },[createEnd])
     
 
 
