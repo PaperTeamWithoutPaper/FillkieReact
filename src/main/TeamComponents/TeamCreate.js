@@ -5,10 +5,11 @@ import { IsCreateTeam, setCurrentTeam, } from '../../reducer/team_reducer';
 const TeamCreate=()=>
 {
     const team_data=useSelector(state=> state.team_reducer.teams)
+    const cur=useSelector(state=>state.team_reducer.currentTeam)
     const dispatch= useDispatch();
     return(
         <div className="TeamCreate">
-            {team_data.map((team)=>{return(<div onClick={()=>{dispatch(setCurrentTeam(team.idx))}} className="TeamCreate-icon">{team.teamName.slice(0,2)}</div>)})}
+            {team_data.map((team)=>{return(<div onClick={()=>{dispatch(setCurrentTeam(team.idx))}} className={team.idx==cur?"TeamCreate-icon-active":"TeamCreate-icon"}>{team.teamName.slice(0,2)}</div>)})}
             <div className="TeamCreate-icon" onClick={()=>{dispatch(IsCreateTeam(1))}}>+</div>    
         </div>
     )

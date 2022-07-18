@@ -140,4 +140,13 @@
         background-color: rgb(255, 130, 81);
         @include IconStyle;
     }
+    &-icon-active{
+        background-color: rgb(48, 78, 214);
+        @include IconStyle;
+    }
+    &-icon-active:hover{
+        cursor: pointer;
+        background-color: rgb(93, 104, 250);
+        @include IconStyle;
+    }
 }

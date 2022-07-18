@@ -46,6 +46,11 @@ const initialState={
     currentTeam:0,
     inviteUrl:'',
     teams:[
+        {
+            idx:0,
+            teamId:'null',
+            teamName:'dump',
+        }
 
     ],
     teamNum:0,

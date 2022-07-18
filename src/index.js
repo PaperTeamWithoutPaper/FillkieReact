@@ -5,9 +5,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import {Provider} from 'react-redux';
-import {createStore} from 'redux'
+import {createStore,applyMiddleware} from 'redux'
 import reducer from './reducer/root_reducer';
 import { CookiesProvider } from 'react-cookie';
+import logger from 'redux-logger'
 const store=createStore(reducer)
 export default store
 
