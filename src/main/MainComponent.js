@@ -12,7 +12,8 @@ import { IsCreateTeam, setTeamInfo, setTeamNum } from '../reducer/team_reducer';
 import InviteUserModal from '../Modal/InviteUserModal';
 import Alarm from '../Modal/Alarm';
 import { getCookie } from '../cookie';
-import { fetchUser } from '../API/API';
+import { getUserInfo } from '../apis/api/userInfo';
+import { getTeamList,getTeamDetail } from '../apis/api/team';
 const MainComponent=()=>
 {
   //Responsive Var//
@@ -30,46 +31,12 @@ const MainComponent=()=>
     const dispatch = useDispatch();
     //API CALL//
     //User Profile fetch
-    const api1= useCallback(()=>
-    {
-      let response=fetchUser(getCookie("access"))
-      dispatch(setUserInfo(response[0],response[1]))
-    }
-    ,[user_email])
-    //Team detail fetch
-    const fetchTeamDetail=()=>
-    {
-      let response=fetchTeamDetail(teamList,teamID,getCookie("access"))
-      dispatch(setTeamNum(response))
-    }
-    
-    //Team List fetch
-    const fetchTeamList= useCallback(()=>
-    {
-      fetch(`https://api.fillkie.com/team/list`, {
-      method: "GET",
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `${getCookie("access")}`,
-      }}).then((response)=>{
-          response.json().then((d)=>{   
-          if(d.data!=null){
-            dispatch(setTeamInfo(d.data))
-            console.log(teamList)
-            if(teamList.length!=0){
-            fetchTeamDetail()
-            }}})})}
-    ,[teamID])
 
-    //USEEFFECT//
-    useEffect(()=>
-    {
-      fetchUser()
-    },[fetchUser])
-    useEffect(()=>
-    {
-      fetchTeamList()
-    },[fetchTeamList])
+    useEffect(async ()=>{
+      await getUserInfo().then((response)=>{console.log(response)})
+      await getTeamList().then((response)=>{console.log(response)})
+      //await getTeamDetail(teamList[teamID]["teamId"]).then((response)=>{console.log(response)})
+    },[])
 
     return(
       <div>
