@@ -3,13 +3,13 @@ import {useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "../cookie";
 import './Invite.scss'
+import Appbar from "../Appbar/Appbar";
 const InviteComponent=()=>
 {
     const {id} = useParams()
     const navigate=useNavigate()
-    useEffect(()=>
+    const accept=()=>
     {
-        console.log('hello')
         fetch('https://api.fillkie.com/team/invite/accept', {
         method: "POST",
         headers: {
@@ -20,16 +20,35 @@ const InviteComponent=()=>
         }).then((response)=>
         {
             response.json().then((d)=>{
-            //navigate('/main')
+            navigate('/main')
+        })})
+    }
+    
+    useEffect(()=>
+    {
+        fetch(`https://api.fillkie.com/team/invite/validation?url=${id}`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `${getCookie('access')}`,
+        },
+        }).then((response)=>
+        {
+            response.json().then((d)=>{
+            console.log(d)
         })})
     },[])
+    
     return(
+        <div>
+        <Appbar type={2}></Appbar>
         <div className="Invite-box">
-            <div className="Invite-title">INVITE</div>
-            <div className="Invite-desc">These team is inviting you :)</div>
-            <div className="Invite-team-title">dump</div>
-            <div className="Invite-team-thumbnail"></div>
-            <div className="Invite-accept-button"></div>
+            <div className="Invite-title">✉️ INVITE</div>
+            <hr style={{color:'yellow'}}></hr>
+            <div className="Invite-desc"> "dump" team is inviting you . </div>
+            <img src="https://source.unsplash.com/random" className="Invite-team-thumbnail"></img>
+            <div className="Invite-accept-button" onClick={accept}>Accept Inviting</div>
+        </div>
         </div>
     )
 }
