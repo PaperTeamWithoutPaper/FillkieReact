@@ -6,7 +6,9 @@ const ModalButton=(props)=>
         <div 
         onMouseOver={()=>{setIshover(1)}} 
         onMouseOut={()=>{setIshover(0)}}
-        className={ishover?"Modal-menu-active":"Modal-menu-normal"}>{props.data}</div>
+        className={ishover?"Modal-menu-active":"Modal-menu-normal"}>
+        {props.data}
+        </div>
     )
 }
 export default ModalButton

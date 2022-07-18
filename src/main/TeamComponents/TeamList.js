@@ -22,7 +22,6 @@ const TeamList=()=>
             <div className="TeamList-lowerblock">
                 <div className="TeamList-users">{teamNum}-users</div>
             </div>
-            
         </div>
         <Modal listopen={listopen}></Modal>
         </div>

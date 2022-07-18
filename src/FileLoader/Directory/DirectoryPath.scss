@@ -14,6 +14,7 @@
     height:10px;
     display:block;
     transition: all ease 0.2s;
+    
 }
 .DirectoryPath{
     &-body{
@@ -22,6 +23,7 @@
         height:calc(100%);
         color:rgb(221, 221, 221);
         font-size:13px;
+        padding-left: 5px;
     }
     &-title{
         width:fit-content;
@@ -32,19 +34,24 @@
         display: flex;
         flex-wrap: nowrap;
         flex-direction: row;
-        margin-left:5px;
+        
+        padding:2px;
+    }
+    &-object-desc-box:hover{
+        cursor: pointer;
+        background-color: rgb(53, 53, 53);
     }
     &-object{
         color:white;
-        padding:2px;
+        
     }
-    &-box:hover{
+    &-file-box:hover{
         cursor: pointer;
         background-color: rgb(53, 53, 53);
     }
     &-object-over{
         color:rgb(255, 255, 255);
-        padding:2px;
+        
         background-color: rgba(82, 82, 82, 0.521)
     }
     &-files{
