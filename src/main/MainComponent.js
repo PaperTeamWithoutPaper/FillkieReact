@@ -13,6 +13,7 @@ import InviteUserModal from '../Modal/InviteUserModal';
 import Alarm from '../Modal/Alarm';
 import { getUserInfo } from '../apis/api/userInfo';
 import { getTeamList,getTeamDetail } from '../apis/api/team';
+import ManageTeamModal from '../Modal/ManageTeamModal';
 const MainComponent=()=>
 {
   //Responsive Var//
@@ -47,6 +48,7 @@ const MainComponent=()=>
         {alarm?<Alarm desc="복사되었습니다."></Alarm>:null}
         {inviting?<InviteUserModal></InviteUserModal>:null}
         {creating?<CreateTeamModal></CreateTeamModal>:null}
+        {/*<ManageTeamModal></ManageTeamModal>*/}
         <div style={{overflow:'hidden', position:'absolute'}}>
           <Appbar type={1}></Appbar>
           <div className={responsiveTeam?"MainGrid-big":"MainGrid-small"}>
