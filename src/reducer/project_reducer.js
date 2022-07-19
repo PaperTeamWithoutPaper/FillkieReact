@@ -10,39 +10,12 @@ const initialState={
     projects:[
         {
             key:1,
-            type:2,
+            type:4,
             thumbnail:"",
             title:"Project1",
             desc:"프로젝트",
         },
-        {
-            key:2,
-            type:2,
-            thumbnail:"",
-            title:"Project2",
-            desc:"프로젝트",
-        },
-        {
-            key:2,
-            type:2,
-            thumbnail:"",
-            title:"Project2",
-            desc:"프로젝트",
-        },
-        {
-            key:2,
-            type:2,
-            thumbnail:"",
-            title:"Project2",
-            desc:"프로젝트",
-        },
-        {
-            key:2,
-            type:2,
-            thumbnail:"",
-            title:"Project2",
-            desc:"프로젝트",
-        }
+       
     ],
 }
 export default function project_reducer(state=initialState, action)

@@ -16,6 +16,7 @@
     transition: all ease 0.3s;
 }
 @mixin bgStyle{
+    backdrop-filter: blur(5px);
     background-color: rgba(0, 0, 0, 0.329);
     position: absolute;
     z-index: 100;
@@ -25,6 +26,7 @@
 }
 .CreateTeamModal{
     &-box{
+        
         display: flex;
         justify-content: center;
     }
