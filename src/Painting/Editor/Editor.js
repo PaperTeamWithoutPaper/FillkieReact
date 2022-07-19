@@ -2,8 +2,11 @@ import {useRef,useState,useEffect} from 'react'
 import Canvas from './Canvas'
 import DrawingBoard from './DrawingBoard/DrawingBoard'
 import yorkie from 'yorkie-js-sdk'
+var client=""
+var doc=""
 const Editor=()=>
 {
+    const [val,setVal]=useState("dump")
     /*
     const [width, setWidth] = useState(0);
     const [height, setHeight] = useState(0);
@@ -13,32 +16,45 @@ const Editor=()=>
         setHeight(window.screen.height);
       }, []);
       */
+    
+   
     async function main(){
         const editor= document.getElementById('ta')
         const options = {
             apiKey: '',
           };
-        const client=new yorkie.Client('https://api.fillkie.com:8080/',options)
+        client=new yorkie.Client('http://3.39.108.134:8080')
         await client.activate();
-        console.log(editor,client)
-        const doc=new yorkie.Document('docs','doc1')
+        doc=new yorkie.Document('document')
         await client.attach(doc);
-        doc.update((root)=>{
-            if(!root.content){
-                root.content= new yorkie.Text();
+        
+        doc.subscribe((event) => {
+            if (event.type === "remote-change") {
+                setVal(doc.getRoot().obj)
             }
-        })
-        editor.on('beforeChange', (cm, change)=>{console.log(change)})
-        doc.getRoot().content.onChanges((changes)=>{console.log(changes)})
+          });
+        client.subscribe((event) => {
+        if (event.type === "peers-changed") {
+            const peers = event.value[doc.getKey()];
+            const peersCount = Object.entries(peers).length;
+            console.log(`There are currently ${peersCount} peers`);
+        }
+        });
     }
     useEffect(()=>{main()},[])
+    useEffect(()=>{
+        if(doc==="") return;
+        doc.update((root) => {
+            root.obj=val
+          });
+    },[val])
     return(
         <div>
             {/*<div style={{width:'100vw'}} ref={divRef}>
             <DrawingBoard width={width} height={height}>
             </DrawingBoard>
             </div> */}
-            <textarea id="ta" style={{width:'100vw',height:'100vh'}}></textarea>
+            <textarea onChange={(e)=>{setVal(e.target.value)}} value={val} id="ta" style={{width:'100vw',height:'100vh'}}></textarea>
 
             
         </div>
