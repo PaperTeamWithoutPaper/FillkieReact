@@ -23,7 +23,7 @@ const Card=(props)=>
             onContextMenu={(e)=>{
                 e.preventDefault();
                 console.log('a')}}>
-            <div className="Card-title">{props.type==3?'➕':props.type==2?'🗂':props.type==1?'📝':'📁'} {props.title}</div>
+            <div className="Card-title">{props.type==3?'➕':props.type==4?'🗂':props.type==1?'📝':'📁'} {props.title}</div>
             <div className={ishover?"Card-shadow-active":"Card-shadow-hidden"}></div>
             <div className={ishover?"Card-desc-active":"Card-desc-hidden"}>{props.desc}</div>
         </div>
