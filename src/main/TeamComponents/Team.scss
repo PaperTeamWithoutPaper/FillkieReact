@@ -128,16 +128,16 @@
 .TeamCreate{
     width:60px;
     height:100vh;
-    background-color: rgb(255, 166, 0);
+    background-color: rgb(31, 31, 31);
     flex:left;
-    transform: translateY(10vh);
+    transform: translateY(65px);
     &-icon{
-        background-color: rgb(223, 91, 14);
+        background-color: rgb(223, 126, 14);
         @include IconStyle;
     }
     &-icon:hover{
         cursor: pointer;
-        background-color: rgb(255, 130, 81);
+        background-color: rgb(255, 185, 81);
         @include IconStyle;
     }
     &-icon-active{
