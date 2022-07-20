@@ -6,10 +6,22 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import {Provider} from 'react-redux';
 import {createStore,applyMiddleware} from 'redux'
-import reducer from './reducer/root_reducer';
+import rootReducer from './reducer/root_reducer';
 import { CookiesProvider } from 'react-cookie';
 import logger from 'redux-logger'
-const store=createStore(reducer)
+import {configureStore, getDefaultMiddleware} from '@reduxjs/toolkit'
+const store = configureStore({
+    reducer: rootReducer,
+    middleware: getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['doc/attach/fulfilled', 'doc/activate/fulfilled'],
+        ignoredPaths: ['docState.client', 'docState.doc'],
+      },
+      immutableCheck: {
+        ignoredPaths: ['docState.client', 'docState.doc'],
+      },
+    }),
+  });
 export default store
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

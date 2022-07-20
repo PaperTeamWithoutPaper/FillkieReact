@@ -1,4 +1,7 @@
 import {useRef,useState,useEffect} from 'react'
+import yorkie from 'yorkie-js-sdk';
+var client=""
+var doc=""
 const DrawingBoard=({width,height})=>
 {
     const DrawingBoardRef=useRef();
@@ -9,7 +12,6 @@ const DrawingBoard=({width,height})=>
 
     useEffect(()=>
     {
-        
         const DrawingBoard=DrawingBoardRef.current;
         DrawingBoard.width='120px'
         DrawingBoard.height='120px'
@@ -46,9 +48,16 @@ const DrawingBoard=({width,height})=>
             }
         }
     }
+    //Yorkie
+   
+
+
+
+
+
     return(
-        <div style={{position:'absolute'}}>
-            <div style={{position:'absolute', zIndex:'123'}}></div>
+        <div style={{position:'absolute', zIndex:'123'}}>
+            <div></div>
             <canvas
             width={width}
             height={height}
