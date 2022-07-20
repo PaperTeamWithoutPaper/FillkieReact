@@ -1,0 +1,35 @@
+.ToolBar{
+    &-body{
+        display: flex;
+        justify-content: center;
+        background-color: rgb(61, 61, 61);
+        height:40px;
+        align-items: center;
+        color:rgb(180, 180, 180);
+    }
+    
+    &-button{
+        width:50px;
+        height:40px;
+        justify-content:center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+
+        transition: all ease 0.2s;
+    }
+    &-button:hover{
+        cursor: pointer;
+        background-color: rgb(87, 87, 87);
+        transition: all ease 0.2s;
+    }
+    &-button-icon{
+        filter:invert(1);
+        width:20px;
+
+    }
+    &-button-desc{
+        font-size: 12px;
+
+    }
+}
