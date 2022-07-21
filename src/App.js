@@ -8,13 +8,11 @@ import Alarm from "./Modal/Alarm"
 import InviteComponent from "./Invite/InviteComponent"
 import LoaderComponent from "./FileLoader/LoaderComponent"
 import InviteErrorComponent from "./Invite/InviteErrorComponent"
-import Test from "./Editor/Test"
 //import DocLoader from "./Editor"
 const App=()=>
 {
   return (
     <div>
-      <Test></Test>
     <Routes>
       <Route path="/login" element={<Login_browser></Login_browser>}/>
       <Route path="/main" element={<MainComponent></MainComponent>}/>
