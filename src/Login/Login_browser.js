@@ -14,7 +14,7 @@ const Login_browser=()=>
         // api의 callback 주소로 code를 받을 시 돌아옴
         const redirect_uri = 'https://api.fillkie.com/user/oauth/google';
         const response_type = "code";
-        const scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email ';
+        const scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/drive ';
         const access_type= "offline";
         const prompt= "consent";
         const AUTHORIZE_URI = `${OATUH_HOST}?${qs.stringify({
