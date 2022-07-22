@@ -8,6 +8,7 @@ import Alarm from "./Modal/Alarm"
 import InviteComponent from "./Invite/InviteComponent"
 import LoaderComponent from "./FileLoader/LoaderComponent"
 import InviteErrorComponent from "./Invite/InviteErrorComponent"
+import DocLoader from "./Editor"
 //import DocLoader from "./Editor"
 const App=()=>
 {
