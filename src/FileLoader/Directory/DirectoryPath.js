@@ -36,7 +36,7 @@ const DirectoryPath=()=>
             </div>
             <div className="DirectoryPath-files">
                 <div className="DirectoryPath-title">PROJECT1</div>
-                {files.map((e)=>{if(e.type==2){return(<DirectoryBar files={e.child} key={e.key} depth={0} title={e.title}></DirectoryBar>)}else{return(<FileBar  key={e.key} depth={0} title={e.title}></FileBar>)}})}
+                {files.map((e)=>{if(e.type==2){return(<DirectoryBar key={e.key} depth={0} title={e.name}></DirectoryBar>)}else{return(<FileBar  key={e.key} depth={0} title={e.name}></FileBar>)}})}
             </div>
         </div>
     )

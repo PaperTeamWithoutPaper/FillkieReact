@@ -14,6 +14,10 @@ import Alarm from '../Modal/Alarm';
 import { getUserInfo } from '../apis/api/userInfo';
 import { getTeamList,getTeamDetail } from '../apis/api/team';
 import ManageTeamModal from '../Modal/ManageTeamModal';
+import CreateProjectModal from '../Modal/FileModal/CreateProjectModal';
+import axios from 'axios';
+import { getCookie } from '../cookie';
+import { setProjectInfo } from '../reducer/project_reducer';
 const MainComponent=()=>
 {
   //Responsive Var//
@@ -28,6 +32,7 @@ const MainComponent=()=>
     const teamList=useSelector(state=>state.team_reducer.teams)
     const teamID=useSelector(state=>state.team_reducer.currentTeam)
     const alarm=useSelector(state=>state.modal_reducer.isCreate)
+    const projectC=useSelector(state=>state.project_reducer.iscreate)
     const dispatch = useDispatch();
     //API CALL//
     //User Profile fetch
@@ -35,6 +40,20 @@ const MainComponent=()=>
       if(teamList.length!=0){
         if(teamList[teamID]["teamId"]!="null")
         {
+
+          fetch(`http://13.124.191.230:8888/team/${teamList[teamID]["teamId"]}/project/`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${getCookie('access')}`,
+            },
+            }).then((response)=>
+            {
+                response.json().then((d)=>{
+                  console.log(d)
+                dispatch(setProjectInfo(d.data))
+                })})
+
       getTeamDetail(teamList[teamID]["teamId"]).then((response)=>{dispatch(setTeamNum(response.data.headcount))})}
     }},[teamList])
     useEffect(()=> {async function fetchData(){
@@ -43,11 +62,14 @@ const MainComponent=()=>
       fetchData();
     },[teamID])
 
+
+
     return(
       <div>
         {alarm?<Alarm desc="복사되었습니다."></Alarm>:null}
         {inviting?<InviteUserModal></InviteUserModal>:null}
         {creating?<CreateTeamModal></CreateTeamModal>:null}
+        {projectC?<CreateProjectModal></CreateProjectModal>:null}
         {/*<ManageTeamModal></ManageTeamModal>*/}
         <div style={{overflow:'hidden', position:'absolute'}}>
           <Appbar type={1}></Appbar>
