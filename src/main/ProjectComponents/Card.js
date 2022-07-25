@@ -1,5 +1,8 @@
 import { useState, useRef } from "react"
 import useDrag from "./useDrag";
+import {useDispatch} from 'react-redux';
+import { IsCreateProject } from "../../reducer/project_reducer";
+import { useNavigate } from "react-router";
 const Card=(props)=>
 {
     const [ishover,setIshover]=useState(0)
@@ -12,6 +15,8 @@ const Card=(props)=>
     {
         setIsover(0)
     }
+    const dispatch=useDispatch();
+    const navigate=useNavigate();
     return(
         <div 
             draggable={props.type!=3?'true':'false'}
@@ -20,6 +25,11 @@ const Card=(props)=>
             className={isover?"Card-body-over":"Card-body"}
             onMouseOver={()=>{setIshover(1)}} 
             onMouseOut={()=>{setIshover(0)}}
+            onClick={()=>{if(props.type==3){dispatch(IsCreateProject(1))}
+            if(props.type==4){navigate(`/board/${props.id}/${props.pid}`)}
+        }
+            
+        }
             onContextMenu={(e)=>{
                 e.preventDefault();
                 console.log('a')}}>

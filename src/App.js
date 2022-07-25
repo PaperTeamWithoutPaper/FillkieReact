@@ -18,10 +18,10 @@ const App=()=>
       <Route path="/login" element={<Login_browser></Login_browser>}/>
       <Route path="/main" element={<MainComponent></MainComponent>}/>
       <Route path="/loginapi" element={<Login_api></Login_api>}/>
-      {/*<Route path="/" element={<DocLoader></DocLoader>}/>*/}
+      <Route path="/" element={<DocLoader></DocLoader>}/>
       <Route exact path="/welcome/:id" element={<InviteComponent></InviteComponent>}/>
       <Route exact path="/welcome/error" element={<InviteErrorComponent></InviteErrorComponent>}/>
-      <Route exact path="/board" element={<LoaderComponent></LoaderComponent>}/>
+      <Route exact path="/board/:id/:pid" element={<LoaderComponent></LoaderComponent>}/>
     </Routes>
     </div>
   )

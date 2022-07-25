@@ -30,11 +30,12 @@ const DirectoryBar=(props)=>
                     draggable
                     className="DirectoryPath-object-desc-box"
                     onClick={()=>{setIsclicked(isclicked*(-1))}}>
+                    
                     <img style={{marginLeft:`${props.depth*10}px`}} className={isclicked==-1?"DirectoryPath-folder-arrow-normal":"DirectoryPath-folder-arrow-clicked"} src={require('./icon/arrow.png')}></img>
                     {<div>📁</div>} 
                     <div style={{marginLeft:'5px'}}>{props.title}</div>
                 </div>
-            {files.map((e)=>{if(e.type==2 && isclicked==1){return(<DirectoryBar files={e.child} key={e.key} depth={props.depth+1} title={e.title}></DirectoryBar>)}else if(isclicked==1){return(<FileBar depth={props.depth+1} title={e.title}></FileBar>)}})}
+            {/*files.map((e)=>{if(e.type==2 && isclicked==1){return(<DirectoryBar files={e.child} key={e.key} depth={props.depth+1} title={e.title}></DirectoryBar>)}else if(isclicked==1){return(<FileBar depth={props.depth+1} title={e.title}></FileBar>)}})*/}
             </div>
         </div>
     )

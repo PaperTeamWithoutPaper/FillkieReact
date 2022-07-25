@@ -10,7 +10,6 @@ export default function DrawingBoard({width, height}) {
 
 
   useEffect(() => {
-    console.log(doc)
     if (!canvasRef.current) {
       return () => {};
     }
@@ -85,7 +84,6 @@ export default function DrawingBoard({width, height}) {
     if (!canvasRef.current) {
       return;
     }
-
     boardRef.current?.setWidth(width);
     boardRef.current?.setHeight(height);
     boardRef.current?.drawAll(doc.getRoot().shapes);

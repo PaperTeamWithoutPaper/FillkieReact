@@ -38,6 +38,7 @@ class CanvasWrapper {
         this.width = width;
         this.canvas.width = devicePixelRatio ? width * devicePixelRatio : width;
         this.canvas.style.width = `${width}px`;
+        this.canvas.style.backgroundColor='yellow';
     }
     setHeight(height, devicePixelRatio) {
         this.height = height;
@@ -68,6 +69,7 @@ class CanvasWrapper {
 export default class Board extends EventDispatcher {
     constructor(el, update) {
         super();
+        this.worker='';
         this.offsetY = 0;
         this.offsetX = 0;
         this.color = 'black'
@@ -79,6 +81,7 @@ export default class Board extends EventDispatcher {
         this.initialize();
     }
     initialize() {
+        this.worker = new LineWorker(this.update,this);
         this.initializeSize();
         this.initializeOffset();
         this.emit = this.emit.bind(this);
@@ -176,7 +179,8 @@ export default class Board extends EventDispatcher {
         };
     }
     onMouseDown(evt) {
-        touchy(this.upperWrapper.getCanvas(), addEvent, 'mousemove', this.onMouseMove);
+        console.log('down')
+        touchy(this.lowerWrapper.getCanvas(), addEvent, 'mousemove', this.onMouseMove);
         this.dragStatus = DragStatus.Drag;
         const point = this.getPointFromTouchyEvent(evt);
         this.worker.mousedown(point, (boardMetadata) => {
@@ -184,6 +188,7 @@ export default class Board extends EventDispatcher {
         });
     }
     onMouseMove(evt) {
+        console.log('move')
         const point = this.getPointFromTouchyEvent(evt);
         if (this.isOutside(point)) {
             this.onMouseUp();
@@ -208,8 +213,10 @@ export default class Board extends EventDispatcher {
         this.emit('mouseout');
     }
     updateMetadata(peerKey, metadata) {
+ 
         this.clear(this.lowerWrapper);
         this.update((root) => {
+           
             this.drawAll(root.shapes);
         });
         this.metadataMap.set(peerKey, JSON.parse(metadata.board || '{}'));
@@ -233,23 +240,18 @@ export default class Board extends EventDispatcher {
         return false;
     }
     drawAll(shapes, wrapper) {
-        console.log(shapes)
-        this.clear(this.lowerWrapper);
+        this.clear(wrapper);
+        if(shapes==undefined) return {}
         for (const shape of shapes) {
-            if (shape.type === 'line') {
-                drawLine(wrapper.getContext(), shape);
-            }
-            else if (shape.type === 'eraser') {
-                drawEraser(wrapper.getContext(), shape);
-            }
-            else if (shape.type === 'rect') {
-                drawRect(wrapper.getContext(), shape);
-            }
+            drawLine(this.lowerWrapper.getContext(), shape);
+
         }
     }
-    clear(wrapper) {
+    clear(wrapper = this.lowerWrapper)
+    {
         wrapper.clear();
     }
+    
     clearBoard() {
     this.clear(this.lowerWrapper);
     this.clear(this.upperWrapper);
