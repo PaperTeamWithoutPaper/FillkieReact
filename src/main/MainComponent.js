@@ -1,6 +1,6 @@
 
 import Appbar from '../Appbar/Appbar'
-import {useEffect, useCallback} from 'react'
+import {useEffect, useCallback, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {setUserInfo} from "../reducer/user_reducer";
 import TeamComponent from './TeamComponents/TeamComponent';
@@ -18,10 +18,11 @@ import CreateProjectModal from '../Modal/FileModal/CreateProjectModal';
 import axios from 'axios';
 import { getCookie } from '../cookie';
 import { setProjectInfo } from '../reducer/project_reducer';
+import Loading from '../Loading/Loading';
 const MainComponent=()=>
 {
   //Responsive Var//
-    const responsiveTeam = useMediaQuery({ minWidth: 1200 })
+    const responsiveTeam = useMediaQuery({ minWidth: 400 })
   //Redux//
     const { user_email, user_profile } = useSelector(state => ({
       user_email: state.user_reducer.user_email,
@@ -40,7 +41,7 @@ const MainComponent=()=>
       if(teamList.length!=0){
         if(teamList[teamID]["teamId"]!="null")
         {
-
+          setProjectLoading(1)
           fetch(`http://13.124.191.230:8888/team/${teamList[teamID]["teamId"]}/project/`, {
             method: "GET",
             headers: {
@@ -51,6 +52,7 @@ const MainComponent=()=>
             {
                 response.json().then((d)=>{
                   console.log(d)
+                setProjectLoading(0)
                 dispatch(setProjectInfo(d.data))
                 })})
 
@@ -61,6 +63,8 @@ const MainComponent=()=>
       await getTeamList().then((response)=>{dispatch(setTeamInfo(response.data))})}
       fetchData();
     },[teamID])
+    //Loading//
+    const [projectLoading, setProjectLoading]=useState(1)
 
 
 
@@ -76,7 +80,7 @@ const MainComponent=()=>
           <div className={responsiveTeam?"MainGrid-big":"MainGrid-small"}>
               <TeamCreate></TeamCreate>
               {responsiveTeam?<TeamComponent></TeamComponent>:null}
-              <ProjectComponent></ProjectComponent>
+              {projectLoading?<Loading></Loading>:<ProjectComponent></ProjectComponent>}
           </div>      
         </div>
       </div>

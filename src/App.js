@@ -9,11 +9,13 @@ import InviteComponent from "./Invite/InviteComponent"
 import LoaderComponent from "./FileLoader/LoaderComponent"
 import InviteErrorComponent from "./Invite/InviteErrorComponent"
 import DocLoader from "./Editor"
+import Loading from "./Loading/Loading"
 //import DocLoader from "./Editor"
 const App=()=>
 {
   return (
     <div>
+      
     <Routes>
       <Route path="/login" element={<Login_browser></Login_browser>}/>
       <Route path="/main" element={<MainComponent></MainComponent>}/>
