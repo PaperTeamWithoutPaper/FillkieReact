@@ -34,10 +34,18 @@ export function setDirInfo(data)
         data
     }
 }
+export function fileLoading(toggle)
+{
+    return{
+        type: 'FILE_LOADING',
+        toggle
+    }
+}
 
 
 const initialState={
     iscreate:0,
+    fileLoading:0,
     typ:0,
     width:200,
     files:[{}
@@ -67,6 +75,11 @@ export default function team_reducer(state=initialState, action)
             return{
                 ...state,
                 files:action.data
+            }
+        case 'FILE_LOADING':
+            return{
+                ...state,
+                fileLoading:action.toggle
             }
       
         default:

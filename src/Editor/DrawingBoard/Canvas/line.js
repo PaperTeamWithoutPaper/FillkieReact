@@ -28,16 +28,16 @@ export function drawLine(context, line) {
     for (const p of line.points) {
         points.push([p.x, p.y]);
     }
+    
     const curves = fitCurve(points, 2);
+    
     if (!curves.length) {
         return;
     }
-    
     context.save();
     context.beginPath();
-    context.strokeStyle = line.color || '#ff7043';
+    context.strokeStyle = line.color || 'black';
     const firstCurve = curves[0];
-    console.log(firstCurve)
     context.moveTo(firstCurve[0][0], firstCurve[0][1]);
     for (const curve of curves) {
         context.bezierCurveTo(curve[1][0], curve[1][1], curve[2][0], curve[2][1], curve[3][0], curve[3][1]);

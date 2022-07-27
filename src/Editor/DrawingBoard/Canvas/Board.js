@@ -1,4 +1,4 @@
-
+//문제의 그 코드*_*_*_*_*_**_*_
 import EventDispatcher from '../../../utils/eventDispatcher';
 import { drawLine, drawEraser } from './line';
 import { drawRect } from './rect';
@@ -10,6 +10,7 @@ var DragStatus;
     DragStatus[DragStatus["Stop"] = 1] = "Stop";
 })(DragStatus || (DragStatus = {}));
 
+//Canvas Wrapper 객체 정의
 class CanvasWrapper {
     constructor(canvas) {
         this.width = 0;
@@ -38,7 +39,6 @@ class CanvasWrapper {
         this.width = width;
         this.canvas.width = devicePixelRatio ? width * devicePixelRatio : width;
         this.canvas.style.width = `${width}px`;
-        this.canvas.style.backgroundColor='yellow';
     }
     setHeight(height, devicePixelRatio) {
         this.height = height;
@@ -65,7 +65,7 @@ class CanvasWrapper {
 }
 
 
-
+//문제의 그 코드 2 *_(_(_*_*_*_))
 export default class Board extends EventDispatcher {
     constructor(el, update) {
         super();
@@ -75,6 +75,7 @@ export default class Board extends EventDispatcher {
         this.color = 'black'
         this.dragStatus = DragStatus.Stop;
         this.metadataMap = new Map();
+        //이 두놈이 문제임 ㅋㅋ
         this.lowerWrapper = new CanvasWrapper(el);
         this.upperWrapper = this.createUpperWrapper();
         this.update = update;
@@ -103,7 +104,7 @@ export default class Board extends EventDispatcher {
         this.removeEventListener('renderAll');
     }
     initializeOffset() {
-        const { y, x } = this.lowerWrapper.getCanvas().getBoundingClientRect();
+        const { y, x } = this.upperWrapper.getCanvas().getBoundingClientRect();
         this.offsetY = y;
         this.offsetX = x;
     }
@@ -128,7 +129,7 @@ export default class Board extends EventDispatcher {
         }
     }
     setColor(color) {
-        this.color = color;
+        this.color = 'black';
         this.worker.setOption({ color });
     }
     setWidth(width) {
@@ -154,12 +155,9 @@ export default class Board extends EventDispatcher {
         this.worker = this.createWorker(tool);
     }
     createWorker() {
-
         return new LineWorker(this.update, this, { color: this.color });
-        
-
     }
-
+    //마우스 이벤트 시작@@@@@@@@@
     getPointFromTouchyEvent(evt) {
         let originY;
         let originX;
@@ -169,7 +167,7 @@ export default class Board extends EventDispatcher {
         }
         else {
             originY = evt.clientY;
-            originX = evt.clientX;
+            originX = evt.clientX-195;
         }
         originY += window.scrollY;
         originX += window.scrollX;
@@ -177,23 +175,26 @@ export default class Board extends EventDispatcher {
             y: originY - this.offsetY,
             x: originX - this.offsetX,
         };
+        
     }
+    //마우스 클릭하면 
     onMouseDown(evt) {
-        console.log('down')
-        touchy(this.lowerWrapper.getCanvas(), addEvent, 'mousemove', this.onMouseMove);
+        touchy(this.upperWrapper.getCanvas(), addEvent, 'mousemove', this.onMouseMove);
         this.dragStatus = DragStatus.Drag;
         const point = this.getPointFromTouchyEvent(evt);
+        
         this.worker.mousedown(point, (boardMetadata) => {
+            
             this.emit('mousedown', boardMetadata);
         });
     }
     onMouseMove(evt) {
-        console.log('move')
+
         const point = this.getPointFromTouchyEvent(evt);
-        if (this.isOutside(point)) {
+        /*if (this.isOutside(point)) {
             this.onMouseUp();
             return;
-        }
+        }*/
         if (this.dragStatus === DragStatus.Stop) {
             return;
         }
@@ -213,10 +214,8 @@ export default class Board extends EventDispatcher {
         this.emit('mouseout');
     }
     updateMetadata(peerKey, metadata) {
- 
-        this.clear(this.lowerWrapper);
+        this.clear(this.upperWrapper);
         this.update((root) => {
-           
             this.drawAll(root.shapes);
         });
         this.metadataMap.set(peerKey, JSON.parse(metadata.board || '{}'));
@@ -233,8 +232,8 @@ export default class Board extends EventDispatcher {
     isOutside(point) {
         if (point.y < 0 ||
             point.x < 0 ||
-            point.y > this.lowerWrapper.getHeight() ||
-            point.x > this.lowerWrapper.getWidth()) {
+            point.y > this.upperWrapper.getHeight() ||
+            point.x > this.upperWrapper.getWidth()) {
             return true;
         }
         return false;
@@ -242,8 +241,9 @@ export default class Board extends EventDispatcher {
     drawAll(shapes, wrapper) {
         this.clear(wrapper);
         if(shapes==undefined) return {}
+        
         for (const shape of shapes) {
-            drawLine(this.lowerWrapper.getContext(), shape);
+            drawLine(this.upperWrapper.getContext(), shape);
 
         }
     }

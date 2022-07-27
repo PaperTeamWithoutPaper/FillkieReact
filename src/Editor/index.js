@@ -7,7 +7,6 @@ import {
   detachDocument,
   attachDoc,
   attachDocLoading,
-
   DocStatus,
   setStatus,
 } from '../reducer/docSlices';
@@ -17,7 +16,7 @@ import Editor, { NAVBAR_HEIGHT } from './Editor';
 
 // eslint-disable-next-line func-names
 export default function DocLoader() {
-  const  docKey  = 'asd';
+  const  docKey  = 'assd';
   const dispatch = useDispatch();
   const client = useSelector(state => state.docReducer.client);
   const doc = useSelector(state => state.docReducer.doc);
@@ -26,19 +25,20 @@ export default function DocLoader() {
   const loading = useSelector(state => state.docReducer.loading);
   const errorMessage = useSelector(state => state.docReducer.errorMessage);
 
+  //client activate in slices
   useEffect(() => {
-    dispatch(activateClient());
-    console.log(client)
+    dispatch(activateClient()); 
     return () => {
       dispatch(deactivateClient());
     };
   }, []);
-
+  //client subscribe to doc
   useEffect(() => {
+    // client activate OR doc activate 이전에 subscribe 실행시 에러처리
     if (!client || !doc) {
       return () => {};
     }
-
+    //사용자 변경시
     const unsubscribe = client.subscribe((event) => {
       if (event.type === 'peers-changed') {
         const documentKey = doc.getKey();
@@ -49,12 +49,14 @@ export default function DocLoader() {
             changedPeers,
           }),
         );
+        //사용자 나갈 때
       } if (status === DocStatus.Connect &&
         ((event.type === 'status-changed' && event.value === 'deactivated') ||
             (event.type === 'stream-connection-status-changed' && event.value === 'disconnected') ||
             (event.type === 'document-synced' && event.value === 'sync-failed'))) {
         dispatch(setStatus(DocStatus.Disconnect));
     }
+    //사용자 들어올 때
     else if (status === DocStatus.Disconnect &&
         (event.type === 'peers-changed' ||
             event.type === 'documents-changed' ||
@@ -64,10 +66,13 @@ export default function DocLoader() {
         dispatch(setStatus(DocStatus.Connect));
     }
 });
+//status 변경시 subscribe
 return () => {
     unsubscribe();
 };
 }, [client, doc, status]);
+
+//document 생성
 useEffect(() => {
 dispatch(createDocument(docKey));
 
@@ -80,10 +85,11 @@ async function attachDocAsync() {
     if (!client || !doc) {
         return;
     }
+    //loading 시작
     dispatch(attachDocLoading(true));
+    //client에 doc attach
     await dispatch(attachDoc({ client, doc }));
-    
-
+    //loading 끝
     dispatch(attachDocLoading(false));
 }
 attachDocAsync();
@@ -95,7 +101,6 @@ return () => {
       
 
   return (
-
     <Editor></Editor>
   )
 
