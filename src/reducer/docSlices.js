@@ -54,7 +54,7 @@ export const activateClient = createAsyncThunk('doc/activate', async (_, thunkAp
                 board: '',
             }, 필요없음
         };*/
-        const client = new yorkie.Client(`https://api.fillkie.com/yorkie` );
+        const client = new yorkie.Client(`https://api.fillkie.com` );
         await client.activate();
         return { client };
         //client를 만들고 return하는 부분
