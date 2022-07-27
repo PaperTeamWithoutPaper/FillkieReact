@@ -54,7 +54,7 @@ export const activateClient = createAsyncThunk('doc/activate', async (_, thunkAp
                 board: '',
             }, 필요없음
         };*/
-        const client = new yorkie.Client(`http://3.39.108.134:8080` );
+        const client = new yorkie.Client(`https://api.fillkie.com/yorkie` );
         await client.activate();
         return { client };
         //client를 만들고 return하는 부분
@@ -86,7 +86,7 @@ export const attachDoc = createAsyncThunk('doc/attach', async ({ client, doc }, 
     }
 });
 const docSlice = createSlice({
-    name: 'doc',
+    name: 'dosaasc',
     initialState,
     reducers: {
         deactivateClient(state) {
