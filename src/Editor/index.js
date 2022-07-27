@@ -16,7 +16,7 @@ import Editor, { NAVBAR_HEIGHT } from './Editor';
 
 // eslint-disable-next-line func-names
 export default function DocLoader() {
-  const  docKey  = 'asdasad';
+  const  docKey  = 'asdasasssd';
   const dispatch = useDispatch();
   const client = useSelector(state => state.docReducer.client);
   const doc = useSelector(state => state.docReducer.doc);
