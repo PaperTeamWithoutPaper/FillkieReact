@@ -10,7 +10,7 @@ const CreateFileModal=({type})=>
     const {id,pid}=useParams()
     const createFile=()=>
     {
-        fetch(`http://13.124.191.230:8888/${type?'dir':'file'}`, {
+        fetch(`https://api.fillkie.com/${type?'dir':'file'}`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
