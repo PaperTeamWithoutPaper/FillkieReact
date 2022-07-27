@@ -20,7 +20,7 @@ const CreateProjectModal=()=>
     const teamID=useSelector(state=>state.team_reducer.currentTeam)
     const postProject=()=>
     {
-        fetch(`http://13.124.191.230:8888/team/${teamList[teamID]["teamId"]}/project/`, {
+        fetch(`https://api.fillkie.com/team/${teamList[teamID]["teamId"]}/project/`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ const CreateProjectModal=()=>
             })
             }).then((response)=>
             {
-                fetch(`http://13.124.191.230:8888/team/${teamList[teamID]["teamId"]}/project/`, {
+                fetch(`https://api.fillkie.com/team/${teamList[teamID]["teamId"]}/project/`, {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json',

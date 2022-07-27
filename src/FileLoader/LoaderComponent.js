@@ -18,7 +18,7 @@ const LoaderComponent=()=>
     const readFile=()=>
     {
         dispatch(fileLoading(1))
-        fetch(`http://13.124.191.230:8888/dir?projectId=${id}&folderId=${pid}`, {
+        fetch(`https://api.fillkie.com/dir?projectId=${id}&folderId=${pid}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
