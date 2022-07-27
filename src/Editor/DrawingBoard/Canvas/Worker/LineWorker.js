@@ -6,24 +6,22 @@ import * as scheduler from '../scheduler';
 class LineWorker extends Worker {
     constructor(update, board, options) {
         super(options);
-
         this.update = update;
         this.board = board;
     }
     mousedown(point) {
         let timeTicket;
-        console.log('a')
         this.update((root) => {
-            var _a;
             const shape = createLine(point,'black');
             root.shapes.push(shape);
             const lastShape = root.shapes.getLast();
             timeTicket = lastShape.getID();
+            this.createID = timeTicket;
         });
-        this.createID = timeTicket;
+        
+
     }
     mousemove(point) {
-        console.log('move')
         scheduler.reserveTask(point, (tasks) => {
             const points = compressPoints(tasks);
             if (tasks.length < 2) {
@@ -31,6 +29,7 @@ class LineWorker extends Worker {
             }
             this.update((root) => {
                 const lastShape = this.getElementByID(root, this.createID);
+
                 if (!lastShape) {
                     return;
                 }
@@ -52,7 +51,7 @@ class LineWorker extends Worker {
                 return;
             }
             // When erasing a line, it checks that the lines overlap, so do not save if there are two points below
-            if (shape.points.length < 2) {
+            if (shape.points.length < 3) {
                 this.deleteByID(root, this.createID);
             }
             this.board.drawAll(root.shapes);

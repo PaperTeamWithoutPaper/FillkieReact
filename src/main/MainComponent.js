@@ -19,6 +19,7 @@ import axios from 'axios';
 import { getCookie } from '../cookie';
 import { setProjectInfo } from '../reducer/project_reducer';
 import Loading from '../Loading/Loading';
+import {springServer,nodeServer} from '../config'
 const MainComponent=()=>
 {
   //Responsive Var//
@@ -42,7 +43,7 @@ const MainComponent=()=>
         if(teamList[teamID]["teamId"]!="null")
         {
           setProjectLoading(1)
-          fetch(`http://13.124.191.230:8888/team/${teamList[teamID]["teamId"]}/project/`, {
+          fetch(`https://api.fillkie.com/team/${teamList[teamID]["teamId"]}/project/`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',

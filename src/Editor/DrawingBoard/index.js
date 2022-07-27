@@ -28,13 +28,12 @@ export default function DrawingBoard({width, height}) {
     if (!doc) {
       return () => {};
     }
-
+    //doc에 저장된 shpaes 객체를 전부 캔버스에 그리는 board내의 함수 호출
     const unsubscribe = doc.subscribe((event) => {
-      if (event.type === 'remote-change') {
+      if (event.type==='remote-change') {
         boardRef.current?.drawAll(doc.getRoot().shapes);
       }
     });
-
     return () => {
       unsubscribe();
     };
@@ -84,6 +83,7 @@ export default function DrawingBoard({width, height}) {
     if (!canvasRef.current) {
       return;
     }
+    console.log('updatedsad')
     boardRef.current?.setWidth(width);
     boardRef.current?.setHeight(height);
     boardRef.current?.drawAll(doc.getRoot().shapes);

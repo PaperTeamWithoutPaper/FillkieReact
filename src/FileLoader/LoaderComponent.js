@@ -7,7 +7,7 @@ import CreateFileModal from "../Modal/FileModal/CreateFileModal"
 import { useParams } from "react-router"
 import { getCookie } from "../cookie"
 import { useEffect } from "react"
-import { setDirInfo,setFileInfo } from "../reducer/file_reducer"
+import { setDirInfo,setFileInfo,fileLoading } from "../reducer/file_reducer"
 const LoaderComponent=()=>
 {
     const pathWidth=useSelector((state)=>state.file_reducer.width)
@@ -17,6 +17,7 @@ const LoaderComponent=()=>
     const dispatch=useDispatch()
     const readFile=()=>
     {
+        dispatch(fileLoading(1))
         fetch(`http://13.124.191.230:8888/dir?projectId=${id}&folderId=${pid}`, {
             method: "GET",
             headers: {
@@ -27,7 +28,7 @@ const LoaderComponent=()=>
             {
                 response.json().then((d)=>{
                     dispatch(setFileInfo(d.data))
-                    console.log(d.data)
+                    dispatch(fileLoading(0))
                 })})
 
     }
