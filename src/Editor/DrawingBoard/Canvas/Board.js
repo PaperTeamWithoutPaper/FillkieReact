@@ -44,6 +44,7 @@ class CanvasWrapper {
         this.height = height;
         this.canvas.height = devicePixelRatio ? height * devicePixelRatio : height;
         this.canvas.style.height = `${height}px`;
+        this.canvas.style.border="solid 1px black"
     }
     setSize(width, height, devicePixelRatio) {
         this.setWidth(width, devicePixelRatio);
@@ -77,7 +78,7 @@ export default class Board extends EventDispatcher {
         this.metadataMap = new Map();
         //이 두놈이 문제임 ㅋㅋ
         this.lowerWrapper = new CanvasWrapper(el);
-        this.upperWrapper = this.createUpperWrapper();
+        //this.upperWrapper = this.createUpperWrapper();
         this.update = update;
         this.initialize();
     }
@@ -91,33 +92,31 @@ export default class Board extends EventDispatcher {
         this.onMouseOut = this.onMouseOut.bind(this);
         this.onMouseDown = this.onMouseDown.bind(this);
         this.onMouseMove = this.onMouseMove.bind(this);
-        touchy(this.upperWrapper.getCanvas(), addEvent, 'mouseup', this.onMouseUp);
-        touchy(this.upperWrapper.getCanvas(), addEvent, 'mouseout', this.onMouseOut);
-        touchy(this.upperWrapper.getCanvas(), addEvent, 'mousedown', this.onMouseDown);
+        touchy(this.lowerWrapper.getCanvas(), addEvent, 'mouseup', this.onMouseUp);
+        touchy(this.lowerWrapper.getCanvas(), addEvent, 'mouseout', this.onMouseOut);
+        touchy(this.lowerWrapper.getCanvas(), addEvent, 'mousedown', this.onMouseDown);
         this.addEventListener('renderAll', this.drawAll);
     }
     destroy() {
-        touchy(this.upperWrapper.getCanvas(), removeEvent, 'mouseup', this.onMouseUp);
-        touchy(this.upperWrapper.getCanvas(), removeEvent, 'mouseout', this.onMouseOut);
-        touchy(this.upperWrapper.getCanvas(), removeEvent, 'mousedown', this.onMouseDown);
-        this.destroyUpperCanvas();
+        touchy(this.lowerWrapper.getCanvas(), removeEvent, 'mouseup', this.onMouseUp);
+        touchy(this.lowerWrapper.getCanvas(), removeEvent, 'mouseout', this.onMouseOut);
+        touchy(this.lowerWrapper.getCanvas(), removeEvent, 'mousedown', this.onMouseDown);
+        //this.destroyUpperCanvas();
         this.removeEventListener('renderAll');
     }
     initializeOffset() {
-        const { y, x } = this.upperWrapper.getCanvas().getBoundingClientRect();
+        const { y, x } = this.lowerWrapper.getCanvas().getBoundingClientRect();
         this.offsetY = y;
         this.offsetX = x;
     }
     initializeSize() {
         this.lowerWrapper.resize();
-        this.upperWrapper.resize();
+       // this.upperWrapper.resize();
     }
     createUpperWrapper() {
         var _a;
         const canvas = document.createElement('canvas');
         const wrapper = new CanvasWrapper(canvas);
-        wrapper.setWidth(this.lowerWrapper.getWidth());
-        wrapper.setHeight(this.lowerWrapper.getHeight());
         (_a = this.lowerWrapper.getCanvas().parentNode) === null || _a === void 0 ? void 0 : _a.appendChild(canvas);
         return wrapper;
     }
@@ -134,17 +133,17 @@ export default class Board extends EventDispatcher {
     }
     setWidth(width) {
         this.lowerWrapper.setWidth(width);
-        this.upperWrapper.setWidth(width);
+       // this.upperWrapper.setWidth(width);
         this.resize();
     }
     setHeight(height) {
         this.lowerWrapper.setHeight(height);
-        this.upperWrapper.setHeight(height);
+      //  this.upperWrapper.setHeight(height);
         this.resize();
     }
     resize() {
         this.lowerWrapper.resize();
-        this.upperWrapper.resize();
+      //  this.upperWrapper.resize();
     }
     setTool(tool) {
         this.setMouseClass(tool);
@@ -167,7 +166,7 @@ export default class Board extends EventDispatcher {
         }
         else {
             originY = evt.clientY;
-            originX = evt.clientX-195;
+            originX = evt.clientX;
         }
         originY += window.scrollY;
         originX += window.scrollX;
@@ -179,7 +178,7 @@ export default class Board extends EventDispatcher {
     }
     //마우스 클릭하면 
     onMouseDown(evt) {
-        touchy(this.upperWrapper.getCanvas(), addEvent, 'mousemove', this.onMouseMove);
+        touchy(this.lowerWrapper.getCanvas(), addEvent, 'mousemove', this.onMouseMove);
         this.dragStatus = DragStatus.Drag;
         const point = this.getPointFromTouchyEvent(evt);
         
@@ -203,7 +202,7 @@ export default class Board extends EventDispatcher {
         });
     }
     onMouseUp() {
-        touchy(this.upperWrapper.getCanvas(), removeEvent, 'mousemove', this.onMouseMove);
+        touchy(this.lowerWrapper.getCanvas(), removeEvent, 'mousemove', this.onMouseMove);
         this.dragStatus = DragStatus.Stop;
         this.worker.mouseup();
         this.emit('mouseup');
@@ -214,7 +213,7 @@ export default class Board extends EventDispatcher {
         this.emit('mouseout');
     }
     updateMetadata(peerKey, metadata) {
-        this.clear(this.upperWrapper);
+        this.clear(this.lowerWrapper);
         this.update((root) => {
             this.drawAll(root.shapes);
         });
@@ -232,8 +231,8 @@ export default class Board extends EventDispatcher {
     isOutside(point) {
         if (point.y < 0 ||
             point.x < 0 ||
-            point.y > this.upperWrapper.getHeight() ||
-            point.x > this.upperWrapper.getWidth()) {
+            point.y > this.lowerWrapper.getHeight() ||
+            point.x > this.lowerWrapper.getWidth()) {
             return true;
         }
         return false;
@@ -243,7 +242,7 @@ export default class Board extends EventDispatcher {
         if(shapes==undefined) return {}
         
         for (const shape of shapes) {
-            drawLine(this.upperWrapper.getContext(), shape);
+            drawLine(this.lowerWrapper.getContext(), shape);
 
         }
     }
@@ -254,7 +253,7 @@ export default class Board extends EventDispatcher {
     
     clearBoard() {
     this.clear(this.lowerWrapper);
-    this.clear(this.upperWrapper);
+    //this.clear(this.upperWrapper);
     this.worker.clearAll();
     }
 }
