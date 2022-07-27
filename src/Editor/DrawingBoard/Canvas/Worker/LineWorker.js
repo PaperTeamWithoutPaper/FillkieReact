@@ -51,7 +51,7 @@ class LineWorker extends Worker {
                 return;
             }
             // When erasing a line, it checks that the lines overlap, so do not save if there are two points below
-            if (shape.points.length < 3) {
+            if (shape.points.length < 2) {
                 this.deleteByID(root, this.createID);
             }
             this.board.drawAll(root.shapes);
