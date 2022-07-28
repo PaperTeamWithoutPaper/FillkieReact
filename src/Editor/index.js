@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
 import {
   activateClient,
   deactivateClient,
@@ -16,7 +17,7 @@ import Editor, { NAVBAR_HEIGHT } from './Editor';
 
 // eslint-disable-next-line func-names
 export default function DocLoader() {
-  const  docKey  = 'asdasasssd';
+  const  {docKey}  = useParams();
   const dispatch = useDispatch();
   const client = useSelector(state => state.docReducer.client);
   const doc = useSelector(state => state.docReducer.doc);
