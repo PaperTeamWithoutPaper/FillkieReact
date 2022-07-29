@@ -1,0 +1,37 @@
+@mixin BoxStyle{
+
+    height:43px;
+    width:90px;
+    border-radius: 50px;
+    transition: all ease 0.5s;
+    margin:0px 10px 0px 10px;
+}
+@mixin ButtonStyle{
+    height:37px;
+    width:37px;
+    transform: translateY(3px);
+    border-radius: 100px;
+    transition: all ease 0.5s;
+}
+.toggle{
+    &-box-unactive{
+        background-color: rgb(201, 201, 201);
+        @include BoxStyle;   
+    }
+    
+    &-box-active{
+        background-color: rgb(255, 174, 0);
+        @include BoxStyle;   
+    }
+
+    &-button-unactive{
+        background-color: rgb(255, 255, 255);
+        margin-left:3px;
+        @include ButtonStyle;   
+    }
+    &-button-active{
+        background-color: rgb(255, 255, 255);
+        margin-left:50px;
+        @include ButtonStyle;   
+    }
+}
