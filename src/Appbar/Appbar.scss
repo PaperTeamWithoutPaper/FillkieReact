@@ -1,12 +1,11 @@
 @mixin AppbarStyle{
-
     width: 100vw;
     height: 65px;
-    text-align: center;
     font-size: 50px;
-    transition: all ease 0.3s;
-    display:block;
+    display: flex;
     box-shadow:0px 0px 10px rgb(173, 173, 173);
+    flex-direction: row;
+    align-items: center;
 }
 @font-face {
     font-family: "ImperialScript";
@@ -16,86 +15,70 @@
 
 
 .Appbar{
-    $normal-color: rgb(0, 0, 0);
-    $normal-text-color: rgb(255, 255, 255);
-    $active-color: rgb(39, 46, 65);
-    $active-text-color: black;
-    
-    &-normal{
-        background-color: $normal-color;
-        color: $normal-text-color;
-        a:visited{
-            color:rgb(255, 255, 255);
-
-        }
-        @include AppbarStyle;
-    }
     &-active{
-        background-color: $active-color;
-        color: $active-text-color;
+        background-color: rgb(39, 46, 65);
+        color: white;
         a:visited{
             color:rgb(255, 255, 255);
+            text-decoration: none;
         }
         a:link{
+            text-decoration: none;
             color:black;
         }
         @include AppbarStyle;
     }
 
-    &-ico{
-        text-align: left;
-        float: left;
-        transform: translate(20px);
-        font-family: 'ImperialScript';
-        width:50px;
-        padding-top: 5px;
-       
-    }
     &-icon{
-        text-align: left;
-        float: left;
-        transform: translate(20px);
+
+        margin-left:20px;
         font-family: 'ImperialScript';
        
     }
     &-login_require{
-        float: right;
         text-align: right;
         font-size: 13pt;
         transform: translate(-20px,100%);
     }
     &-user_profile{
         width:32px;
-
-        float: right;
         text-align: right;
         font-size: 13pt;
-        transform: translate(-20px,55%);
-        border-radius: 100px;
 
+        border-radius: 100px;
+    }
+    &-alarm{
+        width:20px;
+        filter: invert(1);
+        margin:20px;
+        padding:8px;
+        background-color: rgb(219, 209, 185);
+        border-radius: 100px;
+        transition: all ease 0.2s;
+    }
+    &-alarm:hover{
+        background-color: rgb(233, 223, 200);
+        transition: all ease 0.2s;
     }
 }
 @mixin InviteUserStyle{
     padding:5px 20px 5px 20px;
     border-radius: 10px;
-    transition: all ease 0.05s;
+    transition: all ease 0.2s;
 }
 .InviteUser{
-    float: right;
-    transform: translate(-40px,55%);
     font-size: 13pt;
-    &-body-normal{
-        border: 1px solid rgb(255, 255, 255);
-        @include InviteUserStyle
-    }
+    margin-left: auto;
     &-body-active{
-        border: 1px solid rgb(255, 153, 0);
-        color: rgb(255, 153, 0);
+        border: 1px solid rgb(255, 255, 255);
+        color: rgb(255, 255, 255);
         @include InviteUserStyle
     }
     &-body-active:hover{
         cursor: pointer;
-        background-color: rgba(240, 240, 240, 0.075);
+        border: 1px solid rgb(255, 153, 0);
+        color: rgb(255, 153, 0);
+
     }
 
 }

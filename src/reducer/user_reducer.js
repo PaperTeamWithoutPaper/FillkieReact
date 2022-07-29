@@ -7,7 +7,7 @@ export function setUserInfo(email,profile)
 }
 const initialState={
     user_email:'asd',
-    user_profile:'asd',
+    user_profile:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTHUfpbfHayCUU074hh7qpmUxaWKN5bakTOOpVv3IVTu0wTIRbGlsRYqPehEtCnBcFIqc',
 }
 export default function user_reducer(state=initialState, action)
 {
