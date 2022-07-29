@@ -10,6 +10,7 @@ import LoaderComponent from "./FileLoader/LoaderComponent"
 import InviteErrorComponent from "./Invite/InviteErrorComponent"
 import DocLoader from "./Editor"
 import Loading from "./Loading/Loading"
+import PermissionComponent from "./Permission"
 //import DocLoader from "./Editor"
 const App=()=>
 {
@@ -23,6 +24,7 @@ const App=()=>
       <Route exact path="/welcome/:id" element={<InviteComponent></InviteComponent>}/>
       <Route exact path="/welcome/error" element={<InviteErrorComponent></InviteErrorComponent>}/>
       <Route exact path="/board/:id/:pid" element={<LoaderComponent></LoaderComponent>}/>
+      <Route exact path="/permission" element={<PermissionComponent></PermissionComponent>}/>
     </Routes>
     </div>
   )

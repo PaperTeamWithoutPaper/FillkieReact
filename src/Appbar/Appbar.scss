@@ -1,5 +1,5 @@
 @mixin AppbarStyle{
-    position: fixed;
+
     width: 100vw;
     height: 65px;
     text-align: center;
@@ -18,7 +18,7 @@
 .Appbar{
     $normal-color: rgb(0, 0, 0);
     $normal-text-color: rgb(255, 255, 255);
-    $active-color: rgb(255, 255, 255);
+    $active-color: rgb(39, 46, 65);
     $active-text-color: black;
     
     &-normal{
@@ -34,7 +34,7 @@
         background-color: $active-color;
         color: $active-text-color;
         a:visited{
-            color:black;
+            color:rgb(255, 255, 255);
         }
         a:link{
             color:black;
@@ -95,7 +95,7 @@
     }
     &-body-active:hover{
         cursor: pointer;
-        background-color: rgb(247, 247, 247);
+        background-color: rgba(240, 240, 240, 0.075);
     }
 
 }
