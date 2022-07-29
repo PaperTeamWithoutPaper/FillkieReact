@@ -81,7 +81,7 @@ const MainComponent=()=>
           <div className={responsiveTeam?"MainGrid-big":"MainGrid-small"}>
               <TeamCreate></TeamCreate>
               {responsiveTeam?<TeamComponent></TeamComponent>:null}
-              {projectLoading?<ProjectComponent></ProjectComponent>:null}
+              {projectLoading?<Loading></Loading>:<ProjectComponent></ProjectComponent>}
           </div>      
         </div>
       </div>
