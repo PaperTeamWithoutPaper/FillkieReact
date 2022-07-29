@@ -16,20 +16,19 @@ const Appbar=(props)=>
         await getTeamInviteUrl(teamList[teamIdx]['teamId']).then((response)=>dispatch(setInviteUrl(response.data.url)))
     }
     const user_profile=useSelector(state=>state.user_reducer.user_profile)
-    console.log(user_profile)
     return(
-        <div className={scrollY>10?"Appbar-normal":"Appbar-active"}>  
-            <div className="Appbar-grid">
-            {/*<img className="Appbar-ico" src={require('./Icon/favicon.ico')}></img>*/}
-                <a href="/login" className="node"><div className='Appbar-icon' style={{textDecoration:'none'}}>Fillkie</div></a>
-                {type==0?<div className='Appbar-login_require'>로그인 해주세요.</div>:<img className='Appbar-user_profile' src={user_profile} alt="" aria-hidden="true" data-noaft="" data-atf="1" data-frt="0"/>}
-                {type==1?<div className="InviteUser">
-                <div onClick={getUrl} className={scrollY>10?"InviteUser-body-normal":"InviteUser-body-active"}>+ Invite member</div>
-                </div>: null}        
-                {type==2?<div className="InviteUser">
-                <div onClick={getUrl} className={scrollY>10?"InviteUser-body-normal":"InviteUser-body-active"}>Complete</div>
-                </div>: null}        
-            </div>
+        <div className="Appbar-active">  
+            <a href="/login" className="node"><div className='Appbar-icon' style={{textDecoration:'none'}}>Fillkie</div></a>
+            
+            {type==1?<div className="InviteUser">
+            <div onClick={getUrl} className="InviteUser-body-active">+ Invite member</div>
+            </div>: null}        
+            {type==2?<div className="InviteUser">
+            <div onClick={getUrl} className={scrollY>10?"InviteUser-body-normal":"InviteUser-body-active"}>Complete</div>
+            </div>: null}     
+            <img src={require('./Icon/alarm.png')} className="Appbar-alarm"></img> 
+            {type==0?<div className='Appbar-login_require'>로그인 해주세요.</div>:<img className='Appbar-user_profile' src={user_profile} alt="" aria-hidden="true" data-noaft="" data-atf="1" data-frt="0"/>} 
+            <div style={{width:'10px'}}></div> 
         </div>
     )
 }

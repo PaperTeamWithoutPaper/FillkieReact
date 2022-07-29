@@ -5,13 +5,17 @@
     border-radius: 50px;
     transition: all ease 0.5s;
     margin:0px 10px 0px 10px;
+    &:hover{
+        cursor:pointer;
+    }
 }
+
 @mixin ButtonStyle{
     height:37px;
     width:37px;
     transform: translateY(3px);
     border-radius: 100px;
-    transition: all ease 0.5s;
+    transition: all ease 0.2s;
 }
 .toggle{
     &-box-unactive{
