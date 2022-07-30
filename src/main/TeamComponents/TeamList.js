@@ -1,15 +1,24 @@
 import { useState } from 'react'
 import Modal from './Modal'
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
+import { IsInviteTeam ,setInviteUrl} from '../../reducer/team_reducer'
+import { getTeamInviteUrl} from '../../apis/api/team'
 const TeamList=()=>
 {
     const teamList=useSelector(state=>state.team_reducer.teams)
     const teamNum=useSelector(state=>state.team_reducer.teamNum)
     const teamidx=useSelector(state=>state.team_reducer.currentTeam)
+    
+    const dispatch=useDispatch()
     var curTeamName=""
     if(teamList.length!=0)
     {
         curTeamName=teamList[teamidx]['teamName']
+    }
+    const getUrl= async ()=>
+    {
+        dispatch(IsInviteTeam(1))
+        await getTeamInviteUrl(teamList[teamidx]['teamId']).then((response)=>dispatch(setInviteUrl(response.data.url)))
     }
     const [listopen,setListopen]=useState(-1)
     return(
@@ -24,6 +33,7 @@ const TeamList=()=>
                 </div>
             </div>
             <Modal listopen={listopen}></Modal>
+            
         </div>
     )
 }

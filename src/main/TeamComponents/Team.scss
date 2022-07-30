@@ -129,6 +129,7 @@
         font-size: 15px;
         color:rgb(114, 114, 114);
         background-color: rgb(255, 255, 255);
+        transition: all ease 0.2s;
     }
     &-menu-active{
         cursor: pointer;
@@ -136,8 +137,9 @@
         padding:13px;
         width:100%;
         font-size: 15px;
-        color:rgb(255, 186, 59);
+        color:rgb(255, 166, 0);
         background-color: rgb(255, 255, 255);
+        transition: all ease 0.2s;
     }
 }
 .TeamCreate{
@@ -166,4 +168,27 @@
         background-color: rgb(255, 186, 59);
         @include IconStyle;
     }
+}
+@mixin InviteUserStyle{
+
+    border-radius: 10px;
+    transition: all ease 0.2s;
+    font-family: 'S-CoreDream-3Light';
+    width:140px;
+}
+.InviteUser{
+    font-size: 13pt;
+    margin-left: auto;
+    &-body-active{
+        border: 1px solid rgb(240, 240, 240);
+        color: rgb(236, 236, 236);
+        @include InviteUserStyle
+    }
+    &-body-active:hover{
+        cursor: pointer;
+        border: 1px solid rgb(255, 153, 0);
+        color: rgb(255, 153, 0);
+
+    }
+
 }

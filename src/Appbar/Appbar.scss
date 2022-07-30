@@ -55,10 +55,12 @@
         background-color: rgb(219, 209, 185);
         border-radius: 100px;
         transition: all ease 0.2s;
+        margin-left: auto;
     }
     &-alarm:hover{
         background-color: rgb(233, 223, 200);
         transition: all ease 0.2s;
+        
     }
 }
 @mixin InviteUserStyle{
