@@ -31,6 +31,9 @@
     transition: all ease 0.2s
 
 }
+.Link:visited{
+    color:black;
+}
 .MainGrid{
     &-big{
         display:grid;
@@ -123,6 +126,7 @@
         transform: translateY(25px) scale(0.8,0.8) ;   
     }
     &-menu-normal{
+        text-decoration: none;
         flex:1;
         padding:13px;
         width:100%;
@@ -132,6 +136,7 @@
         transition: all ease 0.2s;
     }
     &-menu-active{
+        text-decoration: none;
         cursor: pointer;
         flex:1;
         padding:13px;
@@ -139,7 +144,6 @@
         font-size: 15px;
         color:rgb(255, 166, 0);
         background-color: rgb(255, 255, 255);
-        transition: all ease 0.2s;
     }
 }
 .TeamCreate{
