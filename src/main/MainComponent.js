@@ -39,6 +39,7 @@ const MainComponent=()=>
     //API CALL//
     //User Profile fetch
     useEffect(()=>{
+      setProjectLoading(0)
       if(teamList.length!=0){
         if(teamList[teamID]["teamId"]!="null")
         {
@@ -56,6 +57,7 @@ const MainComponent=()=>
                 setProjectLoading(0)
                 dispatch(setProjectInfo(d.data))
                 })})
+         
 
       getTeamDetail(teamList[teamID]["teamId"]).then((response)=>{dispatch(setTeamNum(response.data.headcount))})}
     }},[teamList])
@@ -81,7 +83,7 @@ const MainComponent=()=>
           <div className={responsiveTeam?"MainGrid-big":"MainGrid-small"}>
               <TeamCreate></TeamCreate>
               {responsiveTeam?<TeamComponent></TeamComponent>:null}
-              {projectLoading?<Loading></Loading>:<ProjectComponent></ProjectComponent>}
+              {<div style={{transition: 'all ease 0.3s', filter:`blur(${projectLoading*5}px)`}}><ProjectComponent ></ProjectComponent></div>}
           </div>      
         </div>
       </div>
