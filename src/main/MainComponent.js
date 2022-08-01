@@ -39,11 +39,11 @@ const MainComponent=()=>
     //API CALL//
     //User Profile fetch
     useEffect(()=>{
-      setProjectLoading(0)
+   
       if(teamList.length!=0){
         if(teamList[teamID]["teamId"]!="null")
         {
-          setProjectLoading(1)
+
           fetch(`https://api.fillkie.com/team/${teamList[teamID]["teamId"]}/project/`, {
             method: "GET",
             headers: {
@@ -62,6 +62,7 @@ const MainComponent=()=>
       getTeamDetail(teamList[teamID]["teamId"]).then((response)=>{dispatch(setTeamNum(response.data.headcount))})}
     }},[teamList])
     useEffect(()=> {async function fetchData(){
+      setProjectLoading(1)
       await getUserInfo().then((response)=>{dispatch(setUserInfo(response.data.userName,response.data.userImage))})
       await getTeamList().then((response)=>{dispatch(setTeamInfo(response.data))})}
       fetchData();
@@ -83,7 +84,8 @@ const MainComponent=()=>
           <div className={responsiveTeam?"MainGrid-big":"MainGrid-small"}>
               <TeamCreate></TeamCreate>
               {responsiveTeam?<TeamComponent></TeamComponent>:null}
-              {<div style={{transition: 'all ease 0.3s', filter:`blur(${projectLoading*5}px)`}}><ProjectComponent ></ProjectComponent></div>}
+              
+              {<div style={{transition: 'all ease 0.3s', opacity:`${100-projectLoading*50}%`}}><ProjectComponent ></ProjectComponent></div>}
           </div>      
         </div>
       </div>
