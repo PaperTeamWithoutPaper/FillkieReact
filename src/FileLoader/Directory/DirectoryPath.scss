@@ -2,7 +2,6 @@
     float:right;
     width:5px;
     background-color: rgb(255, 145, 0);
-    transform: translate(0px,0px);
     height:calc(100%);  
     transition:all ease 0.2s;
 }
@@ -18,7 +17,7 @@
 }
 .DirectoryPath{
     &-body{
-        background-color: rgb(39, 46, 65);
+        background-color: rgb(51, 60, 83);
         //color:black;
         height:calc(100%);
         color:rgb(221, 221, 221);
@@ -39,7 +38,7 @@
     }
     &-object-desc-box:hover{
         cursor: pointer;
-        background-color: rgb(53, 53, 53);
+        background-color: rgb(66, 78, 109);
     }
     &-object{
         color:white;
@@ -47,12 +46,12 @@
     }
     &-file-box:hover{
         cursor: pointer;
-        background-color: rgb(53, 53, 53);
+        background-color: rgb(66, 78, 109);
     }
     &-object-over{
         color:rgb(255, 255, 255);
         
-        background-color: rgba(82, 82, 82, 0.521)
+        background-color: rgb(66, 78, 109);
     }
     &-files{
         

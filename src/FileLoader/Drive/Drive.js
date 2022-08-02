@@ -26,7 +26,7 @@ const Drive=()=>
             <div className="Drive-bg" ></div>
             {isContext?<div style={{position:'absolute',left:`${position.x}px`,top:`${position.y-70}px`,zIndex:'3'}}><ContextModal></ContextModal></div>:null}
             {fileLoading?<Loading></Loading>:
-            <div className="Drive-flex" onContextMenu={createModal} onClick={()=>{setIsContext(0)}}>
+            <div className="Drive-flex" onContextMenu={createModal} onMouseDown={()=>{setIsContext(0)}}>
                 {files.map((data)=>{return(<Card type={data.type} thumbnail={data.thumbnail} title={data.name} desc={data.desc}></Card>)})}
             </div>}
             
