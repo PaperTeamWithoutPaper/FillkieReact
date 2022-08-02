@@ -53,18 +53,20 @@ const MainComponent=()=>
             }).then((response)=>
             {
                 response.json().then((d)=>{
-                  console.log(d)
+                
                 setProjectLoading(0)
                 dispatch(setProjectInfo(d.data))
                 })})
          
 
-      getTeamDetail(teamList[teamID]["teamId"]).then((response)=>{dispatch(setTeamNum(response.data.headcount))})}
+      getTeamDetail(teamList[teamID]["teamId"]).then((response)=>{
+        
+        dispatch(setTeamNum(response.data.headcount))})}
     }},[teamList])
     useEffect(()=> {async function fetchData(){
       setProjectLoading(1)
       await getUserInfo().then((response)=>{dispatch(setUserInfo(response.data.userName,response.data.userImage))})
-      await getTeamList().then((response)=>{dispatch(setTeamInfo(response.data))})}
+      await getTeamList().then((response)=>{console.log(response);dispatch(setTeamInfo(response.data))})}
       fetchData();
     },[teamID])
     //Loading//

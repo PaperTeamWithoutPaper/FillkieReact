@@ -19,22 +19,16 @@
         padding:5px;
     }
     &-createBox{
-        position:absolute;
-        bottom: 0px;
+    
         width:calc(100vw - 470px);
         display:flex;
-        background-color: rgba(0, 0, 0, 0.322);
+        background-color: rgba(0, 0, 0, 0.096);
         align-items: center;
-        justify-content: center;
-        height:80px;
-        backdrop-filter: blur(10px);
+ 
+        height:100px;
         transition: all ease 0.2s;
     }
-    &-createBox:hover{
-        cursor: pointer;
-        background-color: rgba(0, 0, 0, 0.178);
-        transition: all ease 0.2s;
-    }
+   
 
     &-createBox-icon{
         
@@ -44,11 +38,28 @@
         padding:10px;
         
     }
+    &-createBox-box{
+      
+      
+        width:750px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all ease 0.2s;
+    }
+    &-createBox-box:hover{
+        cursor: pointer;
+        background-color: rgba(83, 83, 83, 0.178);
+        transition: all ease 0.2s;
+    }
     &-createBox-desc{
+      
         color:rgb(243, 243, 243);
         font-size: 30px;
         text-align: center;
     }
+
     &-cardBox{
         height:calc(100vh - 216px);
         overflow-y:auto;

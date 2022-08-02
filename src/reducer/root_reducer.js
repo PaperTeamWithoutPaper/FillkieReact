@@ -7,6 +7,7 @@ import modal_reducer from './modal_reducer';
 import docReducer from './docSlices';
 import peerReducer from './peerSlices';
 import drag_reducer from './drag_reducer';
+import permission_reducer from './permission_reducer';
 const rootReducer = combineReducers({
   team_reducer,
   user_reducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   docReducer,
   peerReducer,
   drag_reducer,
+  permission_reducer,
 });
 
 export default rootReducer;

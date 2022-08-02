@@ -1,43 +1,18 @@
 import PermissionCard from "./PermissionCard"
 import "./PermissionChangeComponent.scss"
+import { useSelector } from "react-redux"
+import PermissionCreate from "./PermissionCreate"
 const PermissionChangeComponent=()=>
 {
-    const test=[
-        {
-            id:1,
-            groupName:"testgroup"
-        },
-        {
-            id:2,
-            groupName:"testgroup"
-        },
-        {
-            id:2,
-            groupName:"testgroup"
-        },
-        {
-            id:2,
-            groupName:"testgroup"
-        },
-        {
-            id:2,
-            groupName:"testgroup"
-        },
-        {
-            id:2,
-            groupName:"testgroup"
-        }
-    ]
+    const groups=useSelector(state=>state.permission_reducer.groups)
     return(
         <div className="PermissionChangeComponent-body">
             <div className="PermissionChangeComponent-title">Group Permission</div>
             <div className="PermissionChangeComponent-cardBox">
-                {test.map(()=>{return(<PermissionCard></PermissionCard>)})}
+                {groups.map((child)=>{return(<PermissionCard id={child.groupId} name={child.name}></PermissionCard>)})}
+                <PermissionCreate></PermissionCreate>
             </div>
-            <div className="PermissionChangeComponent-createBox">
-                <img src={require('../Icon/create.png')} className="PermissionChangeComponent-createBox-icon"></img>
-                <div className="PermissionChangeComponent-createBox-desc">Create New Group</div>
-            </div>
+            
         </div>
     )
 }
