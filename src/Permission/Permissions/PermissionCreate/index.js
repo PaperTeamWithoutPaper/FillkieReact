@@ -9,14 +9,13 @@ const PermissionCreate=({name})=>
     const teams=useSelector(state=>state.team_reducer.teams)
     const createGroup=()=>
     {
-        fetch(`https://api.fillkie.com/permission/group/create`, {
+        fetch(`https://api.fillkie.com/permission/group/create/${teams[teamIdx]['teamId']}`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `${getCookie('access')}`,
         },
         body:{
-            "teamId" : teams[teamIdx]['teamId'],
             "groupName" : groupName
         }
         }).then((response)=>
