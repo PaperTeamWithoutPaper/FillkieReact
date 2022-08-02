@@ -15,9 +15,9 @@ const PermissionCreate=({name})=>
             'Content-Type': 'application/json',
             'Authorization': `${getCookie('access')}`,
         },
-        body:{
+        body:JSON.stringify({
             "groupName" : groupName
-        }
+        })
         }).then((response)=>
         {
             response.json().then((d)=>{
