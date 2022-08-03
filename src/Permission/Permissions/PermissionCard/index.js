@@ -3,11 +3,12 @@ import ToggleBar from './toggle'
 import { useDispatch,useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { getCookie } from '../../../cookie';
-const PermissionCard=({id,name})=>
+import { changeGroup, setGroupPermission, setGroupPermissionEach } from '../../../reducer/permission_reducer';
+const PermissionCard=({idx,id,name})=>
 {
-    
+    const dispatch=useDispatch()
     const [over,setOver]=useState(0)
-    const [per,setPer]=useState({0:true,1:true,2:true,3:true,4:true,5:true})
+    const per=useSelector(state=>state.permission_reducer.permission)
     const permissionFrom=useSelector(state=>state.drag_reducer.permissionFrom)
     const ondragover=(e)=>
     {
@@ -20,13 +21,15 @@ const PermissionCard=({id,name})=>
     }
     const ondrop=()=>
     {
-        console.log(permissionFrom)
         setOver(0)
+        dispatch(changeGroup(permissionFrom,name,id))
+        
     }
     const teamIdx=useSelector(state=>state.team_reducer.currentTeam)
     const teams=useSelector(state=>state.team_reducer.teams)
     const getToggleList=()=>
     {
+        
         fetch(`https://api.fillkie.com/permission/${id}/${teams[teamIdx]['teamId']}`, {
         method: "GET",
         headers: {
@@ -36,12 +39,14 @@ const PermissionCard=({id,name})=>
         }).then((response)=>
         {
             response.json().then((d)=>{
-                setPer(d.data.permission)
-      
+                dispatch(setGroupPermission(id,d.data.permission))
+   
         })})
     }
+
+    const [toggle,setToggle]=useState(0)
+    useEffect(()=>{Object.keys(per).includes(id)?setToggle(1):setToggle(0)},[per])
     useEffect(()=>{getToggleList()},[])
-    useEffect(()=>{console.log(per)},[per])
     const permission=['READ','WRITE','CREATE','DELETE','BAN','INVITE']
     return(
         <div 
@@ -63,7 +68,8 @@ const PermissionCard=({id,name})=>
             {permission.map((data,index)=>{return(
                 <div className="PermissionCard-box" style={{transform:'translateX(30px)'}}>
                 <div className="PermissionCard-desc">{data}</div>
-                    <ToggleBar toggle={per[index]}></ToggleBar>
+                    {toggle?<ToggleBar id={id} idx={index}
+            toggle={per[id][index]}></ToggleBar>:null}
                 </div>
                
             )})}

@@ -1,0 +1,32 @@
+.save{
+    &-body{
+        background-color: rgb(43, 43, 43);
+        height:100px;
+        width:calc(100vw - 490px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 30px;
+        margin:10px;
+        position: absolute;
+        bottom:0px;
+        opacity: 100%;
+        transition: transform ease 0.2s,background-color ease 0.2s;
+    }
+    &-body:active{
+        background-color: rgb(46, 46, 46);
+        transform: scale(0.95,0.95);
+        transition: transform ease 0.2s, background-color ease 0.2s;
+    }
+    &-icon{
+        filter: brightness(50%) saturate(1000%) hue-rotate(120deg) invert(83%);
+        height:50px;
+        width:50px;
+    }
+    
+    &-desc{
+        margin-left: 20px;
+        font-size: 30px;
+        color: white;
+    }
+}
