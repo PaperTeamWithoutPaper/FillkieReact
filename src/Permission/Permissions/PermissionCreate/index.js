@@ -21,7 +21,6 @@ const PermissionCreate=({name})=>
         }).then((response)=>
         {
             response.json().then((d)=>{
-                console.log(d.data)
         })})
     }
     return(
@@ -35,9 +34,9 @@ const PermissionCreate=({name})=>
                     <div style={{width:'30px'}}></div>
                     <div className="PermissionCard-padd2"></div>
               
-                    <div className="PermissionChangeComponent-createBox-box">
+                    <div onClick={createGroup} className="PermissionChangeComponent-createBox-box">
                         <img src={require('../../Icon/create.png')} className="PermissionChangeComponent-createBox-icon"></img>
-                        <div onClick={createGroup}  className="PermissionChangeComponent-createBox-desc">Create New Group</div>
+                        <div  className="PermissionChangeComponent-createBox-desc">Create New Group</div>
                     </div>
             </div>
     )

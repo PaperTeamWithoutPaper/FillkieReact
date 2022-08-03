@@ -24,7 +24,7 @@ export function reserveTask(task, _work) {
         work = _work;
         requestTask(false);
     }
-}
+}   
 export function flushTask() {
     clearTimeout(timeout);
     if (typeof work === 'function') {

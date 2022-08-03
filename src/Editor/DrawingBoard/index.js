@@ -83,7 +83,6 @@ export default function DrawingBoard({width, height}) {
     if (!canvasRef.current) {
       return;
     }
-    console.log('updatedsad')
     boardRef.current?.setWidth(width);
     boardRef.current?.setHeight(height);
     boardRef.current?.drawAll(doc.getRoot().shapes);

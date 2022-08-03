@@ -39,8 +39,6 @@
         
     }
     &-createBox-box{
-      
-      
         width:750px;
         height: 100%;
         display: flex;
@@ -61,7 +59,7 @@
     }
 
     &-cardBox{
-        height:calc(100vh - 216px);
+        height:calc(100vh - 260px);
         overflow-y:auto;
     }
 }

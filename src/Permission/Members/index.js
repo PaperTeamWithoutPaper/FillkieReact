@@ -12,7 +12,7 @@ const MembersComponent=()=>
         <div className="MemberComponent-body">
             <div className="MemberComponent-title">Team Members</div>
             <div className="MemberComponent-memberBox">
-                {users.map((child)=>{return(<MemberCard id={child.id} name={child.name} profile={child.profile}></MemberCard>)})}
+                {users.map((child,index)=>{return(<MemberCard idx={index} groupName={child.groupName} id={child.id} name={child.name} profile={child.profile}></MemberCard>)})}
             </div>
         </div>
     )

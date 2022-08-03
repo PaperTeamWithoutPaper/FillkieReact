@@ -1,12 +1,12 @@
 import './MemberCard.scss'
 import { useDispatch } from 'react-redux'
 import { setPermissionDragFrom } from '../../../reducer/drag_reducer';
-const MemberCard=({id,name,profile})=>
+const MemberCard=({idx,id,name,profile,groupName})=>
 {
     const dispatch=useDispatch();
     const ondragstart=()=>
     {
-        dispatch(setPermissionDragFrom(id))
+        dispatch(setPermissionDragFrom(idx))
     }
     const ondragend=()=>
     {
@@ -24,7 +24,7 @@ const MemberCard=({id,name,profile})=>
                 {name}
             </div>
             <div className="MemberCard-group">
-                bachelor
+                {groupName}
             </div>
         </div>
     )
