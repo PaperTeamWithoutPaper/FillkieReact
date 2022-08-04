@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import { IsInviteTeam, setInviteUrl } from '../../reducer/team_reducer';
 import { getTeamInviteUrl } from '../../apis/api/team';
 import { Link } from 'react-router-dom';
+import { springAxios } from '../../apis/api';
 const ModalButton=(props)=>
 {
     const [ishover,setIshover]=useState(0)
@@ -12,7 +13,7 @@ const ModalButton=(props)=>
     const getUrl= async ()=>
     {
         dispatch(IsInviteTeam(1))
-        await getTeamInviteUrl(teamList[teamIdx]['teamId']).then((response)=>dispatch(setInviteUrl(response.data.url)))
+        await springAxios.get(`/team/invite?teamId=${teamList[teamIdx]['teamId']}`).then((response)=>{dispatch(setInviteUrl(response.data.data.url))})
     }
     return (
         <div style={{width:'100%'}}>

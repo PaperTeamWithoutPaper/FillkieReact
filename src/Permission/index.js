@@ -6,6 +6,7 @@ import { useSelector,useDispatch } from "react-redux"
 import team_reducer from "../reducer/team_reducer"
 import { getCookie } from "../cookie"
 import { useEffect } from "react"
+import { springAxios } from "../apis/api"
 import { setGroupList,setGroupUsers,initGroupUsers,initPermission} from "../reducer/permission_reducer"
 const PermissionComponent=()=>
 {
@@ -14,40 +15,18 @@ const PermissionComponent=()=>
     const dispatch=useDispatch()
     const getGroupUser=(groupId)=>
     {
-        fetch(`https://api.fillkie.com/permission/users/${groupId}/${teams[teamIdx]['teamId']}`, {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${getCookie('access')}`,
-        },
-        }).then((response)=>
-        {
-            response.json().then((d)=>{
-                dispatch(setGroupUsers(d.data))
-                console.log(d.data)
-        })})
+        springAxios.get(`/permission/users/${groupId}/${teams[teamIdx]['teamId']}`).then((response)=>dispatch(setGroupUsers(response.data.data)))
     }
     const getGroupList=()=>
     {
         dispatch(initGroupUsers([]))
-        
-        fetch(`https://api.fillkie.com/permission/groups/${teams[teamIdx]['teamId']}`, {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${getCookie('access')}`,
-        },
-        }).then((response)=>
-        {
-            response.json().then((d)=>{
-                dispatch(setGroupList(d.data))
-                for(var i=0;i<d.data.length;i++)
+        springAxios.get(`/permission/groups/${teams[teamIdx]['teamId']}`).then((response)=>{
+            dispatch(setGroupList(response.data.data))
+            for(var i=0;i<response.data.data.length;i++)
                 {
-                    getGroupUser(d.data[i]['groupId'])
+                    getGroupUser(response.data.data[i]['groupId'])
                 }
-
-        })})
-    
+        })
     }
     useEffect(()=>{getGroupList()},[])
     return(

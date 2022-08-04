@@ -4,6 +4,7 @@ import { useDispatch,useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { getCookie } from '../../../cookie';
 import { changeGroup, setGroupPermission, setGroupPermissionEach } from '../../../reducer/permission_reducer';
+import { springAxios } from '../../../apis/api';
 const PermissionCard=({idx,id,name})=>
 {
     const dispatch=useDispatch()
@@ -29,19 +30,7 @@ const PermissionCard=({idx,id,name})=>
     const teams=useSelector(state=>state.team_reducer.teams)
     const getToggleList=()=>
     {
-        
-        fetch(`https://api.fillkie.com/permission/${id}/${teams[teamIdx]['teamId']}`, {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${getCookie('access')}`,
-        },
-        }).then((response)=>
-        {
-            response.json().then((d)=>{
-                dispatch(setGroupPermission(id,d.data.permission))
-   
-        })})
+        springAxios.get(`/permission/${id}/${teams[teamIdx]['teamId']}`).then((response)=>dispatch(setGroupPermission(id,response.data.data.permission)))
     }
 
     const [toggle,setToggle]=useState(0)
