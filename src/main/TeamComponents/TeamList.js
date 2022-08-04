@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Modal from './Modal'
 import {useSelector, useDispatch} from 'react-redux'
 import { IsInviteTeam ,setInviteUrl} from '../../reducer/team_reducer'
@@ -11,14 +11,11 @@ const TeamList=()=>
     
     const dispatch=useDispatch()
     var curTeamName=""
+    
+
     if(teamList.length!=0)
     {
-        curTeamName=teamList[teamidx]['teamName']
-    }
-    const getUrl= async ()=>
-    {
-        dispatch(IsInviteTeam(1))
-        await getTeamInviteUrl(teamList[teamidx]['teamId']).then((response)=>dispatch(setInviteUrl(response.data.url)))
+        curTeamName=teamList[teamidx]['teamName']  
     }
     const [listopen,setListopen]=useState(-1)
     return(

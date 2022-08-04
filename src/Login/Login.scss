@@ -15,15 +15,15 @@
     color:rgb(255, 255, 255);
     font-size: 20px;
     background-color: rgb(51, 60, 83);
-    box-shadow: 0px 5px 5px rgb(65, 77, 109);
-    transition: all ease 0.2s;
+
+    transition: background-color 0.2s;
     
 }
 
 .Login{
     &-box{
         font-family: 'S-CoreDream-3Light';
-        transform: translate(calc(50vw - 50% ),calc(50vh - 60% ));
+        transform: translate(calc(50vw - 50% ),calc(50vh - 70% ));
         position:absolute;
         width:400px;
         height:330px;
@@ -47,16 +47,16 @@
     &-google-button{
         font-family: 'S-CoreDream-3Light';
         @include ButtonStyle;
-        background-color:rgb(247, 247, 247);
-        color:black;
-        box-shadow: 0px 5px 5px rgb(223, 223, 223);
+        background-color:rgb(54, 54, 54);
+        color:rgb(255, 255, 255);
+        box-shadow: 0px 2px 8px rgb(223, 223, 223);
         width:440px;
-        transform: translate(calc(50vw - 50% ),calc(50vh + 160px ));
+        transform: translate(calc(50vw - 50% ),calc(50vh + 130px ));
         border-radius: 10px;
     }
     &-google-button:hover{
         cursor: pointer;
-        background-color: rgb(241, 241, 241);
+        background-color: rgb(71, 71, 71);
     }
 
     &-button-logo{
@@ -65,11 +65,34 @@
     }
 
     &-input{
-        display: inline;
-        height:50px;
-        width:100%;
-        margin-bottom: 20px;
-        text-indent: 10px;
+        &-id{
+            display: inline;
+            height:50px;
+            width:395px;
+            margin-bottom: 20px;
+            text-indent: 10px;
+            border-radius: 5px;
+            border:solid 1px rgb(180, 180, 180);
+            font-size:20px;
+            color:rgb(110, 110, 110);
+            font-family: 'S-CoreDream-3Light';
+        }
+        &-pw{
+            display: inline;
+            height:50px;
+            width:395px;
+            margin-bottom: 20px;
+            text-indent: 10px;
+            border-radius: 5px;
+            border:solid 1px rgb(180, 180, 180);
+            -webkit-text-security:disc;
+            font-size:20px;
+            color:rgb(110, 110, 110);
+            font-family: 'S-CoreDream-3Light';
+
+        }
+        
+       
     }
     &-register-box{
        transform: translateX(75px);

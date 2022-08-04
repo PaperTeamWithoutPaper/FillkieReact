@@ -4,43 +4,20 @@ import { useNavigate } from "react-router-dom";
 import { getCookie } from "../cookie";
 import './Invite.scss'
 import Appbar from "../Appbar/Appbar";
+import { springAxios } from "../apis/api";
 const InviteComponent=()=>
 {
     const [teamName,setTeamName]=useState("")
     const {id} = useParams()
     const navigate=useNavigate()
     const accept=()=>
-    {
-        fetch('https://api.fillkie.com/team/invite/accept', {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${getCookie('access')}`,
-        },
-        body: JSON.stringify({url:id}),
-        }).then((response)=>
-        {
-            response.json().then((d)=>{
-
-            navigate('/main')
-        })})
+    {   
+        springAxios.post('/team/invite/accept',{url:id}).then(()=>navigate('/main'))
     }
     
     useEffect(()=>
     {
-        fetch(`https://api.fillkie.com/team/invite/validation?url=${id}`, {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${getCookie('access')}`,
-        },
-        }).then((response)=>
-        {
-            response.json().then((d)=>{
-            console.log(d)
-            setTeamName(d.data.teamName)
-        }).catch((response)=>navigate('/welcome/error'))
-    })
+        springAxios.get(`/team/invite/validation?url=${id}`).then((response)=>setTeamName(response.data.data.teamName)).catch(()=>navigate('/welcome/error'))
     },[])
     
     return(

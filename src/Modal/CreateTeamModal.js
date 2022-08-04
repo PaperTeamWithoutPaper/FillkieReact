@@ -6,7 +6,7 @@ import axios from 'axios'
 import Alarm from './Alarm';
 import { getCookie } from '../cookie';
 import { getTeamList, postCreateTeam } from '../apis/api/team';
-
+import { springAxios } from '../apis/api';
 const CreateTeamModal=(props)=>
 {
     const teamList=useSelector(state=>state.team_reducer.teams)
@@ -23,8 +23,8 @@ const CreateTeamModal=(props)=>
     },[])
     const createTeam= async ()=> 
     {
-        await postCreateTeam(teamName).then((response)=>{console.log(response)})
-        await getTeamList().then((response)=>{dispatch(setTeamInfo(response.data))})
+        await springAxios.post('/team/create',{'teamName':teamName}).then((response)=>{console.log(response.data)})
+        await springAxios.get('/team/list').then((response)=>{dispatch(setTeamInfo(response.data.data))})
         setLoading(0)
         setCreateEnd(1)
         setTimeout(()=>removeComponent(),300)

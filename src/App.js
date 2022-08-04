@@ -11,6 +11,7 @@ import InviteErrorComponent from "./Invite/InviteErrorComponent"
 import DocLoader from "./Editor"
 import Loading from "./Loading/Loading"
 import PermissionComponent from "./Permission"
+import FileUpload from "./FIleUpload"
 //import DocLoader from "./Editor"
 const App=()=>
 {
@@ -25,6 +26,7 @@ const App=()=>
       <Route exact path="/welcome/error" element={<InviteErrorComponent></InviteErrorComponent>}/>
       <Route exact path="/board/:id/:pid" element={<LoaderComponent></LoaderComponent>}/>
       <Route exact path="/permission" element={<PermissionComponent></PermissionComponent>}/>
+      <Route exact path="/load" element={<FileUpload></FileUpload>}/>
     </Routes>
     </div>
   )

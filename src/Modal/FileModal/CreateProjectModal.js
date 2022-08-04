@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {IsCreateProject} from '../../reducer/project_reducer';
 import { getCookie } from '../../cookie';
 import { setProjectInfo } from '../../reducer/project_reducer';
+import { nodeAxios } from '../../apis/api';
 const CreateProjectModal=()=>
 {
 
@@ -20,30 +21,12 @@ const CreateProjectModal=()=>
     const teamID=useSelector(state=>state.team_reducer.currentTeam)
     const postProject=()=>
     {
-        fetch(`https://api.fillkie.com/team/${teamList[teamID]["teamId"]}/project/`, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `${getCookie('access')}`,
-            },
-            body:JSON.stringify({
-                name: pName
-            })
-            }).then((response)=>
-            {
-                fetch(`https://api.fillkie.com/team/${teamList[teamID]["teamId"]}/project/`, {
-                    method: "GET",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `${getCookie('access')}`,
-                    },
-                    }).then((response)=>
-                    {
-                        response.json().then((d)=>{
-                        dispatch(setProjectInfo(d.data))
-                        setLoading(0);setTimeout(()=>removeComponent(),300)
-                        })})
-            })
+        nodeAxios.post(`/team/${teamList[teamID]["teamId"]}/project`,{
+            name: pName
+        }).then(()=>nodeAxios.get(`/team/${teamList[teamID]["teamId"]}/project`).then((response)=>{dispatch(setProjectInfo(response.data.data))
+            setLoading(0);setTimeout(()=>removeComponent(),300)}))
+      
+   
     }
     const dispatch=useDispatch()
     return(

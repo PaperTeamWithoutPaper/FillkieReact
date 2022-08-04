@@ -2,26 +2,32 @@
 import { useState } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import { getCookie } from '../../../cookie'
+import { springAxios } from '../../../apis/api'
+import { setGroupList,setGroupUsers,initGroupUsers,initPermission} from "../../../reducer/permission_reducer"
 const PermissionCreate=({name})=>
 {
     const [groupName, setGroupName]=useState('')
     const teamIdx=useSelector(state=>state.team_reducer.currentTeam)
     const teams=useSelector(state=>state.team_reducer.teams)
+    const dispatch=useDispatch();
+    const getGroupUser=(groupId)=>
+    {
+        springAxios.get(`/permission/users/${groupId}/${teams[teamIdx]['teamId']}`).then((response)=>dispatch(setGroupUsers(response.data.data)))
+    }
+    const getGroupList=()=>
+    {
+        dispatch(initGroupUsers([]))
+        springAxios.get(`/permission/groups/${teams[teamIdx]['teamId']}`).then((response)=>{
+            dispatch(setGroupList(response.data.data))
+            for(var i=0;i<response.data.data.length;i++)
+                {
+                    getGroupUser(response.data.data[i]['groupId'])
+                }
+        })
+    }
     const createGroup=()=>
     {
-        fetch(`https://api.fillkie.com/permission/group/create/${teams[teamIdx]['teamId']}`, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${getCookie('access')}`,
-        },
-        body:JSON.stringify({
-            "groupName" : groupName
-        })
-        }).then((response)=>
-        {
-            response.json().then((d)=>{
-        })})
+        springAxios.post(`/permission/group/create/${teams[teamIdx]['teamId']}`,{groupName:groupName}).then(()=>{getGroupList()})
     }
     return(
         <div className="PermissionChangeComponent-createBox">

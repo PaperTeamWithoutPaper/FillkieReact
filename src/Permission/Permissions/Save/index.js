@@ -2,6 +2,7 @@ import './save.scss'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { getCookie } from '../../../cookie'
+import { springAxios } from '../../../apis/api'
 const SaveButton=()=>
 {
     const [clicked,setClicked]=useState(0)
@@ -41,18 +42,7 @@ const SaveButton=()=>
     {
         setClicked(1)
         const body=createBody()
-        console.log(body)
-        fetch(`https://api.fillkie.com/permission/update/${teams[teamIdx]['teamId']}`, {
-        method: "PUT",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${getCookie('access')}`,
-        },
-        body:JSON.stringify(body)
-        }).then((response)=>
-        {
-            response.json().then((d)=>{
-        })})
+        springAxios.put(`/permission/update/${teams[teamIdx]['teamId']}`,body)
     }
     return(
         <div className="save-body" onClick={onclick}>
