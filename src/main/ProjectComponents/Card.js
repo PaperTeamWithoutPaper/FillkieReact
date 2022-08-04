@@ -27,6 +27,7 @@ const Card=(props)=>
             onMouseOut={()=>{setIshover(0)}}
             onClick={()=>{if(props.type==3){dispatch(IsCreateProject(1))}
             if(props.type==4){navigate(`/board/${props.id}/${props.pid}`)}
+            if(props.type==2){navigate(`/board/${props.id}/${props.pid}`)}
         }
             
         }

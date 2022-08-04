@@ -18,8 +18,7 @@ import CreateProjectModal from '../Modal/FileModal/CreateProjectModal';
 import axios from 'axios';
 import { getCookie } from '../cookie';
 import { setProjectInfo } from '../reducer/project_reducer';
-import Loading from '../Loading/Loading';
-import {springServer,nodeServer} from '../config'
+import { springAxios,nodeAxios } from '../apis/api';
 const MainComponent=()=>
 {
   //Responsive Var//

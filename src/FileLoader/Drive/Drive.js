@@ -20,7 +20,7 @@ const Drive=()=>
         e.preventDefault()
         document.addEventListener('contextmenu',getMouseXY)
     }
-    
+    console.log(files)
     return(
         <div className="Drive-box">
             <div className="Drive-bg" ></div>
