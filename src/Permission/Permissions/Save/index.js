@@ -43,7 +43,7 @@ const SaveButton=()=>
         const body=createBody()
         console.log(body)
         fetch(`https://api.fillkie.com/permission/update/${teams[teamIdx]['teamId']}`, {
-        method: "POST",
+        method: "PUT",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `${getCookie('access')}`,
