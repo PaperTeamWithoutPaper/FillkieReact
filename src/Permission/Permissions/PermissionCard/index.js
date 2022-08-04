@@ -46,7 +46,7 @@ const PermissionCard=({idx,id,name})=>
 
     const [toggle,setToggle]=useState(0)
     useEffect(()=>{Object.keys(per).includes(id)?setToggle(1):setToggle(0)},[per])
-    useEffect(()=>{getToggleList()},[])
+    useEffect(()=>{getToggleList();setToggle(0)},[])
     const permission=['READ','WRITE','CREATE','DELETE','BAN','INVITE']
     return(
         <div 

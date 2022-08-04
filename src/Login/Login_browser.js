@@ -31,13 +31,23 @@ const Login_browser=()=>
     return (
     <div>
         <Appbar type={0}></Appbar>
+ 
         <div className="Login-box">
             <div className="Login-title">Sign in</div>
-            <div className="Login-button" onClick={onLogin}>
+            <input className="Login-input" placeholder="Type your ID"></input>
+            <input className="Login-input" placeholder="Type your Password"></input>
+            <div className="Login-normal-button" onClick={onLogin}>
+                <div className="Login-button-desc">Sign in</div>
+            </div>
+            <div className="Login-register-box">
+                <div className="Login-register-desc">Do you need account?</div>   
+                <div className="Login-register">Register</div>
+            </div>
+        </div>
+        <div className="Login-google-button" onClick={onLogin}>
                 <img className="Login-button-logo" src={require('./Icon/googleLogo.png')}></img>
                 <div className="Login-button-desc">Sign in with google</div>
             </div>
-        </div>
     </div>
     )
 }
