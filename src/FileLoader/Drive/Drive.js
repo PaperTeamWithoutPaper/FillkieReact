@@ -22,8 +22,9 @@ const Drive=()=>
     }
     const createModal=(e)=>
     {
-        setIsContext(1)
         e.preventDefault()
+        setIsContext(1)
+    
         document.addEventListener('contextmenu',getMouseXY)
     }
     /////drag/////
@@ -54,6 +55,7 @@ const Drive=()=>
     const {id}=useParams()
     return(
         <div className="Drive-box"
+        onContextMenu={createModal} 
         onDragStart={ondragstart}
         onDrop={ondrop}
         onDragOver={ondragover}
@@ -68,7 +70,7 @@ const Drive=()=>
             <div className="Drive-bg"></div>
             {isContext?<div style={{position:'absolute',left:`${position.x}px`,top:`${position.y-70}px`,zIndex:'3'}}><ContextModal></ContextModal></div>:null}
             <div style={{transition: 'all ease 0.3s', opacity:`${100-fileLoading*50}%`}}>
-            <div className="Drive-flex" onContextMenu={createModal} onMouseDown={()=>{setIsContext(0)}}>
+            <div className="Drive-flex" onMouseDown={()=>{setIsContext(0)}}>
                 {file!=undefined?(file.map((data)=>{return(<Card pid={id} id={data.key} type={data.type} thumbnail={data.thumbnail} title={data.name} desc={data.desc}></Card>)})):null}
             </div>
             </div>
