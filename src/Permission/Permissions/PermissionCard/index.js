@@ -4,12 +4,13 @@ import { useDispatch,useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { getCookie } from '../../../cookie';
 import { changeGroup, setGroupPermission, setGroupPermissionEach } from '../../../reducer/permission_reducer';
-import { springAxios } from '../../../apis/api';
+
 const PermissionCard=({idx,id,name})=>
 {
     const dispatch=useDispatch()
     const [over,setOver]=useState(0)
     const per=useSelector(state=>state.permission_reducer.permission)
+    const isPermission=useSelector(state=>state.permission_reducer.isPermission)
     const permissionFrom=useSelector(state=>state.drag_reducer.permissionFrom)
     const ondragover=(e)=>
     {
@@ -26,20 +27,10 @@ const PermissionCard=({idx,id,name})=>
         dispatch(changeGroup(permissionFrom,name,id))
         
     }
-    const teamIdx=useSelector(state=>state.team_reducer.currentTeam)
-    const teams=useSelector(state=>state.team_reducer.teams)
-    const getToggleList=()=>
-    {
-        springAxios.get(`/permission/${id}/${teams[teamIdx]['teamId']}`).then((response)=>dispatch(setGroupPermission(id,response.data.data.permission)))
-    }
 
-    const [toggle,setToggle]=useState(0)
-    useEffect(()=>{Object.keys(per).includes(id)?setToggle(1):setToggle(0)},[per])
-    useEffect(()=>{getToggleList();setToggle(0)},[])
     const permission=['READ','WRITE','CREATE','DELETE','BAN','INVITE']
     return(
         <div 
-        draggable
         onDragOver={ondragover}
         onDragLeave={ondragleave}
         onDrop={ondrop}
@@ -57,8 +48,8 @@ const PermissionCard=({idx,id,name})=>
             {permission.map((data,index)=>{return(
                 <div className="PermissionCard-box" style={{transform:'translateX(30px)'}}>
                 <div className="PermissionCard-desc">{data}</div>
-                    {toggle?<ToggleBar id={id} idx={index}
-            toggle={per[id][index]}></ToggleBar>:null}
+                    {<ToggleBar id={id} idx={index}
+            ></ToggleBar>}
                 </div>
                
             )})}

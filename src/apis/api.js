@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 import { getCookie } from '../cookie';
 
 const NODE_SERVER='https://api.fillkie.com/node';

@@ -46,10 +46,18 @@ export function setGroupPermissionEach(groupIdx,permissionIdx,toggle)
         groupIdx,permissionIdx,toggle
     }
 }
+export function isPermission(toggle)
+{
+    return{
+        type: 'IS_PERMISSION',
+        toggle
+    }
+}
 const initialState={
     groups:[],
     users:[],
-    permission:{}
+    permission:{},
+    isPermission:0,
 }
 export default function permission_reducer(state=initialState, action)
 {
@@ -96,6 +104,12 @@ export default function permission_reducer(state=initialState, action)
             return{
                 ...state,
                 permission:[]
+            }
+        case 'IS_PERMISSION':
+            return{
+                ...state,
+                isPermission:action.toggle
+
             }
     
         default:

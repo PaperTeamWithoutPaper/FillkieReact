@@ -16,7 +16,8 @@
     &-icon-box{
         &-active{
             position: absolute;
-            transform: translateX(calc(50vw - 50%));
+            left:50%;
+            transform: translateX(-50%);
             bottom: 10px;
             display: flex;
             align-items: center;
@@ -26,7 +27,8 @@
         }
         &-unactive{
             position: fixed;
-            transform: translateX(calc(50vw - 50%));
+            left:50%;
+            transform: translateX(calc(-50%));
             bottom: -100px;
             display: flex;
             align-items: center;

@@ -2,7 +2,7 @@ import './Appbar.scss'
 import useScroll from './useScroll'
 import {useDispatch, useSelector} from 'react-redux';
 import { IsInviteTeam, setInviteUrl } from '../reducer/team_reducer';
-import { getTeamInviteUrl } from '../apis/api/team';
+
 const Appbar=(props)=>
 {
     const type=props.type
@@ -10,11 +10,7 @@ const Appbar=(props)=>
     const teamList=useSelector((state)=>state.team_reducer.teams)
     const teamIdx=useSelector((state)=>state.team_reducer.currentTeam)
     const dispatch=useDispatch()
-    const getUrl= async ()=>
-    {
-        dispatch(IsInviteTeam(1))
-        await getTeamInviteUrl(teamList[teamIdx]['teamId']).then((response)=>dispatch(setInviteUrl(response.data.url)))
-    }
+  
     const user_profile=useSelector(state=>state.user_reducer.user_profile)
     return(
         <div className="Appbar-active">  

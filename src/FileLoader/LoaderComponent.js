@@ -7,7 +7,9 @@ import CreateFileModal from "../Modal/FileModal/CreateFileModal"
 import { useParams } from "react-router"
 import { getCookie } from "../cookie"
 import { useEffect } from "react"
-import { setDirInfo,setFileInfo,fileLoading } from "../reducer/file_reducer"
+import { setDirInfo,setFileInfo,fileLoading, setRootInfo, setCurDir } from "../reducer/file_reducer"
+import { nodeAxios,springAxios } from "../apis/api"
+import { setUserInfo } from "../reducer/user_reducer"
 const LoaderComponent=()=>
 {
     const pathWidth=useSelector((state)=>state.file_reducer.width)
@@ -17,28 +19,17 @@ const LoaderComponent=()=>
     const dispatch=useDispatch()
     const readFile=()=>
     {
+        springAxios.get('/user/profile').then((response)=>{dispatch(setUserInfo(response.data.data.userName,response.data.data.userImage))})
         dispatch(fileLoading(1))
-        fetch(`https://api.fillkie.com/dir?projectId=${id}&folderId=${pid}`, {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `${getCookie('access')}`,
-            },
-            }).then((response)=>
-            {
-                response.json().then((d)=>{
-                    dispatch(setFileInfo(d.data))
-                    dispatch(fileLoading(0))
-                })})
-
+        dispatch(setCurDir(pid))
+        
+        nodeAxios.get(`/dir?projectId=${id}&folderId=${pid}`).then((response)=>{
+            console.log(response.data.data)
+            dispatch(setFileInfo(pid,response.data.data));
+            dispatch(setRootInfo(response.data.data))
+            dispatch(fileLoading(0))})
     }
     useEffect(readFile,[])
-
-
-
-
-
-
 
 
     return(

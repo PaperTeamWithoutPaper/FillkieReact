@@ -1,13 +1,20 @@
-import {useState} from 'react'
-import { useSelector } from 'react-redux'
+import {useEffect, useState} from 'react'
+import { useSelector,useDispatch } from 'react-redux'
+import { useNavigate, useParams } from 'react-router'
 import FileBar from './FileBar'
+import { nodeAxios } from '../../apis/api'
+import { setFileInfo,setCurDir,fileLoading } from '../../reducer/file_reducer'
 const DirectoryBar=(props)=>
 {
-    const files=props.files
+    const {id,pid}=useParams()
+    const files=useSelector(state=>state.file_reducer.files)
+    const dirId=props.id
+    const file=files[dirId]
     const width=useSelector((state)=>state.file_reducer.width)
     const [ishover,setIshover]=useState(0)
     const [isover,setIsover]=useState(0)
     const [isclicked, setIsclicked]=useState(-1)
+    const dispatch=useDispatch()
     const ondragover=()=>
     {
         setIsover(1)
@@ -15,6 +22,13 @@ const DirectoryBar=(props)=>
     const ondragleave=()=>
     {
         setIsover(0)
+    }
+    const readInnerFile=()=>
+    {
+        nodeAxios.get(`/dir?projectId=${id}&folderId=${props.id}`).then((response)=>{
+            
+            dispatch(setFileInfo(props.id,response.data.data));
+        })
     }
 
     return(
@@ -29,13 +43,15 @@ const DirectoryBar=(props)=>
                     onDragLeave={ondragleave}
                     draggable
                     className="DirectoryPath-object-desc-box"
-                    onClick={()=>{setIsclicked(isclicked*(-1))}}>
+                    onClick={()=>{setIsclicked(isclicked*(-1));readInnerFile()}}
+           
+                    >
                     
                     <img style={{marginLeft:`${props.depth*10}px`}} className={isclicked==-1?"DirectoryPath-folder-arrow-normal":"DirectoryPath-folder-arrow-clicked"} src={require('./icon/arrow.png')}></img>
                     {<div>📁</div>} 
                     <div style={{marginLeft:'5px'}}>{props.title}</div>
                 </div>
-            {/*files.map((e)=>{if(e.type==2 && isclicked==1){return(<DirectoryBar files={e.child} key={e.key} depth={props.depth+1} title={e.title}></DirectoryBar>)}else if(isclicked==1){return(<FileBar depth={props.depth+1} title={e.title}></FileBar>)}})*/}
+            {file!=undefined?(file.map((e)=>{if(e.type==2 && isclicked==1){return(<DirectoryBar title={e.name} id={e.key} depth={props.depth+1} ></DirectoryBar>)}else if(isclicked==1){return(<FileBar  title={e.name} id={e.key} depth={props.depth+1} ></FileBar>)}})):null}
             </div>
         </div>
     )

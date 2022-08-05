@@ -5,7 +5,7 @@ import { setTeamInfo,IsCreateTeam,setCurrentTeam} from '../reducer/team_reducer'
 import axios from 'axios'
 import Alarm from './Alarm';
 import { getCookie } from '../cookie';
-import { getTeamList, postCreateTeam } from '../apis/api/team';
+
 import { springAxios } from '../apis/api';
 const CreateTeamModal=(props)=>
 {
