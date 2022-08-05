@@ -7,6 +7,7 @@ export default function DrawingBoard({width, height}) {
   const boardRef = useRef();
   const client = useSelector(state => state.docReducer.client);
   const doc = useSelector(state => state.docReducer.doc);
+  const color =  "#" + Math.round(Math.random() * 0xffffff).toString(16)
 
 
   useEffect(() => {
@@ -87,6 +88,8 @@ export default function DrawingBoard({width, height}) {
     boardRef.current?.setHeight(height);
     boardRef.current?.drawAll(doc.getRoot().shapes);
   }, [doc, width, height]);
-
+  useEffect(() => {
+    boardRef.current?.setColor(color);
+  }, [doc, color]);
   return <canvas ref={canvasRef} />;
 }

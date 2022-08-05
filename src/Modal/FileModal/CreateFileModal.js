@@ -8,15 +8,16 @@ import { setDirInfo,setFileInfo } from '../../reducer/file_reducer';
 import { nodeAxios } from '../../apis/api';
 const CreateFileModal=({type})=>
 {
-    const {id,pid}=useParams()
+    const {id}=useParams()
+    const dirId=useSelector(state=>state.file_reducer.dirId)
     const createFile=()=>
     {
         nodeAxios.post(`/${type?'dir':'file'}`,{
             projectId:id,
-            folderId:pid,
+            folderId:dirId,
             name:fileName
-        }).then(()=>nodeAxios.get(`/dir?projectId=${id}&folderId=${pid}`).then((response)=>{
-            dispatch(setFileInfo(response.data.data));
+        }).then(()=>nodeAxios.get(`/dir?projectId=${id}&folderId=${dirId}`).then((response)=>{
+            dispatch(setFileInfo(dirId,response.data.data));
             setLoading(0);
             setTimeout(()=>removeComponent(),300)}))
     }

@@ -4,12 +4,16 @@ import DirectoryBar from './DirectoryBar'
 import { useEffect, useState, useCallback } from 'react'
 import { setDirWidth } from '../../reducer/file_reducer'
 import FileBar from './FileBar'
+import { useParams } from 'react-router'
+import { setCurDir,fileLoading,setFileInfo } from '../../reducer/file_reducer'
+import { nodeAxios } from '../../apis/api'
 const DirectoryPath=()=>
 {
     const dispatch=useDispatch()
-    const files=useSelector((state)=>state.file_reducer.files)
+    const files=useSelector((state)=>state.file_reducer.rootfiles)
     const pathWidth=useSelector((state)=>state.file_reducer.width)
     const [dragging,setDragging]=useState(0)
+    const {pid,id}=useParams()
     const ondragstart=(e)=>
     {
         const img = new Image();
@@ -23,6 +27,10 @@ const DirectoryPath=()=>
         dispatch(setDirWidth(e.clientX-35))
         }
     }
+    const readFile=()=>
+    {
+        dispatch(setCurDir(pid))
+    }
     return(
         <div className="DirectoryPath-body" style={{width:`${pathWidth+30}px`}}>
             <div 
@@ -35,8 +43,8 @@ const DirectoryPath=()=>
                 onDragEnd={()=>{setDragging(0)}}>
             </div>
             <div className="DirectoryPath-files">
-                <div className="DirectoryPath-title">PROJECT1</div>
-                {files.map((e)=>{if(e.type==2){return(<DirectoryBar key={e.key} depth={0} title={e.name}></DirectoryBar>)}else{return(<FileBar  key={e.key} depth={0} title={e.name}></FileBar>)}})}
+                <div onClick={readFile} className="DirectoryPath-title">PROJECT1</div>
+                {files.map((e)=>{if(e.type==2){return(<DirectoryBar id={e.key} depth={0} title={e.name}></DirectoryBar>)}else{return(<FileBar  key={e.key} depth={0} title={e.name}></FileBar>)}})}
             </div>
         </div>
     )

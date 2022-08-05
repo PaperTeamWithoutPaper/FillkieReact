@@ -68,18 +68,18 @@ class CanvasWrapper {
 
 //문제의 그 코드 2 *_(_(_*_*_*_))
 export default class Board extends EventDispatcher {
-    constructor(el, update) {
+    constructor(el, update,color) {
         super();
         this.worker='';
         this.offsetY = 0;
         this.offsetX = 0;
-        this.color = 'black'
         this.dragStatus = DragStatus.Stop;
         this.metadataMap = new Map();
         //이 두놈이 문제임 ㅋㅋ
         this.lowerWrapper = new CanvasWrapper(el);
         //this.upperWrapper = this.createUpperWrapper();
         this.update = update;
+        this.color=color;
         this.initialize();
     }
     initialize() {
@@ -128,7 +128,7 @@ export default class Board extends EventDispatcher {
         }
     }
     setColor(color) {
-        this.color = 'black';
+        this.color=color;
         this.worker.setOption({ color });
     }
     setWidth(width) {

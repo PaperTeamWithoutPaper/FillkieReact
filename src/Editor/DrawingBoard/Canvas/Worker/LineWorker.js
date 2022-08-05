@@ -12,7 +12,8 @@ class LineWorker extends Worker {
     mousedown(point) {
         let timeTicket;
         this.update((root) => {
-            const shape = createLine(point,'black');
+            const colorCode  =  this.options?.color
+            const shape = createLine(point,colorCode);
             root.shapes.push(shape);
             const lastShape = root.shapes.getLast();
             timeTicket = lastShape.getID();
@@ -24,6 +25,7 @@ class LineWorker extends Worker {
     mousemove(point) {
         scheduler.reserveTask(point, (tasks) => {
             const points = compressPoints(tasks);
+            
             if (tasks.length < 2) {
                 return;
             }
@@ -42,6 +44,7 @@ class LineWorker extends Worker {
         this.flushTask();
     }
     flushTask() {
+        scheduler.flushTask();
         this.update((root) => {
             if (!this.createID) {
                 return;
