@@ -8,7 +8,7 @@
         flex-wrap: wrap;
         z-index: 2;
         overflow-y: auto;
-        height:100%;
+        height:calc(100vh - 65px);
     }
     &-bg{
         background-color: rgb(255, 208, 0);
