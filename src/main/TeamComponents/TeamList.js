@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Modal from './Modal'
 import {useSelector, useDispatch} from 'react-redux'
 import { IsInviteTeam ,setInviteUrl} from '../../reducer/team_reducer'
-import { getTeamInviteUrl} from '../../apis/api/team'
+
 const TeamList=()=>
 {
     const teamList=useSelector(state=>state.team_reducer.teams)

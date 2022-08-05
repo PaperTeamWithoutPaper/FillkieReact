@@ -25,7 +25,7 @@ const App=()=>
       <Route exact path="/welcome/:id" element={<InviteComponent></InviteComponent>}/>
       <Route exact path="/welcome/error" element={<InviteErrorComponent></InviteErrorComponent>}/>
       <Route exact path="/board/:id/:pid" element={<LoaderComponent></LoaderComponent>}/>
-      <Route exact path="/permission" element={<PermissionComponent></PermissionComponent>}/>
+      <Route exact path="/permission/:teamId" element={<PermissionComponent></PermissionComponent>}/>
       <Route exact path="/load" element={<FileUpload></FileUpload>}/>
     </Routes>
     </div>

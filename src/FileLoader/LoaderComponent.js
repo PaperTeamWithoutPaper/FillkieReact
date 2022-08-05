@@ -8,6 +8,7 @@ import { useParams } from "react-router"
 import { getCookie } from "../cookie"
 import { useEffect } from "react"
 import { setDirInfo,setFileInfo,fileLoading } from "../reducer/file_reducer"
+import { nodeAxios } from "../apis/api"
 const LoaderComponent=()=>
 {
     const pathWidth=useSelector((state)=>state.file_reducer.width)
@@ -18,27 +19,9 @@ const LoaderComponent=()=>
     const readFile=()=>
     {
         dispatch(fileLoading(1))
-        fetch(`https://api.fillkie.com/dir?projectId=${id}&folderId=${pid}`, {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `${getCookie('access')}`,
-            },
-            }).then((response)=>
-            {
-                response.json().then((d)=>{
-                    dispatch(setFileInfo(d.data))
-                    dispatch(fileLoading(0))
-                })})
-
+        nodeAxios.get(`/dir?projectId=${id}&folderId=${pid}`).then((response)=>{dispatch(setFileInfo(response.data.data));dispatch(fileLoading(0))})
     }
     useEffect(readFile,[])
-
-
-
-
-
-
 
 
     return(

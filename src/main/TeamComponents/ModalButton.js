@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux';
 import { IsInviteTeam, setInviteUrl } from '../../reducer/team_reducer';
-import { getTeamInviteUrl } from '../../apis/api/team';
+
 import { Link } from 'react-router-dom';
 import { springAxios } from '../../apis/api';
 const ModalButton=(props)=>
@@ -30,7 +30,7 @@ const ModalButton=(props)=>
             onMouseOut={()=>{setIshover(0)}}>
         <Link 
             style={{width:'100%',height:'100px',display:'block',textDecoration:'none',transition:'all ease 0.2s',color:`${ishover?'orange':'gray'}`}}
-            to="/permission"
+            to={`/permission/${teamList[teamIdx]['teamId']}`}
             
             >
             {props.data}</Link>

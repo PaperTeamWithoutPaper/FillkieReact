@@ -11,8 +11,8 @@ import CreateTeamModal from '../Modal/CreateTeamModal';
 import { IsCreateTeam, setTeamInfo, setTeamNum } from '../reducer/team_reducer';
 import InviteUserModal from '../Modal/InviteUserModal';
 import Alarm from '../Modal/Alarm';
-import { getUserInfo } from '../apis/api/userInfo';
-import { getTeamList,getTeamDetail } from '../apis/api/team';
+
+
 import ManageTeamModal from '../Modal/ManageTeamModal';
 import CreateProjectModal from '../Modal/FileModal/CreateProjectModal';
 import axios from 'axios';
