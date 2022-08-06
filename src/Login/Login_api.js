@@ -24,6 +24,7 @@ const Login_api=()=>
           })
       }
       navigate('/main')
+      window.location.reload();
     },[])
     return(
         null

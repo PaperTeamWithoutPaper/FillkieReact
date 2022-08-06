@@ -26,7 +26,6 @@ const LoaderComponent=()=>
         nodeAxios.get(`/dir?projectId=${id}&folderId=${pid}`).then((response)=>{
             console.log(response.data.data)
             dispatch(setFileInfo(pid,response.data.data));
-            dispatch(setRootInfo(response.data.data))
             dispatch(fileLoading(0))})
     }
     useEffect(readFile,[])
