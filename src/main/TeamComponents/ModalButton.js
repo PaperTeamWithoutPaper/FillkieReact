@@ -30,7 +30,7 @@ const ModalButton=(props)=>
             onMouseOut={()=>{setIshover(0)}}>
         <Link 
             style={{width:'100%',height:'100px',display:'block',textDecoration:'none',transition:'all ease 0.2s',color:`${ishover?'orange':'gray'}`}}
-            to={teamList[teamIdx]['teamId']?`/permission/${teamList[teamIdx]['teamId']}`:null}
+            to={teamList[teamIdx]!=undefined?`/permission/${teamList[teamIdx]['teamId']}`:null}
             
             >
             {props.data}</Link>
