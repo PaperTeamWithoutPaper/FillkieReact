@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import Appbar from "../Appbar/Appbar";
 import cid from '../config';
 import './Login.scss'
+
 const Login_browser=()=>
 {
     const onLogin=()=>{
@@ -26,6 +27,7 @@ const Login_browser=()=>
             prompt,
         })}`;
         window.location.href = AUTHORIZE_URI;
+        
         
     }
     return (

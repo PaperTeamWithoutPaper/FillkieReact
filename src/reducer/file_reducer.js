@@ -68,7 +68,7 @@ export function setDragFrom(id)
 
 const initialState={
     iscreate:0,
-    fileLoading:0,
+    fileLoadingVal:0,
     typ:0,
     width:200,
     rootfiles:[{}],
@@ -111,7 +111,7 @@ export default function team_reducer(state=initialState, action)
         case 'FILE_LOADING':
             return{
                 ...state,
-                fileLoading:action.toggle
+                fileLoadingVal:action.toggle
             }
         case 'SET_CUR_DIR':
             return{

@@ -12,6 +12,7 @@ const NodeAxios=()=>
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `${getCookie('access')}`,
+            
         }})
     return nodeAxios
 }
