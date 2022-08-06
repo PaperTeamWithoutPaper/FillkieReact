@@ -32,7 +32,11 @@ const Login_browser=()=>
     }
     return (
     <div>
-        <Appbar type={0}></Appbar>
+        <Appbar desc=
+        {<p>1.Hello, fillkie is a service designed to make it easy to co-edit and manage notes on the web.<br></br><br></br>
+            2.Please sign in using your Google ID in the window.
+            </p>}
+             type={0}></Appbar>
  
         <div className="Login-box">
             <div className="Login-title">Sign in</div>

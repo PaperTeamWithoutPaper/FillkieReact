@@ -79,7 +79,19 @@ const MainComponent=()=>
         {projectC?<CreateProjectModal></CreateProjectModal>:null}
         {/*<ManageTeamModal></ManageTeamModal>*/}
         <div style={{overflow:'hidden', position:'absolute'}}>
-          <Appbar type={1}></Appbar>
+          <Appbar desc=
+{<p>
+1-a. You can create a team by clicking the + button on the left sidebar.<br></br><br></br>
+1-b. After that, you can use the ability sto invite new members or manage 
+them by clicking the team button on the left.<br></br><br></br>
+2-a. Alternatively, you can join another team by accessing the invitation link from an external team.<br></br><br></br>
+3. If you have permission to create a project for your team, you can create a project folder associated with your Google drive in Fillkie.<br></br><br></br>
+4. When you click on the project, you go to the Project Management page.
+</p>}
+
+
+
+type={1}></Appbar>
           <div className={responsiveTeam?"MainGrid-big":"MainGrid-small"}>
               <TeamCreate></TeamCreate>
               {responsiveTeam?<TeamComponent></TeamComponent>:null}

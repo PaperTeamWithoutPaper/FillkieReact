@@ -13,6 +13,12 @@
     src: url("./fonts/ImperialScript-Regular.ttf") format("truetype");
   }
 
+@font-face {
+font-family: 'S-CoreDream-3Light';
+src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+font-weight: normal;
+font-style: normal;
+}
 
 .Appbar{
     &-active{
@@ -50,7 +56,7 @@
     &-alarm{
         width:20px;
         filter: invert(1);
-        margin:20px;
+        margin:0px;
         padding:8px;
         background-color: rgb(219, 209, 185);
         border-radius: 100px;
@@ -60,6 +66,31 @@
     &-alarm:hover{
         background-color: rgb(233, 223, 200);
         transition: all ease 0.2s;
+        
+    }
+    &-info{
+        width:20px;
+        filter: invert(1);
+        margin:20px;
+        padding:8px;
+        background-color: rgb(219, 209, 185);
+        border-radius: 100px;
+        transition: all ease 0.2s;
+   
+    }
+    &-info:hover{
+        background-color: rgb(233, 223, 200);
+        transition: all ease 0.2s;
+        
+    }
+    &-info-modal{
+        font-family: 'S-CoreDream-3Light';
+      
+        background-color: rgba(0, 0, 0, 0.562);
+        position:absolute;
+        padding:5px 10px 5px 10px;
+        color:white;
+        border-radius: 10px;
         
     }
 }
