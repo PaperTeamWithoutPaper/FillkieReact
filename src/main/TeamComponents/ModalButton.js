@@ -13,7 +13,7 @@ const ModalButton=(props)=>
     const getUrl= async ()=>
     {
         dispatch(IsInviteTeam(1))
-        await springAxios.get(`/team/invite?teamId=${teamList[teamIdx]['teamId']}`).then((response)=>{dispatch(setInviteUrl(response.data.data.url))})
+        await springAxios.get(`/team/invite/${teamList[teamIdx]['teamId']}`).then((response)=>{dispatch(setInviteUrl(response.data.data.url))})
     }
     return (
         <div style={{width:'100%'}}>
