@@ -3,14 +3,15 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { getCookie } from '../../../cookie'
 import { springAxios } from '../../../apis/api'
+import { useParams } from 'react-router'
 const SaveButton=()=>
 {
     const [clicked,setClicked]=useState(0)
-    const teamIdx=useSelector(state=>state.team_reducer.currentTeam)
-    const teams=useSelector(state=>state.team_reducer.teams)
+    const {teamId}=useParams()
     const groups=useSelector(state=>state.permission_reducer.groups)
     const permission=useSelector(state=>state.permission_reducer.permission)
     const users=useSelector(state=>state.permission_reducer.users)
+    const 
     const createBody=()=>
     {
         
@@ -42,7 +43,7 @@ const SaveButton=()=>
     {
         setClicked(1)
         const body=createBody()
-        springAxios.put(`/permission/update/${teams[teamIdx]['teamId']}`,body)
+        springAxios.put(`/permission/update/${teamId}`,body)
     }
     return(
         <div className="save-body" onClick={onclick}>
