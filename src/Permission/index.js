@@ -40,7 +40,13 @@ const PermissionComponent=()=>
         springAxios.get('/user/profile').then((response)=>{dispatch(setUserInfo(response.data.data.userName,response.data.data.userImage))})},[])
     return(
         <div>
-            <Appbar type={2}></Appbar>
+            <Appbar desc={ <p>
+                1. On the left side, you can view information about the members of the team and on the right side, you can view the groups created for the team.<br></br><br></br>
+2. If you have permission to modify permissions, you can set permissions for each group.<br></br><br></br>
+3. You can create any group of users from the right side.<br></br><br></br>
+4. Drag and drop a member to a specific group from the left side to the right side to easily change the group to which the member belongs.<br></br><br></br>
+5. To save the changes, press the save button on the bottom right.
+            </p>} type={2}></Appbar>
             <div className="PermissionComponent-grid">
                 <MembersComponent></MembersComponent>
                 <PermissionChangeComponent></PermissionChangeComponent>

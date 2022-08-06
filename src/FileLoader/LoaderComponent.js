@@ -34,7 +34,14 @@ const LoaderComponent=()=>
     return(
         <div>
             {iscreate?<CreateFileModal type={type}></CreateFileModal>:null}
-            <Appbar type={1}></Appbar>
+            <Appbar 
+            desc={<p>
+                1. Right-click on the white screen on the right to open a window where you can create a note or folder.<br></br><br></br>
+2. Create a note and click it to go to the meeting page where you can edit it together.<br></br><br></br>
+3. Drag and drop makes it easy to upload files within the drive.
+            </p>}
+            
+            type={1}></Appbar>
             <div style={{gridTemplateColumns: `${pathWidth+50}px 1fr`}} className="LoaderComponent-box">
                 <DirectoryPath></DirectoryPath>
                 <Drive></Drive>
