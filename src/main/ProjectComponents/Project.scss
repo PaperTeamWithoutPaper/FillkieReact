@@ -17,7 +17,12 @@
     &-flex{
         display:flex;
         flex-wrap: wrap;
-
+    }
+    &-noteam-desc{
+        font-family: "Tway";
+        font-size:30px;
+        margin:10px;
+        color:gray;
 
     }
 }

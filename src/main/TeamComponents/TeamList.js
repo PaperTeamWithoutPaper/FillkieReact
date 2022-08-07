@@ -20,7 +20,7 @@ const TeamList=()=>
     const [listopen,setListopen]=useState(-1)
     return(
         <div className="TeamList-bg">
-            <div className="TeamList-body" onClick={()=>{setListopen(listopen*(-1))}}>
+            {teamNum!=0?<div className="TeamList-body" onClick={()=>{setListopen(listopen*(-1))}}>
                 <div className="TeamList-upperblock">
                     <div className="TeamList-name">{curTeamName}</div>
                     <img src={require('./icon/arrow.png')} className={listopen==-1?"TeamList-icon-lower":"TeamList-icon-upper"}></img>
@@ -28,8 +28,8 @@ const TeamList=()=>
                 <div className="TeamList-lowerblock">
                     <div className="TeamList-users">{teamNum}-users</div>
                 </div>
-            </div>
-            <Modal listopen={listopen}></Modal>
+            </div>:null}
+            {teamNum!=0?<Modal listopen={listopen}></Modal>:null}
             
         </div>
     )
