@@ -7,6 +7,7 @@ import Alarm from './Alarm';
 import { getCookie } from '../cookie';
 
 import { springAxios } from '../apis/api';
+import Loading from '../Loading/Loading';
 const CreateTeamModal=(props)=>
 {
     const teamList=useSelector(state=>state.team_reducer.teams)
@@ -21,10 +22,17 @@ const CreateTeamModal=(props)=>
     useEffect(()=>{
         setLoading(1)
     },[])
+    const [apiloading, setApiloading]=useState(0)
     const createTeam= async ()=> 
     {
+        if(apiloading==1)
+        {
+            return;
+        }
+        setApiloading(1)
         await springAxios.post('/team/create',{'teamName':teamName}).then((response)=>{console.log(response.data)})
         await springAxios.get('/team/list').then((response)=>{dispatch(setTeamInfo(response.data.data))})
+        setApiloading(0)
         setLoading(0)
         setCreateEnd(1)
         setTimeout(()=>removeComponent(),300)
@@ -48,7 +56,10 @@ const CreateTeamModal=(props)=>
                 <div className="CreateTeamModal-desc">Set your team name</div>
                 <input onChange={(e)=>{setTeamName(e.target.value)}} value={teamName} placeholder="Enter team name" className="CreateTeamModal-teaminput"></input>
                 <div className="CreateTeamModal-buttonbox">
-                    <div className="CreateTeamModal-accept" onClick={createTeam}>Continue</div>
+                    <div className="CreateTeamModal-accept" onClick={createTeam}>
+                        {apiloading==0?<div>Continue</div>:
+                        <Loading></Loading>}
+                    </div>
                     <div className="CreateTeamModal-no" onClick={()=>{ setLoading(0);setTimeout(()=>removeComponent(),300)}}>Cancel</div>
                 </div>
             </div>
