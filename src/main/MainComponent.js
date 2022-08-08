@@ -68,7 +68,7 @@ const MainComponent=()=>
     }},[teamList])
     useEffect(()=> {async function fetchData(){
       setProjectLoading(1)
-      await springAxios.get('/user/profile').then((response)=>{dispatch(setUserInfo(response.data.data.userName,response.data.data.userImage))}).catch(navigate('/login'))
+      await springAxios.get('/user/profile').then((response)=>{dispatch(setUserInfo(response.data.data.userName,response.data.data.userImage))}).catch(()=>{navigate('/login')})
       await springAxios.get('/team/list').then((response)=>{dispatch(setTeamInfo(response.data.data))})}
       fetchData();
     },[teamID])
