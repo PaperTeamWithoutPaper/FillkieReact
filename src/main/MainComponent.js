@@ -11,6 +11,7 @@ import CreateTeamModal from '../Modal/CreateTeamModal';
 import { IsCreateTeam, setTeamInfo, setTeamNum } from '../reducer/team_reducer';
 import InviteUserModal from '../Modal/InviteUserModal';
 import Alarm from '../Modal/Alarm';
+import { useNavigate } from 'react-router';
 
 
 import ManageTeamModal from '../Modal/ManageTeamModal';
@@ -35,6 +36,8 @@ import FloatingButton from '../buttons/FloatingButton';
 
 const MainComponent=()=>
 {
+  //navigate//
+  const navigate=useNavigate()
   //Responsive Var//
     const responsiveTeam = useMediaQuery({ minWidth: 400 })
   //Redux//
@@ -65,7 +68,7 @@ const MainComponent=()=>
     }},[teamList])
     useEffect(()=> {async function fetchData(){
       setProjectLoading(1)
-      await springAxios.get('/user/profile').then((response)=>{dispatch(setUserInfo(response.data.data.userName,response.data.data.userImage))})
+      await springAxios.get('/user/profile').then((response)=>{dispatch(setUserInfo(response.data.data.userName,response.data.data.userImage))}).catch(navigate('/login'))
       await springAxios.get('/team/list').then((response)=>{dispatch(setTeamInfo(response.data.data))})}
       fetchData();
     },[teamID])
