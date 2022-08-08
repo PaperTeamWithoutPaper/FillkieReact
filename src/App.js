@@ -16,7 +16,7 @@ import FileUpload from "./FIleUpload"
 const App=()=>
 {
   return (
-    <div>
+    <div >
     <Routes>
       <Route path="/login" element={<Login_browser></Login_browser>}/>
       <Route path="/main" element={<MainComponent></MainComponent>}/>

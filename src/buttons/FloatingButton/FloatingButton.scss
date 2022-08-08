@@ -4,18 +4,25 @@
         height:60px;
         background-color: orange;
         position: absolute;
-        right:10px;
-        bottom:10px;
+        z-index: 100;
+        right:15px;
+        bottom:15px;
         border-radius: 100px;
         display:flex;
         align-items: center;
         justify-content: center;
+        transition: all ease 0.2s;
         &-icon{
             width:30px;
             height:30px;
             filter: invert(1);
             transform: translateX(3px);
-
         }
     }
+    &-body:hover{
+        transform: scale(0.95,0.95);
+        transition: all ease 0.2s;
+        cursor: pointer;
+    }
+
 }
