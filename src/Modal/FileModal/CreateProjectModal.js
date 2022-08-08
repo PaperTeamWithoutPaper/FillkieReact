@@ -5,6 +5,7 @@ import {IsCreateProject} from '../../reducer/project_reducer';
 import { getCookie } from '../../cookie';
 import { setProjectInfo } from '../../reducer/project_reducer';
 import { nodeAxios } from '../../apis/api';
+import Loading from '../../Loading/Loading';
 const CreateProjectModal=()=>
 {
 
@@ -13,6 +14,7 @@ const CreateProjectModal=()=>
         dispatch(IsCreateProject(0))
     }
     const [loading, setLoading]=useState(0)
+    const [apiloading, setApiloading]=useState(0)
     useEffect(()=>{
         setLoading(1)
     },[])
@@ -21,9 +23,16 @@ const CreateProjectModal=()=>
     const teamID=useSelector(state=>state.team_reducer.currentTeam)
     const postProject=()=>
     {
+        if(apiloading==1)
+        {
+            return;
+        }
+        setApiloading(1)
         nodeAxios.post(`/team/${teamList[teamID]["teamId"]}/project`,{
             name: pName
-        }).then(()=>nodeAxios.get(`/team/${teamList[teamID]["teamId"]}/project`).then((response)=>{dispatch(setProjectInfo(response.data.data))
+        }).then(()=>nodeAxios.get(`/team/${teamList[teamID]["teamId"]}/project`).then((response)=>{
+            setApiloading(0)
+            dispatch(setProjectInfo(response.data.data))
             setLoading(0);setTimeout(()=>removeComponent(),300)}))
       
    
@@ -38,7 +47,10 @@ const CreateProjectModal=()=>
                 <div className="CreateProjectModal-desc">Set your Project name</div>
                 <input value={pName} onChange={(e)=>setPName(e.target.value)} placeholder='Project Name' className="CreateTeamModal-teaminput"></input>
                 <div className="CreateProjectModal-buttonbox">
-                    <div className="CreateProjectModal-accept" onClick={postProject}>Continue</div>
+                    <div className="CreateProjectModal-accept" onClick={postProject}>
+                    {apiloading==0?<div>Continue</div>:
+                        <Loading></Loading>}
+                    </div>
                     <div className="CreateProjectModal-no" onClick={()=>{ setLoading(0);setTimeout(()=>removeComponent(),300)}}>Cancel</div>
                 </div>
             </div>
