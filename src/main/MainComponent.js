@@ -19,6 +19,7 @@ import axios from 'axios';
 import { getCookie } from '../cookie';
 import { setProjectInfo } from '../reducer/project_reducer';
 import { springAxios,nodeAxios } from '../apis/api';
+import FloatingButton from '../buttons/FloatingButton';
 
 ///
 
@@ -73,6 +74,7 @@ const MainComponent=()=>
 
     return(
       <div>
+        <FloatingButton></FloatingButton>
         {alarm?<Alarm desc="복사되었습니다."></Alarm>:null}
         {inviting?<InviteUserModal></InviteUserModal>:null}
         {creating?<CreateTeamModal></CreateTeamModal>:null}
