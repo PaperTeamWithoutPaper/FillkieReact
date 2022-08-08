@@ -1,0 +1,30 @@
+@font-face {
+    font-family: 'S-CoreDream-3Light';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.DescComponent{
+    &-body{
+        background-color: white;
+        box-shadow: 0px 2px 5px gray;
+        position: absolute;
+        z-index: 101;
+        display: flex;
+        align-items:center;
+        max-width: 500px;
+        transform: translate(calc(50vw - 50%),calc(100vh - 100px));
+        font-family: 'S-CoreDream-3Light';
+        border-radius: 10px;
+        padding:10px;
+        flex-direction: column;
+        &-title{
+
+        }
+        &-desc{
+
+        }
+
+    }
+}

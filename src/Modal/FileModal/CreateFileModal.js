@@ -30,6 +30,7 @@ const CreateFileModal=({type})=>
     }
     const removeComponent=()=>
     {
+        setApiloading(0)
         dispatch(IsCreateFile(0))
     }
     const [apiloading, setApiloading]=useState(0)
@@ -49,7 +50,7 @@ const CreateFileModal=({type})=>
                 <input value={fileName} onChange={(e)=>{setFileName(e.target.value)}} placeholder={type?'Folder Name':'Note Name'} className="CreateTeamModal-teaminput"></input>
                 <div className="CreateFileModal-buttonbox">
                     <div className="CreateFileModal-accept" onClick={createFile}>
-                    {apiloading==0?<div>Continue</div>:
+                    {(apiloading==0)?<div>Continue</div>:
                         <Loading></Loading>}
                     </div>
                     <div className="CreateFileModal-no" onClick={()=>{ setLoading(0);setTimeout(()=>removeComponent(),300)}}>Cancel</div>

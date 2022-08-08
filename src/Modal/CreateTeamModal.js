@@ -16,6 +16,7 @@ const CreateTeamModal=(props)=>
     const teamlength=teamList.length
     const removeComponent=()=>
     {
+        setApiloading(0)
         dispatch(IsCreateTeam(0))
     }
     const [loading, setLoading]=useState(0)
@@ -32,7 +33,7 @@ const CreateTeamModal=(props)=>
         setApiloading(1)
         await springAxios.post('/team/create',{'teamName':teamName}).then((response)=>{console.log(response.data)})
         await springAxios.get('/team/list').then((response)=>{dispatch(setTeamInfo(response.data.data))})
-        setApiloading(0)
+        
         setLoading(0)
         setCreateEnd(1)
         setTimeout(()=>removeComponent(),300)
@@ -57,7 +58,7 @@ const CreateTeamModal=(props)=>
                 <input onChange={(e)=>{setTeamName(e.target.value)}} value={teamName} placeholder="Enter team name" className="CreateTeamModal-teaminput"></input>
                 <div className="CreateTeamModal-buttonbox">
                     <div className="CreateTeamModal-accept" onClick={createTeam}>
-                        {apiloading==0?<div>Continue</div>:
+                        {(apiloading==0)?<div>Continue</div>:
                         <Loading></Loading>}
                     </div>
                     <div className="CreateTeamModal-no" onClick={()=>{ setLoading(0);setTimeout(()=>removeComponent(),300)}}>Cancel</div>
