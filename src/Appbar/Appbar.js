@@ -23,7 +23,7 @@ const Appbar=(props)=>
         </div>
         <div className="Appbar-active">  
             
-            <a href="/login" className="node"><div className='Appbar-icon' style={{textDecoration:'none'}}>Fillkie</div></a>
+            <a href="/main" className="node"><div className='Appbar-icon' style={{textDecoration:'none'}}>Fillkie</div></a>
             
                   
             <img src={require('./Icon/alarm.png')} className="Appbar-alarm"></img> 
