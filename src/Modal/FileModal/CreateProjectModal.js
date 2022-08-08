@@ -48,7 +48,7 @@ const CreateProjectModal=()=>
                 <input value={pName} onChange={(e)=>setPName(e.target.value)} placeholder='Project Name' className="CreateTeamModal-teaminput"></input>
                 <div className="CreateProjectModal-buttonbox">
                     <div className="CreateProjectModal-accept" onClick={postProject}>
-                    {apiloading==0?<div>Continue</div>:
+                    {(apiloading==0 && loading==0)?<div>Continue</div>:
                         <Loading></Loading>}
                     </div>
                     <div className="CreateProjectModal-no" onClick={()=>{ setLoading(0);setTimeout(()=>removeComponent(),300)}}>Cancel</div>
