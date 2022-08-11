@@ -18,7 +18,7 @@ const App=()=>
   return (
     <div >
     <Routes>
-      <Route path="/login" element={<Login_browser></Login_browser>}/>
+      <Route path="/" element={<Login_browser></Login_browser>}/>
       <Route path="/main" element={<MainComponent></MainComponent>}/>
       <Route path="/loginapi" element={<Login_api></Login_api>}/>
       <Route exact path="/meeting/:docKey" element={<DocLoader></DocLoader>}/>
