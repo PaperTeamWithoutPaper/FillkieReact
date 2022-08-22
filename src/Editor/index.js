@@ -39,7 +39,7 @@ const Editor=()=>
             }
             )
     }
-    const updateElement=(index,x1,y1,x2,y2,tool)=>
+    const updateElement=(index,x1,y1,x2,y2,tool,text)=>
     {
         switch (tool)
         {
@@ -59,6 +59,14 @@ const Editor=()=>
                 root.shapes[index].points.push({x: x2,y: y2}))
                 break;
             case "text":
+                doc.update((root)=>{
+                    root.shapes[index].index=index
+                    root.shapes[index].x1=x1
+                    root.shapes[index].y1=y1
+                    root.shapes[index].text=text
+                    root.shapes[index].width=context.measureText(text).width
+                    root.shapes[index].height=15
+                })
                 
                 break;
             default:
@@ -70,6 +78,7 @@ const Editor=()=>
 
     const onmousedown=(e,type)=>
     {
+        if(textRef.current) return
         const clientX=type=="des"?e.clientX:e.touches[0].clientX
         const clientY=type=="des"?e.clientY:e.touches[0].clientY
        
@@ -101,6 +110,10 @@ const Editor=()=>
                     const offsetX=clientX-element.x1;
                     const offsetY=clientY-element.y1;
                     setSelectedElement({...element,offsetX,offsetY})
+                    if(element.tool=='text')
+                    {
+                        pencilStart={x:clientX,y:clientY}
+                    }
                 }
                 
                 
@@ -180,7 +193,15 @@ const Editor=()=>
                 drawAll();
                 drawSelectedBox({tool,x1:newX,y1:newY,x2:newX+width,y2:newY+height},context)
             }
-            else
+            else if(selectedElement.tool==='text')
+            {
+                const {index,x1,y1,tool,text} = selectedElement
+                
+                updateElement(index,x1+clientX-pencilStart.x,y1+clientY-pencilStart.y,null,null,tool,text);
+                drawAll();
+                drawSelectedBox({tool,x1:x1+clientX-pencilStart.x,y1:y1+clientY-pencilStart.y,x2:null,y2:null,width:selectedElement.width},context)
+            }
+            else if(selectedElement.tool==='pencil')
             {
                 
                 const {index,tool,offsetX,offsetY} = selectedElement
@@ -224,13 +245,24 @@ const Editor=()=>
             updateElement(index, x1,y1,x2,y2,selectedElement.tool)
         }    
         if(action==='writing') 
-        {textRef.current.focus();
+        {
         return
         }
         
-        setAction('selection')
+        setAction('none')
         setSelectedElement(null);
     }
+    const onblur=(e)=>
+    {
+        console.log('blur')
+        const {index, x1,y1,tool} = selectedElement;
+        
+        setAction('selecct')
+        updateElement(index,x1,y1,null,null,tool,e.target.value)
+        e.target.value=""
+        drawAll();
+    }
+
 
     //캔버스 생성//
     function drawAll()
@@ -289,7 +321,7 @@ const Editor=()=>
                 setUsers(Object.keys(event.value[`${docKey}`]))
                 console.log(Object.keys(event.value[`${docKey}`]))
             } else if (event.type === 'stream-connection-status-changed') {
-                console.log('hello'); // 'connected' or 'disconnected'
+                
             }
             });
             
@@ -298,6 +330,7 @@ const Editor=()=>
     useLayoutEffect(()=> {
         canvas=document.getElementById('canvas');
         context=canvas.getContext('2d');
+        context.scale(window.devicePixelRatio, window.devicePixelRatio);
         
         if(client===null)
         {
@@ -306,6 +339,14 @@ const Editor=()=>
        
     }
     ,[])
+    useEffect(()=>
+    {
+        if(action==='writing')
+        {
+            console.log(action)
+            setTimeout(()=>{textRef.current.focus()},1)
+        }
+    },[action,selectedElement])
     return(
         <div>
             
@@ -313,11 +354,17 @@ const Editor=()=>
             {
             
             <canvas
-            style={{display:`${loading?'none':'block'}`}}
+            style={{
+                display:`${loading?'none':'block'}`,
+                width:`${window.innerWidth}px`,
+                height:`${(window.innerHeight-30)}px`
+        }}
             id="canvas"
-            width={window.innerWidth}
-            height={window.innerHeight-30}
-            onMouseDown={(e)=>{onmousedown(e,'des')}}
+            width={window.innerWidth*window.devicePixelRatio}
+            height={(window.innerHeight-30)*window.devicePixelRatio}
+            onMouseDown={(e)=>{
+                
+                onmousedown(e,'des')}}
             onMouseMove={(e)=>{onmousemove(e,'des')}}
             onMouseUp={(e)=>{onmouseup(e,'des')}}
             onTouchStart={(e)=>{onmousedown(e,'mob')}}
@@ -329,20 +376,35 @@ const Editor=()=>
                 action === "writing"?
             <textarea
             
-            ref={textRef}
-            style={{position:'fixed', top:selectedElement.y1,left:selectedElement.x1}}></textarea>:null
+            onBlur={(e)=>{onblur(e)}}
+            style={{
+                position:'fixed', 
+                top:selectedElement.y1-2,
+                left:selectedElement.x1,
+                font: "15px serif",
+                margin: 0,
+                padding:0,
+                border:0,
+                outline: 0,
+                resize: 'auto',
+                overflow: 'hiddent',
+                whiteSpace: 'pre',
+                background: 'transparent',
+    }}
+            ref={textRef}></textarea>:null
+
             }  
             <div style={{position:'absolute', right:'10px', top:'10px'}}>
                 <div>사용자</div>
                 
-                {users.map((user)=>{return(<div>{user}asd</div>)})}
+                {users.map((user,key)=>{return(<div key={user}>{user}asd</div>)})}
 
             </div>
             
             <button onClick={()=>{setTool('pencil')}}>그리기</button>
             <button onClick={()=>{setTool('line')}}>선</button>
             <button onClick={()=>{setTool('rectangle')}}>직사각형</button>
-            {/*<button onClick={()=>{setTool('text')}}>텍스트</button>*/}
+            {<button onClick={()=>{setTool('text')}}>텍스트</button>}
             <button onClick={()=>{setTool('selection')}}>선택</button>
             <button onClick={()=>{setTool('eraser')}}>지우개</button>
             <button onClick={()=>{doc.update((root)=>root.shapes=[]);drawAll()}}>초기화</button>
