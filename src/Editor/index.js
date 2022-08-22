@@ -12,10 +12,25 @@ var pencilR=null;
 var pencilStart=null;
 const Editor=()=>
 {
+    //resize//
+    useEffect(()=>{
+        window.addEventListener('resize',()=>{
+         
+            canvas.width=window.innerWidth
+            canvas.height=window.innerHeight-30
+            drawAll();
+
+        })
+
+    }
+    )
+
+
     //ref//
     const textRef=useRef();
     //path var//
     const {docKey}=useParams()
+
     const [users,setUsers]=useState([])
     const [tool,setTool]=useState('pencil')
     const [action,setAction]=useState('none')
@@ -269,6 +284,7 @@ const Editor=()=>
     {
         
         const root = doc.getRoot();
+        
         context.clearRect(0,0,canvas.width,canvas.height);
         /*var img = new Image();
         img.src = 'https://placeimg.com/100/100/any';
@@ -300,6 +316,7 @@ const Editor=()=>
 
                 });
             setLoading(0)
+            
             drawAll()
             
             
@@ -330,15 +347,16 @@ const Editor=()=>
     useLayoutEffect(()=> {
         canvas=document.getElementById('canvas');
         context=canvas.getContext('2d');
-        context.scale(window.devicePixelRatio, window.devicePixelRatio);
         
         if(client===null)
         {
             activateClient();   
         }
        
-    }
-    ,[])
+    },[]
+    )
+
+
     useEffect(()=>
     {
         if(action==='writing')
@@ -355,13 +373,12 @@ const Editor=()=>
             
             <canvas
             style={{
+  
                 display:`${loading?'none':'block'}`,
-                width:`${window.innerWidth}px`,
-                height:`${(window.innerHeight-30)}px`
         }}
             id="canvas"
-            width={window.innerWidth*window.devicePixelRatio}
-            height={(window.innerHeight-30)*window.devicePixelRatio}
+            width={window.innerWidth}
+            height={(window.innerHeight-30)}
             onMouseDown={(e)=>{
                 
                 onmousedown(e,'des')}}
