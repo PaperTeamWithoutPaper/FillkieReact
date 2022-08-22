@@ -62,6 +62,14 @@ export const drawSelectedBox=(element,context,pencilRange)=>
         context.fillStyle="rgba(0,60,255,0.1)"
         context.fillRect(pencilRange.x1,pencilRange.y1,pencilRange.x2-pencilRange.x1,pencilRange.y2-pencilRange.y1);
     }
+    if(tool==='text')
+    {
+        context.lineWidth = 1; // 선 굵기 10픽셀
+        context.strokeStyle="rgb(0, 60, 255)";
+        context.strokeRect(x1,y1,element.width,15);
+        context.fillStyle="rgba(0,60,255,0.1)"
+        context.fillRect(x1,y1,element.width,15);
+    }
 
     
     
@@ -76,7 +84,7 @@ export const createElement=(index,x1,y1,x2,y2,tool)=>
         case 'pencil':
             return {index, points: [{x:x1,y:y1}],tool,moveXY:{x:4,y:0},removed:false}
         case 'text':
-            return {index, x1,y1,tool,removed:false,text:''}
+            return {index, x1,y1,tool,removed:false,text:'',width:0,height:15}
         default:
             throw new Error(`Type not recognized: ${tool}`)
 
@@ -194,6 +202,9 @@ export const positionWithinElement=(x,y,element)=>
     else if (tool==='text')
     {
         
+        const inside = x1<=x && x<=x1+element.width && y1<=y&& y<=y1+15?'inside':null;
+        
+        return {position:inside}
         
     }
        

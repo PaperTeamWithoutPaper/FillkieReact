@@ -64,6 +64,8 @@ const Editor=()=>
                     root.shapes[index].x1=x1
                     root.shapes[index].y1=y1
                     root.shapes[index].text=text
+                    root.shapes[index].width=context.measureText(text).width
+                    root.shapes[index].height=15
                 })
                 
                 break;
@@ -108,6 +110,10 @@ const Editor=()=>
                     const offsetX=clientX-element.x1;
                     const offsetY=clientY-element.y1;
                     setSelectedElement({...element,offsetX,offsetY})
+                    if(element.tool=='text')
+                    {
+                        pencilStart={x:clientX,y:clientY}
+                    }
                 }
                 
                 
@@ -187,7 +193,15 @@ const Editor=()=>
                 drawAll();
                 drawSelectedBox({tool,x1:newX,y1:newY,x2:newX+width,y2:newY+height},context)
             }
-            else
+            else if(selectedElement.tool==='text')
+            {
+                const {index,x1,y1,tool,text} = selectedElement
+                
+                updateElement(index,x1+clientX-pencilStart.x,y1+clientY-pencilStart.y,null,null,tool,text);
+                drawAll();
+                drawSelectedBox({tool,x1:x1+clientX-pencilStart.x,y1:y1+clientY-pencilStart.y,x2:null,y2:null,width:selectedElement.width},context)
+            }
+            else if(selectedElement.tool==='pencil')
             {
                 
                 const {index,tool,offsetX,offsetY} = selectedElement
@@ -371,7 +385,7 @@ const Editor=()=>
                 margin: 0,
                 padding:0,
                 border:0,
-                outline: 'solid 1px black',
+                outline: 0,
                 resize: 'auto',
                 overflow: 'hiddent',
                 whiteSpace: 'pre',
@@ -383,7 +397,7 @@ const Editor=()=>
             <div style={{position:'absolute', right:'10px', top:'10px'}}>
                 <div>사용자</div>
                 
-                {users.map((user)=>{return(<div>{user}asd</div>)})}
+                {users.map((user,key)=>{return(<div key={user}>{user}asd</div>)})}
 
             </div>
             
