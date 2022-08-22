@@ -76,7 +76,7 @@ export const createElement=(index,x1,y1,x2,y2,tool)=>
         case 'pencil':
             return {index, points: [{x:x1,y:y1}],tool,moveXY:{x:4,y:0},removed:false}
         case 'text':
-            return {index, x1,y1,tool,removed:false,text:'Hello world'}
+            return {index, x1,y1,tool,removed:false,text:''}
         default:
             throw new Error(`Type not recognized: ${tool}`)
 
@@ -122,6 +122,7 @@ export const drawElement=(context, element)=>
             break;
 
         case 'text':
+            context.textBaseline="top"
             context.fillStyle="black"
             context.font = '15px serif';
             context.fillText(element.text, element.x1, element.y1);
