@@ -2,8 +2,8 @@ import {useEffect, useLayoutEffect,useState,useRef} from 'react'
 import {drawSelectedBox, drawElement,createSelectedBox,createElement,getElementAtPosition,adjustElementCoordinates,cursorForPosition,resizeCoordinates} from './util'
 import yorkie from 'yorkie-js-sdk'
 import { useParams } from 'react-router'
-import { root } from 'postcss';
-import { isIfStatement } from 'typescript';
+import "./Editor.scss"
+
 var client=null;
 var doc= null;
 var canvas= null;
@@ -411,20 +411,22 @@ const Editor=()=>
             ref={textRef}></textarea>:null
 
             }  
-            <div style={{position:'absolute', right:'10px', top:'10px'}}>
+            <div style={{position:'absolute', right:'10px', top:'50px'}}>
                 <div>사용자</div>
                 
                 {users.map((user,key)=>{return(<div key={user}>{user}asd</div>)})}
 
             </div>
+            <div className="toolBox">
+                <button className={tool==='pencil'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('pencil')}}>그리기</button>
+                <button className={tool==='line'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('line')}}>선</button>
+                <button className={tool==='rectangle'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('rectangle')}}>직사각형</button>
+                {<button className={tool==='text'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('text')}}>텍스트</button>}
+                <button className={tool==='selection'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('selection')}}>선택</button>
+                <button className={tool==='eraser'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('eraser')}}>지우개</button>
+                <button className={tool==='asd'?"toolBox-button-active":"toolBox-button"} onClick={()=>{doc.update((root)=>root.shapes=[]);drawAll()}}>초기화</button>
+            </div>
             
-            <button onClick={()=>{setTool('pencil')}}>그리기</button>
-            <button onClick={()=>{setTool('line')}}>선</button>
-            <button onClick={()=>{setTool('rectangle')}}>직사각형</button>
-            {<button onClick={()=>{setTool('text')}}>텍스트</button>}
-            <button onClick={()=>{setTool('selection')}}>선택</button>
-            <button onClick={()=>{setTool('eraser')}}>지우개</button>
-            <button onClick={()=>{doc.update((root)=>root.shapes=[]);drawAll()}}>초기화</button>
         </div>
     )
 }

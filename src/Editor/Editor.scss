@@ -1,0 +1,24 @@
+.toolBox{
+    position: fixed;
+    top:0px;
+    background-color: rgb(49, 49, 49);
+    display:flex;
+    width:100vw;
+    height:50px;
+    justify-content: center;
+    
+    &-button{
+        background-color: rgb(49, 49, 49);
+        width:50px;
+        border: 0;
+        color:white;
+    }
+    &-button:hover{
+        background-color: rgb(27, 27, 27);
+    }
+    &-button-active{
+        background-color: orange;
+        width:50px;
+        border: 0;
+    }
+}
