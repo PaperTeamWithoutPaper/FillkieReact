@@ -1,5 +1,5 @@
 import {useEffect, useLayoutEffect,useState,useRef} from 'react'
-import {drawSelectedBox, drawElement,createSelectedBox,createElement,getElementAtPosition,adjustElementCoordinates,cursorForPosition,resizeCoordinates} from './util'
+import {getMinMaxXY,getElementsAtPosition, drawSelectedBox, drawElement,createSelectingBox,createElement,getElementAtPosition,adjustElementCoordinates,cursorForPosition,resizeCoordinates} from './util'
 import yorkie from 'yorkie-js-sdk'
 import { useParams } from 'react-router'
 import "./Editor.scss"
@@ -37,6 +37,7 @@ const Editor=()=>
     const [selectedElement,setSelectedElement]=useState(null);
     const [selectedPosition, setSelectedPosition]=useState(null);
     const [loading, setLoading]= useState(0);
+    const [downPosition,setDownPosition]=useState({x:0,y:0})
     //const [eraseList,setEraseList]=useState([]);
 
     const movePencil=(index,tool,offsetX,offsetY)=>
@@ -95,25 +96,21 @@ const Editor=()=>
     {
         if(textRef.current) return
         const clientX=type=="des"?e.clientX:e.touches[0].clientX
-        const clientY=type=="des"?e.clientY:e.touches[0].clientY
-       
-        
+        const clientY=type=="des"?e.clientY:e.touches[0].clientY 
+        setDownPosition({x:clientX,y:clientY})  
         const id = doc.getRoot().shapes.length;
         drawAll()
         if(tool==='selection')
         {
             const getElement=getElementAtPosition(clientX,clientY,doc.getRoot().shapes)
-
             if(getElement)
             {
                 const {element,position,pencilRange}=getElement
                 pencilR=pencilRange
-                
                 setSelectedPosition(position)
                 if(element.tool=='pencil')
                 {
                     pencilStart={x:clientX,y:clientY}
-                   
                     drawSelectedBox(element,context,pencilRange)
                     const offsetX=pencilRange.x1-element.moveXY.x+(clientX-pencilRange.x1);
                     const offsetY=pencilRange.y1-element.moveXY.y+(clientY-pencilRange.y1);;
@@ -140,6 +137,9 @@ const Editor=()=>
                 {
                     setAction("resizing")
                 }
+            }
+            else{
+                setAction("selecting")
             }
     
         }
@@ -168,11 +168,18 @@ const Editor=()=>
        
         if(tool === 'selection')
         {
-            const elements=doc.getRoot().shapes;
-            const element = getElementAtPosition(clientX,clientY,elements)
-            e.target.style.cursor = element ? cursorForPosition(element.position): "default"
-            
+            if(action !== 'selecting')
+            {
+                const elements=doc.getRoot().shapes;
+                const element = getElementAtPosition(clientX,clientY,elements)
+                e.target.style.cursor = element ? cursorForPosition(element.position): "default"
+            }
+            else{
+                drawAll()
+                createSelectingBox(context,downPosition.x,downPosition.y,clientX,clientY)
+            }
         }
+        
         if(action==='drawing')
         { 
             const elements=doc.getRoot().shapes;
@@ -246,7 +253,26 @@ const Editor=()=>
     }
     const onmouseup=(e,type)=>
     {
-        
+        const clientX=type=="des"?e.clientX:e.touches[0].clientX
+        const clientY=type=="des"?e.clientY:e.touches[0].clientY
+        const elements=doc.getRoot().shapes
+        if(action==='selecting')
+        {
+            const adjustXY=adjustElementCoordinates({tool:'rectangle',x1:downPosition.x,y1:downPosition.y,x2:clientX,y2:clientY});
+            const indexList=getElementsAtPosition(elements,adjustXY.x1,adjustXY.y1,adjustXY.x2,adjustXY.y2)
+
+            if(indexList.length===0) 
+            {
+                drawAll();
+                setAction('none')
+                return;
+            }
+            const {minX,minY,maxX,maxY} = getMinMaxXY(elements,indexList)
+
+            
+            drawAll()
+            drawSelectedBox({tool:'rectangle',x1:minX,y1:minY,x2:maxX,y2:maxY},context)
+        }
         if(action === 'drawing' && (tool==='rectangle' || tool === 'line')){
             const index = doc.getRoot().shapes.length-1
             const {x1,y1,x2,y2}=adjustElementCoordinates(doc.getRoot().shapes[index]);
