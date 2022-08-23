@@ -14,6 +14,85 @@ function getSvgPathFromStroke(stroke) {
     d.push('Z')
     return d.join(' ')
   }
+
+//selection
+export const getElementsAtPosition=(elements,x1,y1,x2,y2)=>
+{
+    var returnIndex=[]
+    for(var i=0;i<elements.length;i++)
+    {
+        const element=elements[i]
+        if(element.removed==true) return
+        switch(element.tool)
+        {
+            case 'pencil':
+                const {minX,minY,maxX,maxY}=getPencilMinMaxXY(element)
+                if(minX>=x1 && maxX<=x2 && minY>=y1 && maxY<=y2) returnIndex=[...returnIndex,element.index]
+                break;
+            case 'line':
+                
+            case 'rectangle':
+                if(element.x1>=x1 && element.x2<=x2 && element.y1>=y1 && element.y2<=y2) returnIndex=[...returnIndex,element.index]
+                break;
+            case 'text':
+                if(element.x1>=x1 && element.x1+element.width<=x2 && element.y1>=y1 && element.y1+15<=y2) returnIndex=[...returnIndex,element.index]
+                break;
+        }
+    }
+    return returnIndex
+}
+export const getMinMaxXY=(elements,indexList)=>
+{
+    var maxX=0
+    var minX=100101010
+    var maxY=0
+    var minY=111010101
+    for(var i=0;i<indexList.length;i++)
+    {
+        const element=elements[indexList[i]]
+        switch(element.tool)
+        {
+            case 'pencil':
+                minX=minX<getPencilMinMaxXY(element).minX?minX:getPencilMinMaxXY(element).minX
+                minY=minY<getPencilMinMaxXY(element).minY?minY:getPencilMinMaxXY(element).minY
+                maxX=maxX>getPencilMinMaxXY(element).maxX?maxX:getPencilMinMaxXY(element).maxX
+                maxY=maxY>getPencilMinMaxXY(element).maxY?maxY:getPencilMinMaxXY(element).maxY
+                break;
+            case 'line':
+                const minX2=Math.min(element.x1,element.x2)
+                const maxX2=Math.max(element.x1,element.x2)
+                const minY2=Math.min(element.y1,element.y2)
+                const maxY2=Math.max(element.y1,element.y2)
+                minX=minX<minX2?minX:minX2
+                minY=minY<minY2?minY:minY2
+                maxX=maxX>maxX2?maxX:maxX2
+                maxY=maxY>maxY2?maxY:maxY2
+                break;
+
+            case 'rectangle':
+                minX=minX<element.x1?minX:element.x1
+                minY=minY<element.y1?minY:element.y1
+                maxX=maxX>element.x2?maxX:element.x2
+                maxY=maxY>element.y2?maxY:element.y2
+                break;
+            case 'text':
+                minX=minX<element.x1?minX:element.x1
+                minY=minY<element.y1?minY:element.y1
+                maxX=maxX>element.x1+element.width?maxX:element.x1+element.width
+                maxY=maxY>element.y1+15?maxY:element.y1+15
+                break;
+        }
+    }
+    return {minX,minY,maxX,maxY}
+}
+export const createSelectingBox=(context,x1,y1,x2,y2)=>
+{
+    context.lineWidth = 1; // 선 굵기 10픽셀
+    context.strokeStyle="rgb(0, 60, 255)";
+    context.strokeRect(x1,y1,x2-x1,y2-y1);
+    context.fillStyle="rgba(0,60,255,0.1)"
+    context.fillRect(x1,y1,x2-x1,y2-y1);
+}
 const drawCircle=(x,y,context)=>
 {
     
@@ -41,6 +120,7 @@ export const drawSelectedBox=(element,context,pencilRange)=>
     drawCircle(x2,y2,context)
     drawCircle(x1,y2,context)
     drawCircle(x2,y1,context)
+
     }
     if(tool==='line')
     {
@@ -145,6 +225,34 @@ const nearPoint = (x,y,x1,y1,name)=>
 {
     return Math.abs(x-x1)<5 && Math.abs(y-y1)<5 ? name : null;
 } 
+const getPencilMinMaxXY=(element)=>
+{
+    var maxX=0
+    var minX=100101010
+    var maxY=0
+    var minY=111010101
+    for(var i=0;i<element.points.length;i++)
+        {
+            var cur={x:element.points[i].x+element.moveXY.x,y:element.points[i].y+element.moveXY.y}
+            if(maxX<cur.x)
+            {
+                maxX=cur.x
+            }
+            if(minX>cur.x)
+            {
+                minX=cur.x
+            }
+            if(maxY<cur.y)
+            {
+                maxY=cur.y
+            }
+            if(minY>cur.y)
+            {
+                minY=cur.y
+            }
+        }
+    return {minX,minY,maxX,maxY}
+}
 export const positionWithinElement=(x,y,element)=>
 {
     const {tool,x1,x2,y1,y2,removed}=element;
@@ -167,10 +275,6 @@ export const positionWithinElement=(x,y,element)=>
         return {position:start || end || inside}
     }else if(tool === 'pencil')
     {
-        var maxX=0
-        var minX=100101010
-        var maxY=0
-        var minY=111010101
         var flag=false
         for(var i=0;i<element.points.length;i++)
         {
@@ -179,23 +283,8 @@ export const positionWithinElement=(x,y,element)=>
             {
                 flag=true
             }
-            if(maxX<cur.x)
-            {
-                maxX=cur.x
-            }
-            if(minX>cur.x)
-            {
-                minX=cur.x
-            }
-            if(maxY<cur.y)
-            {
-                maxY=cur.y
-            }
-            if(minY>cur.y)
-            {
-                minY=cur.y
-            }
         }
+        const {minX,minY,maxX,maxY}= getPencilMinMaxXY(element)
         const inside = flag ? "inside" : null;
         return {position:inside,pencilRange:{x1:minX,y1:minY,x2:maxX,y2:maxY}}
     }
