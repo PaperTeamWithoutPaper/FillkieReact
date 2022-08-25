@@ -3,6 +3,7 @@ import {getMinMaxXY,getElementsAtPosition, drawSelectedBox, drawElement,createSe
 import yorkie from 'yorkie-js-sdk'
 import { useParams } from 'react-router'
 import "./Editor.scss"
+import { SketchPicker } from 'react-color'
 
 var client=null;
 var doc= null;
@@ -15,17 +16,18 @@ const Editor=()=>
     //resize//
     useEffect(()=>{
         window.addEventListener('resize',()=>{
-         
             canvas.width=window.innerWidth
             canvas.height=window.innerHeight-30
             drawAll();
-
         })
-
     }
     )
 
-
+    //color//
+    const [strokePicker,setStrokePicker]=useState(0)
+    const [fillPicker,setFillPicker]=useState(0)
+    const [strokeColor,setStrokeColor]=useState('black')
+    const [fillColor,setFillColor]=useState('black')
     //ref//
     const textRef=useRef();
     //path var//
@@ -451,7 +453,27 @@ const Editor=()=>
                 <button className={tool==='selection'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('selection')}}>선택</button>
                 <button className={tool==='eraser'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('eraser')}}>지우개</button>
                 <button className={tool==='asd'?"toolBox-button-active":"toolBox-button"} onClick={()=>{doc.update((root)=>root.shapes=[]);drawAll()}}>초기화</button>
+                <div className="toolBox-colorBox">
+                    <div className="toolBox-colorBox-desc">선</div>
+                    <button onClick={()=>{setStrokePicker(1)}} style={{width:15,height:15,border:'1px solid white',backgroundColor:`${strokeColor}`}}></button>
+                </div>
+                <div className="toolBox-colorBox">
+                    <div className="toolBox-colorBox-desc">채우기</div>
+                    <button onClick={()=>{setFillPicker(1)}} style={{width:15,height:15,border:'1px solid white',backgroundColor:`${fillColor}`}}></button>
+                </div>
             </div>
+            {strokePicker?
+                        <div style={{position:'absolute',top:0}}>
+                            <div onClick={()=>{setStrokePicker(0)}} style={{top:0,position:'absolute',width:'100vw',height:'100vh'}}></div>
+                            <div style={{position:'absolute',transform:'translateY(50px)'}}><SketchPicker color={strokeColor} onChange={(color)=>{setStrokeColor(color.hex)}}></SketchPicker></div>
+                        </div>:null
+            }
+            {fillPicker?
+                        <div style={{position:'absolute',top:0}}>
+                            <div onClick={()=>{setFillPicker(0)}} style={{top:0,position:'absolute',width:'100vw',height:'100vh'}}></div>
+                            <div style={{position:'absolute',transform:'translateY(50px)'}}><SketchPicker color={fillColor} onChange={(color)=>{setFillColor(color.hex)}}></SketchPicker></div>
+                        </div>:null
+            }
             
         </div>
     )
