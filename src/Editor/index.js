@@ -459,7 +459,7 @@ const Editor=()=>
                     {strokePicker?
                         <div style={{position:'absolute',top:0}}>
                             <div onClick={()=>{setStrokePicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
-                            <div style={{position:'absolute',transform:'translate(-100px,50px)'}}><SketchPicker color={strokeColor} onChange={(color)=>{setStrokeColor(color.hex)}}></SketchPicker></div>
+                            <div style={{position:'absolute',transform:'translate(-100px,50px)'}}><SketchPicker color={strokeColor} onChange={(color)=>{setStrokeColor(`rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${color.rgb.a})`)}}></SketchPicker></div>
                         </div>:null
             }
                     
@@ -470,7 +470,7 @@ const Editor=()=>
                     {fillPicker?
                         <div style={{position:'absolute',top:0}}>
                             <div onClick={()=>{setFillPicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
-                            <div style={{position:'absolute',transform:'translate(-100px,50px)'}}><SketchPicker color={fillColor} onChange={(color)=>{setFillColor(color.hex)}}></SketchPicker></div>
+                            <div style={{position:'absolute',transform:'translate(-100px,50px)'}}><SketchPicker color={fillColor} onChange={(color)=>{setFillColor(`rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${color.rgb.a})`)}}></SketchPicker></div>
                         </div>:null
             }
                 </div>
