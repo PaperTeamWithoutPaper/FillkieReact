@@ -152,7 +152,7 @@ const Editor=()=>
         else{
             setAction(tool=== "text"?"writing":'drawing');
    
-            const element=createElement(id,clientX,clientY,clientX,clientY,tool)
+            const element=createElement(id,clientX,clientY,clientX,clientY,tool,strokeColor,fillColor)
             setSelectedElement(element)
             doc.update((root)=>{
                 root.shapes.push(element);
@@ -456,24 +456,27 @@ const Editor=()=>
                 <div className="toolBox-colorBox">
                     <div className="toolBox-colorBox-desc">선</div>
                     <button onClick={()=>{setStrokePicker(1)}} style={{width:15,height:15,border:'1px solid white',backgroundColor:`${strokeColor}`}}></button>
+                    {strokePicker?
+                        <div style={{position:'absolute',top:0}}>
+                            <div onClick={()=>{setStrokePicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
+                            <div style={{position:'absolute',transform:'translate(-100px,50px)'}}><SketchPicker color={strokeColor} onChange={(color)=>{setStrokeColor(color.hex)}}></SketchPicker></div>
+                        </div>:null
+            }
+                    
                 </div>
                 <div className="toolBox-colorBox">
                     <div className="toolBox-colorBox-desc">채우기</div>
                     <button onClick={()=>{setFillPicker(1)}} style={{width:15,height:15,border:'1px solid white',backgroundColor:`${fillColor}`}}></button>
+                    {fillPicker?
+                        <div style={{position:'absolute',top:0}}>
+                            <div onClick={()=>{setFillPicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
+                            <div style={{position:'absolute',transform:'translate(-100px,50px)'}}><SketchPicker color={fillColor} onChange={(color)=>{setFillColor(color.hex)}}></SketchPicker></div>
+                        </div>:null
+            }
                 </div>
             </div>
-            {strokePicker?
-                        <div style={{position:'absolute',top:0}}>
-                            <div onClick={()=>{setStrokePicker(0)}} style={{top:0,position:'absolute',width:'100vw',height:'100vh'}}></div>
-                            <div style={{position:'absolute',transform:'translateY(50px)'}}><SketchPicker color={strokeColor} onChange={(color)=>{setStrokeColor(color.hex)}}></SketchPicker></div>
-                        </div>:null
-            }
-            {fillPicker?
-                        <div style={{position:'absolute',top:0}}>
-                            <div onClick={()=>{setFillPicker(0)}} style={{top:0,position:'absolute',width:'100vw',height:'100vh'}}></div>
-                            <div style={{position:'absolute',transform:'translateY(50px)'}}><SketchPicker color={fillColor} onChange={(color)=>{setFillColor(color.hex)}}></SketchPicker></div>
-                        </div>:null
-            }
+            
+            
             
         </div>
     )

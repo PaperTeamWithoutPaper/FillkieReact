@@ -154,17 +154,17 @@ export const drawSelectedBox=(element,context,pencilRange)=>
     
     
 }
-export const createElement=(index,x1,y1,x2,y2,tool)=>
+export const createElement=(index,x1,y1,x2,y2,tool,strokeColor,fillColor)=>
 {
     switch (tool)
     {
         case "line":
         case 'rectangle':
-        return {index,x1,y1,x2,y2,tool,removed:false}
+        return {index,x1,y1,x2,y2,tool,removed:false,strokeColor,fillColor}
         case 'pencil':
-            return {index, points: [{x:x1,y:y1}],tool,moveXY:{x:4,y:0},removed:false}
+            return {index, points: [{x:x1,y:y1}],tool,moveXY:{x:4,y:0},removed:false,fillColor}
         case 'text':
-            return {index, x1,y1,tool,removed:false,text:'',width:0,height:15}
+            return {index, x1,y1,tool,removed:false,text:'',width:0,height:15,fillColor}
         default:
             throw new Error(`Type not recognized: ${tool}`)
 
@@ -182,7 +182,7 @@ export const drawElement=(context, element)=>
             context.moveTo(x1,y1)
             context.lineTo(x2,y2)
             context.lineWidth = 2
-            context.strokeStyle = "black"
+            context.strokeStyle = element.strokeColor
             context.stroke();
             
 
@@ -190,13 +190,13 @@ export const drawElement=(context, element)=>
         case 'rectangle':
             
             context.lineWidth = 2; // 선 굵기 10픽셀
-            context.strokeStyle="black";
+            context.strokeStyle=element.strokeColor;
             context.strokeRect(x1,y1,x2-x1,y2-y1);
-            context.fillStyle="rgba(200,200,56,0.4)"
+            context.fillStyle=element.fillColor
             context.fillRect(x1,y1,x2-x1,y2-y1);
             break;
         case 'pencil':
-            context.fillStyle="black"
+            context.fillStyle=element.fillColor
             var XY=[]
             for(var i=0; i<element.points.length;i++)
             {
@@ -211,7 +211,7 @@ export const drawElement=(context, element)=>
 
         case 'text':
             context.textBaseline="top"
-            context.fillStyle="black"
+            context.fillStyle=element.fillColor
             context.font = '15px serif';
             context.fillText(element.text, element.x1, element.y1);
             break;
