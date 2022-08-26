@@ -22,7 +22,7 @@ export const getElementsAtPosition=(elements,x1,y1,x2,y2)=>
     for(var i=0;i<elements.length;i++)
     {
         const element=elements[i]
-        if(element.removed==true) return
+        if(element.removed==true) continue
         switch(element.tool)
         {
             case 'pencil':

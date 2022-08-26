@@ -261,9 +261,9 @@ const Editor=()=>
         if(action==='selecting')
         {
             const adjustXY=adjustElementCoordinates({tool:'rectangle',x1:downPosition.x,y1:downPosition.y,x2:clientX,y2:clientY});
+            
             const indexList=getElementsAtPosition(elements,adjustXY.x1,adjustXY.y1,adjustXY.x2,adjustXY.y2)
-
-            if(indexList.length===0) 
+            if(indexList===undefined || indexList.length===0)
             {
                 drawAll();
                 setAction('none')
