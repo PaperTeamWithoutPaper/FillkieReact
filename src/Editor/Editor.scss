@@ -25,4 +25,15 @@
         color:white;
         transition: all ease 0.2s;
     }
+    &-colorBox{
+        width:50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        &-desc{
+            color:white;
+            font-size: 13px;
+        }
+    }
 }
