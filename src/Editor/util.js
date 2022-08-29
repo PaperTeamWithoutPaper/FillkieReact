@@ -276,10 +276,12 @@ export const positionWithinElement=(x,y,element)=>
     }else if(tool === 'pencil')
     {
         var flag=false
-        for(var i=0;i<element.points.length;i++)
+        for(var i=0;i<element.points.length-1;i++)
         {
-            var cur={x:element.points[i].x+element.moveXY.x,y:element.points[i].y+element.moveXY.y}
-            if(distance(cur,{x,y})<10)
+            const a={x:element.points[i].x+element.moveXY.x,y:element.points[i].y+element.moveXY.y}
+            const b={x:element.points[i+1].x+element.moveXY.x,y:element.points[i+1].y+element.moveXY.y}
+            const c={x,y}
+            if(Math.abs(distance(a,b) - (distance(a,c)+distance(b,c)))<10)
             {
                 flag=true
             }

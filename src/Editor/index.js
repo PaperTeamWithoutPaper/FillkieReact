@@ -28,6 +28,7 @@ const Editor=()=>
     const [fillPicker,setFillPicker]=useState(0)
     const [strokeColor,setStrokeColor]=useState('black')
     const [fillColor,setFillColor]=useState('black')
+    const [currentTextColor,setCurrentTextColor]=useState('black')
     //ref//
     const textRef=useRef();
     //path var//
@@ -52,6 +53,7 @@ const Editor=()=>
     }
     const removeElement=(element)=>
     {
+        
         doc.update((root)=>{
             root.shapes[element.index].removed=true
             }
@@ -154,6 +156,7 @@ const Editor=()=>
    
             const element=createElement(id,clientX,clientY,clientX,clientY,tool,strokeColor,fillColor)
             setSelectedElement(element)
+            setCurrentTextColor(fillColor)
             doc.update((root)=>{
                 root.shapes.push(element);
                 }
@@ -297,11 +300,17 @@ const Editor=()=>
     }
     const onblur=(e)=>
     {
-        console.log('blur')
         const {index, x1,y1,tool} = selectedElement;
-        
+        console.log(e.target.value)
+        if(e.target.value==="")
+        {
+            removeElement(selectedElement)
+        }
+        else
+        {
+            updateElement(index,x1,y1,null,null,tool,e.target.value)
+        }
         setAction('selecct')
-        updateElement(index,x1,y1,null,null,tool,e.target.value)
         e.target.value=""
         drawAll();
     }
@@ -435,6 +444,7 @@ const Editor=()=>
                 overflow: 'hiddent',
                 whiteSpace: 'pre',
                 background: 'transparent',
+                color: fillColor
     }}
             ref={textRef}></textarea>:null
 
