@@ -1,9 +1,10 @@
-import {useEffect, useLayoutEffect,useState,useRef} from 'react'
+import {useEffect, useLayoutEffect,useState,useRef, useSyncExternalStore} from 'react'
 import {getMinMaxXY,getElementsAtPosition, drawSelectedBox, drawElement,createSelectingBox,createElement,getElementAtPosition,adjustElementCoordinates,cursorForPosition,resizeCoordinates} from './util'
 import yorkie from 'yorkie-js-sdk'
 import { useParams } from 'react-router'
 import "./Editor.scss"
 import { SketchPicker } from 'react-color'
+import MousePointer from './Mouse'
 
 var client=null;
 var doc= null;
@@ -339,6 +340,7 @@ const Editor=()=>
      
             setLoading(1)
             client = new yorkie.Client(`https://api.fillkie.com`)
+            console.log(client)
             await client.activate();   
             doc = new yorkie.Document(docKey);   
             await client.attach(doc);
@@ -351,6 +353,7 @@ const Editor=()=>
                 root.shapes=[]
 
 
+
                 });
             setLoading(0)
             
@@ -360,6 +363,15 @@ const Editor=()=>
             
     }
 
+    useLayoutEffect(()=>{
+        if(users.length<=1) return
+        doc.update((root) => {
+            root.mouse[users[1]].left=100
+            root.mouse[users[1]].right=100
+            });
+        
+    
+},[users])
     function subscribeDoc()
     {
         
@@ -455,6 +467,11 @@ const Editor=()=>
                 {users.map((user,key)=>{return(<div key={user}>{user}asd</div>)})}
 
             </div>
+            {/*users.map((user,index)=>{
+                if(index===0) return
+                const l= user in Object.keys(doc.getRoot().mouse)?doc.getRoot().mouse[user].left:0
+                const t=user in Object.keys(doc.getRoot().mouse)?doc.getRoot().mouse[user].top:0
+            return(<MousePointer color="yellow" left={l} top={t}></MousePointer>)})*/}
             <div className="toolBox">
                 <button className={tool==='pencil'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('pencil')}}>그리기</button>
                 <button className={tool==='line'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('line')}}>선</button>
