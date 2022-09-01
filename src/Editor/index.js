@@ -1,9 +1,10 @@
-import {useEffect, useLayoutEffect,useState,useRef} from 'react'
+import {useEffect, useLayoutEffect,useState,useRef, useSyncExternalStore} from 'react'
 import {getMinMaxXY,getElementsAtPosition, drawSelectedBox, drawElement,createSelectingBox,createElement,getElementAtPosition,adjustElementCoordinates,cursorForPosition,resizeCoordinates} from './util'
 import yorkie from 'yorkie-js-sdk'
 import { useParams } from 'react-router'
 import "./Editor.scss"
 import { SketchPicker } from 'react-color'
+import MousePointer from './Mouse'
 
 var client=null;
 var doc= null;
@@ -28,6 +29,7 @@ const Editor=()=>
     const [fillPicker,setFillPicker]=useState(0)
     const [strokeColor,setStrokeColor]=useState('black')
     const [fillColor,setFillColor]=useState('black')
+    const [currentTextColor,setCurrentTextColor]=useState('black')
     //ref//
     const textRef=useRef();
     //path var//
@@ -52,6 +54,7 @@ const Editor=()=>
     }
     const removeElement=(element)=>
     {
+        
         doc.update((root)=>{
             root.shapes[element.index].removed=true
             }
@@ -154,6 +157,7 @@ const Editor=()=>
    
             const element=createElement(id,clientX,clientY,clientX,clientY,tool,strokeColor,fillColor)
             setSelectedElement(element)
+            setCurrentTextColor(fillColor)
             doc.update((root)=>{
                 root.shapes.push(element);
                 }
@@ -297,11 +301,17 @@ const Editor=()=>
     }
     const onblur=(e)=>
     {
-        console.log('blur')
         const {index, x1,y1,tool} = selectedElement;
-        
+        console.log(e.target.value)
+        if(e.target.value==="")
+        {
+            removeElement(selectedElement)
+        }
+        else
+        {
+            updateElement(index,x1,y1,null,null,tool,e.target.value)
+        }
         setAction('selecct')
-        updateElement(index,x1,y1,null,null,tool,e.target.value)
         e.target.value=""
         drawAll();
     }
@@ -330,6 +340,7 @@ const Editor=()=>
      
             setLoading(1)
             client = new yorkie.Client(`https://api.fillkie.com`)
+            console.log(client)
             await client.activate();   
             doc = new yorkie.Document(docKey);   
             await client.attach(doc);
@@ -342,6 +353,7 @@ const Editor=()=>
                 root.shapes=[]
 
 
+
                 });
             setLoading(0)
             
@@ -351,6 +363,15 @@ const Editor=()=>
             
     }
 
+    useLayoutEffect(()=>{
+        if(users.length<=1) return
+        doc.update((root) => {
+            root.mouse[users[1]].left=100
+            root.mouse[users[1]].right=100
+            });
+        
+    
+},[users])
     function subscribeDoc()
     {
         
@@ -435,6 +456,7 @@ const Editor=()=>
                 overflow: 'hiddent',
                 whiteSpace: 'pre',
                 background: 'transparent',
+                color: fillColor
     }}
             ref={textRef}></textarea>:null
 
@@ -445,6 +467,11 @@ const Editor=()=>
                 {users.map((user,key)=>{return(<div key={user}>{user}asd</div>)})}
 
             </div>
+            {/*users.map((user,index)=>{
+                if(index===0) return
+                const l= user in Object.keys(doc.getRoot().mouse)?doc.getRoot().mouse[user].left:0
+                const t=user in Object.keys(doc.getRoot().mouse)?doc.getRoot().mouse[user].top:0
+            return(<MousePointer color="yellow" left={l} top={t}></MousePointer>)})*/}
             <div className="toolBox">
                 <button className={tool==='pencil'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('pencil')}}>그리기</button>
                 <button className={tool==='line'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('line')}}>선</button>
