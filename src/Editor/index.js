@@ -363,15 +363,7 @@ const Editor=()=>
             
     }
 
-    useLayoutEffect(()=>{
-        if(users.length<=1) return
-        doc.update((root) => {
-            root.mouse[users[1]].left=100
-            root.mouse[users[1]].right=100
-            });
-        
-    
-},[users])
+
     function subscribeDoc()
     {
         
