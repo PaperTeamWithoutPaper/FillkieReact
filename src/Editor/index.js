@@ -14,15 +14,7 @@ var pencilR=null;
 var pencilStart=null;
 const Editor=()=>
 {
-    //resize//
-    useEffect(()=>{
-        window.addEventListener('resize',()=>{
-            canvas.width=window.innerWidth
-            canvas.height=window.innerHeight-30
-            drawAll();
-        })
-    }
-    )
+   
 
     //color//
     const [strokePicker,setStrokePicker]=useState(0)
@@ -324,12 +316,15 @@ const Editor=()=>
         const root = doc.getRoot();
         
         context.clearRect(0,0,canvas.width,canvas.height);
+        
         /*var img = new Image();
         img.src = 'https://placeimg.com/100/100/any';
         img.onload = function(){
         context.drawImage(img, 10, 10);
         }*/
+        context.scale(window.devicePixelRatio,window.devicePixelRatio)
         root.shapes.forEach(element => drawElement(context, element));
+        context.scale(1/window.devicePixelRatio,1/window.devicePixelRatio)
         
 
     }
@@ -387,7 +382,9 @@ const Editor=()=>
     }
     useLayoutEffect(()=> {
         canvas=document.getElementById('canvas');
+        
         context=canvas.getContext('2d');
+        
         
         if(client===null)
         {
@@ -414,12 +411,13 @@ const Editor=()=>
             
             <canvas
             style={{
-  
+                width:`${window.innerWidth}px`,
+                height:`${window.innerHeight-30}px`,
                 display:`${loading?'none':'block'}`,
         }}
             id="canvas"
-            width={window.innerWidth}
-            height={(window.innerHeight-30)}
+            width={window.innerWidth*window.devicePixelRatio}
+            height={(window.innerHeight-30)*window.devicePixelRatio}
             onMouseDown={(e)=>{
                 
                 onmousedown(e,'des')}}
