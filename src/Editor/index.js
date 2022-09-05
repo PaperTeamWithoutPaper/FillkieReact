@@ -4,7 +4,7 @@ import yorkie from 'yorkie-js-sdk'
 import { useParams } from 'react-router'
 import "./Editor.scss"
 import { SketchPicker } from 'react-color'
-import MousePointer from './Mouse'
+import html2canvas from 'html2canvas'
 
 var client=null;
 var doc= null;
@@ -12,6 +12,7 @@ var canvas= null;
 var context=null;
 var pencilR=null;
 var pencilStart=null;
+
 const Editor=()=>
 {
    
@@ -256,6 +257,7 @@ const Editor=()=>
         const elements=doc.getRoot().shapes
         if(action==='selecting')
         {
+            
             const adjustXY=adjustElementCoordinates({tool:'rectangle',x1:downPosition.x,y1:downPosition.y,x2:clientX,y2:clientY});
             
             const indexList=getElementsAtPosition(elements,adjustXY.x1,adjustXY.y1,adjustXY.x2,adjustXY.y2)
@@ -269,6 +271,13 @@ const Editor=()=>
 
             
             drawAll()
+            /*const spx=Math.min(downPosition.x,clientX)
+            const spy=Math.min(downPosition.y,clientY)
+            const epx=Math.max(downPosition.x,clientX)
+            const epy=Math.max(downPosition.y,clientY)
+            html2canvas(document.body,{x:spx,y:spy,width:epx-spx,height:epy-spy}).then(function(canvas) {
+                document.body.appendChild(canvas);
+            }); CAPTURE CODE*/
             drawSelectedBox({tool:'rectangle',x1:minX,y1:minY,x2:maxX,y2:maxY},context)
         }
         if(action === 'drawing' && (tool==='rectangle' || tool === 'line')){
@@ -393,8 +402,6 @@ const Editor=()=>
        
     },[]
     )
-
-
     useEffect(()=>
     {
         if(action==='writing')
@@ -403,6 +410,10 @@ const Editor=()=>
             setTimeout(()=>{textRef.current.focus()},1)
         }
     },[action,selectedElement])
+    const onCapture=()=>
+    {
+        
+    }
     return(
         <div>
             
@@ -470,6 +481,7 @@ const Editor=()=>
                 <button className={tool==='selection'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('selection')}}>선택</button>
                 <button className={tool==='eraser'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('eraser')}}>지우개</button>
                 <button className={tool==='asd'?"toolBox-button-active":"toolBox-button"} onClick={()=>{doc.update((root)=>root.shapes=[]);drawAll()}}>초기화</button>
+                <button className={tool==='asd'?"toolBox-button-active":"toolBox-button"} onClick={onCapture}>캡처</button>
                 <div className="toolBox-colorBox">
                     <div className="toolBox-colorBox-desc">선</div>
                     <button onClick={()=>{setStrokePicker(1)}} style={{width:15,height:15,border:'1px solid white',backgroundColor:`${strokeColor}`}}></button>
