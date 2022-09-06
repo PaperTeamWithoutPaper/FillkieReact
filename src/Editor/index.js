@@ -5,7 +5,7 @@ import { useParams } from 'react-router'
 import "./Editor.scss"
 import { SketchPicker } from 'react-color'
 import html2canvas from 'html2canvas'
-
+import {twoFingers} from '@skilitics/two-fingers'
 var client=null;
 var doc= null;
 var canvas= null;
@@ -15,8 +15,14 @@ var pencilStart=null;
 
 const Editor=()=>
 {
-   
-
+    //canvas position//
+    const [canvasX,setCanvasX]=useState(0)
+    var cx=0
+    const [canvasY,setCanvasY]=useState(0)
+    var cy=0
+    //scale//
+    var scp=1
+    const [scalePer,setScalePer]=useState(1)
     //color//
     const [strokePicker,setStrokePicker]=useState(0)
     const [fillPicker,setFillPicker]=useState(0)
@@ -93,8 +99,8 @@ const Editor=()=>
     const onmousedown=(e,type)=>
     {
         if(textRef.current) return
-        const clientX=type=="des"?e.clientX:e.touches[0].clientX
-        const clientY=type=="des"?e.clientY:e.touches[0].clientY 
+        const clientX=type=="des"?e.clientX+cx:e.touches[0].clientX+cx
+        const clientY=type=="des"?e.clientY+cy:e.touches[0].clientY+cy 
         setDownPosition({x:clientX,y:clientY})  
         const id = doc.getRoot().shapes.length;
         drawAll()
@@ -162,8 +168,8 @@ const Editor=()=>
     const onmousemove=(e,type)=>
     {
         
-        const clientX=type=="des"?e.clientX:e.touches[0].clientX
-        const clientY=type=="des"?e.clientY:e.touches[0].clientY
+        const clientX=type=="des"?e.clientX+cx:e.touches[0].clientX+cx
+        const clientY=type=="des"?e.clientY+cy:e.touches[0].clientY+cy 
        
         if(tool === 'selection')
         {
@@ -321,7 +327,7 @@ const Editor=()=>
     //캔버스 생성//
     function drawAll()
     {
-        
+        if(doc==null) return
         const root = doc.getRoot();
         
         context.clearRect(0,0,canvas.width,canvas.height);
@@ -331,9 +337,9 @@ const Editor=()=>
         img.onload = function(){
         context.drawImage(img, 10, 10);
         }*/
-        context.scale(window.devicePixelRatio,window.devicePixelRatio)
+        context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)
         root.shapes.forEach(element => drawElement(context, element));
-        context.scale(1/window.devicePixelRatio,1/window.devicePixelRatio)
+        context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
         
 
     }
@@ -391,9 +397,23 @@ const Editor=()=>
     }
     useLayoutEffect(()=> {
         canvas=document.getElementById('canvas');
-        
         context=canvas.getContext('2d');
-        
+        window.addEventListener("wheel",function(e){e.preventDefault()},{passive: false})
+        canvas.addEventListener("wheel", function(e){
+            e.preventDefault();
+            if (e.ctrlKey) {
+              scp-=e.deltaY/100
+              setScalePer(scp)
+            } else {
+                cx-=e.deltaX
+                cy-=e.deltaY
+
+              setCanvasY(cy)
+              setCanvasX(cx)
+
+            }
+          }, {passive: false})
+
         
         if(client===null)
         {
@@ -410,35 +430,43 @@ const Editor=()=>
             setTimeout(()=>{textRef.current.focus()},1)
         }
     },[action,selectedElement])
-    const onCapture=()=>
+    useEffect(()=>
     {
+        if(scalePer!=0)
+        {
+            drawAll()
+        }
         
-    }
+    },[scalePer])
     return(
         <div>
             
             {loading?<div>Loading</div>:null}
             {
-            
-            <canvas
-            style={{
-                width:`${window.innerWidth}px`,
-                height:`${window.innerHeight-30}px`,
-                display:`${loading?'none':'block'}`,
-        }}
-            id="canvas"
-            width={window.innerWidth*window.devicePixelRatio}
-            height={(window.innerHeight-30)*window.devicePixelRatio}
-            onMouseDown={(e)=>{
+            <div style={{overflow:'hidden', backgroundColor:'yellow',width:'500px', height:'500px'}}>
+                <canvas
+                style={{
+                    transform: `translate(${canvasX}px,${canvasY}px)`,
+                    width:`${window.innerWidth}px`,
+                    height:`${window.innerHeight-30}px`,
+                    display:`${loading?'none':'block'}`,
+            }}
+                id="canvas"
+                width={window.innerWidth*window.devicePixelRatio}
+                height={(window.innerHeight-30)*window.devicePixelRatio}
+                onMouseDown={(e)=>{
+                    
+                    onmousedown(e,'des')}}
                 
-                onmousedown(e,'des')}}
-            onMouseMove={(e)=>{onmousemove(e,'des')}}
-            onMouseUp={(e)=>{onmouseup(e,'des')}}
-            onTouchStart={(e)=>{onmousedown(e,'mob')}}
-            onTouchMove={(e)=>{onmousemove(e,'mob')}}
-            onTouchEnd={(e)=>{onmouseup(e,'mob')}} >
-            
-            </canvas>}
+                onMouseMove={(e)=>{onmousemove(e,'des')}}
+                onMouseUp={(e)=>{onmouseup(e,'des')}}
+                onTouchStart={(e)=>{onmousedown(e,'mob')}}
+                onTouchMove={(e)=>{onmousemove(e,'mob')}}
+                onTouchEnd={(e)=>{onmouseup(e,'mob')}} >
+                
+                </canvas>
+            </div>
+            }
             {
                 action === "writing"?
             <textarea
@@ -481,7 +509,7 @@ const Editor=()=>
                 <button className={tool==='selection'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('selection')}}>선택</button>
                 <button className={tool==='eraser'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('eraser')}}>지우개</button>
                 <button className={tool==='asd'?"toolBox-button-active":"toolBox-button"} onClick={()=>{doc.update((root)=>root.shapes=[]);drawAll()}}>초기화</button>
-                <button className={tool==='asd'?"toolBox-button-active":"toolBox-button"} onClick={onCapture}>캡처</button>
+                <input value={scalePer} className={tool==='asd'?"toolBox-button-active":"toolBox-button"}></input>
                 <div className="toolBox-colorBox">
                     <div className="toolBox-colorBox-desc">선</div>
                     <button onClick={()=>{setStrokePicker(1)}} style={{width:15,height:15,border:'1px solid white',backgroundColor:`${strokeColor}`}}></button>
