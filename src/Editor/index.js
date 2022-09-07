@@ -403,11 +403,14 @@ const Editor=()=>
         canvas=document.getElementById('canvas');
         context=canvas.getContext('2d');
         window.addEventListener("wheel",function(e){e.preventDefault()},{passive: false})
-        canvas.addEventListener("wheel", function(e){
+        const frame=document.getElementById('frame');
+        frame.addEventListener("wheel", function(e){
             e.preventDefault();
             if (e.ctrlKey) {
-              scp-=e.deltaY/100
-              setScalePer(scp)
+                scp-=e.deltaY/500
+                setScalePer(scp)
+             
+              
             } else {
                 cx-=e.deltaX
                 cy-=e.deltaY
@@ -447,18 +450,18 @@ const Editor=()=>
             
             {loading?<div>Loading</div>:null}
             {
-            <div style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'gray',width:'500px', height:'100vh'}}>
+            <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:'100vh'}}>
                 <canvas
                 style={{
-                    backgroundColor:'orange',
+                    backgroundColor:'white',
                     transform: `translate(${canvasX}px,${canvasY}px)`,
-                    width:`${window.innerWidth}px`,
-                    height:`${window.innerHeight-30}px`,
+                    width:`${window.innerWidth*scalePer}px`,
+                    height:`${window.innerHeight*scalePer-30}px`,
                     display:`${loading?'none':'block'}`,
             }}
                 id="canvas"
-                width={window.innerWidth*window.devicePixelRatio}
-                height={(window.innerHeight-30)*window.devicePixelRatio}
+                width={window.innerWidth*scalePer*window.devicePixelRatio}
+                height={(window.innerHeight*scalePer-30)*window.devicePixelRatio}
                 onMouseDown={(e)=>{
                     
                     onmousedown(e,'des')}}
