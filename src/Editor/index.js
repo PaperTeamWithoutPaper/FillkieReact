@@ -99,8 +99,11 @@ const Editor=()=>
     const onmousedown=(e,type)=>
     {
         if(textRef.current) return
-        const clientX=type=="des"?e.clientX+cx:e.touches[0].clientX+cx
-        const clientY=type=="des"?e.clientY+cy:e.touches[0].clientY+cy 
+        const ratioX=((scalePer-1)/scalePer)
+        const ratioY=((scalePer-1)/scalePer)
+        var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX
+        var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.touches[0].clientY-canvasY
+
         setDownPosition({x:clientX,y:clientY})  
         const id = doc.getRoot().shapes.length;
         drawAll()
@@ -167,9 +170,10 @@ const Editor=()=>
     }
     const onmousemove=(e,type)=>
     {
-        
-        const clientX=type=="des"?e.clientX+cx:e.touches[0].clientX+cx
-        const clientY=type=="des"?e.clientY+cy:e.touches[0].clientY+cy 
+        const ratioX=((scalePer-1)/scalePer)
+        const ratioY=((scalePer-1)/scalePer)
+        var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX
+        var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.touches[0].clientY-canvasY
        
         if(tool === 'selection')
         {
@@ -443,9 +447,10 @@ const Editor=()=>
             
             {loading?<div>Loading</div>:null}
             {
-            <div style={{overflow:'hidden', backgroundColor:'yellow',width:'500px', height:'500px'}}>
+            <div style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'gray',width:'500px', height:'100vh'}}>
                 <canvas
                 style={{
+                    backgroundColor:'orange',
                     transform: `translate(${canvasX}px,${canvasY}px)`,
                     width:`${window.innerWidth}px`,
                     height:`${window.innerHeight-30}px`,
