@@ -18,8 +18,10 @@ const Editor=()=>
     //canvas position//
     const [canvasX,setCanvasX]=useState(0)
     var cx=0
+    var tcx=0
     const [canvasY,setCanvasY]=useState(0)
     var cy=0
+    var tcy=0
     //scale//
     var scp=1
     const [scalePer,setScalePer]=useState(1)
@@ -427,12 +429,22 @@ const Editor=()=>
         frame.addEventListener("wheel", function(e){
             e.preventDefault();
             if (e.ctrlKey) {
-                scp-=e.deltaY/500
+                const ratioX=((scp-1)/scp)
+                const ratioY=((scp-1)/scp)
+                const clientX=e.clientX-cx*(1/scp)-e.clientX*ratioX
+                const clientY=e.clientY-cy*(1/scp)-e.clientY*ratioY
 
+                scp-=e.deltaY/200
                 setScalePer(scp)
+                cx+=(e.deltaY/200)*clientX
+                cy+=(e.deltaY/200)*clientY
+                
+                setCanvasY(cy)
+                setCanvasX(cx)
              
               
             } else {
+  
                 cx-=e.deltaX
                 cy-=e.deltaY
 
