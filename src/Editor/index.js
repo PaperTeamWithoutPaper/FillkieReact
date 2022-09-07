@@ -118,14 +118,19 @@ const Editor=()=>
                 if(element.tool=='pencil')
                 {
                     pencilStart={x:clientX,y:clientY}
+
+                    context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)
                     drawSelectedBox(element,context,pencilRange)
+                    context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
                     const offsetX=pencilRange.x1-element.moveXY.x+(clientX-pencilRange.x1);
                     const offsetY=pencilRange.y1-element.moveXY.y+(clientY-pencilRange.y1);;
                     setSelectedElement({...element,offsetX,offsetY})
                 }
 
                 else{
-                    drawSelectedBox(element,context)
+                    context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)
+                    drawSelectedBox(element,context,pencilRange)
+                    context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
                     const offsetX=clientX-element.x1;
                     const offsetY=clientY-element.y1;
                     setSelectedElement({...element,offsetX,offsetY})
@@ -185,7 +190,9 @@ const Editor=()=>
             }
             else{
                 drawAll()
+                context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)    
                 createSelectingBox(context,downPosition.x,downPosition.y,clientX,clientY)
+                context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
             }
         }
         
@@ -222,7 +229,10 @@ const Editor=()=>
                 
                 updateElement(index,newX,newY,newX+width,newY+height,tool);
                 drawAll();
+                context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)    
                 drawSelectedBox({tool,x1:newX,y1:newY,x2:newX+width,y2:newY+height},context)
+                context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
+
             }
             else if(selectedElement.tool==='text')
             {
@@ -230,7 +240,10 @@ const Editor=()=>
                 
                 updateElement(index,x1+clientX-pencilStart.x,y1+clientY-pencilStart.y,null,null,tool,text);
                 drawAll();
+                context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)    
                 drawSelectedBox({tool,x1:x1+clientX-pencilStart.x,y1:y1+clientY-pencilStart.y,x2:null,y2:null,width:selectedElement.width},context)
+                context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
+
             }
             else if(selectedElement.tool==='pencil')
             {
@@ -241,11 +254,14 @@ const Editor=()=>
                 movePencil(index,tool,clientX-offsetX,clientY-offsetY)
                 drawAll();
 
+                context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)    
                 drawSelectedBox(selectedElement,context,{
                     x1:pencilR.x1+clientX-pencilStart.x,
                     y1:pencilR.y1+clientY-pencilStart.y,
                     x2:pencilR.x2+clientX-pencilStart.x,
                     y2:pencilR.y2+clientY-pencilStart.y})
+                context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
+
             }
             
         }
@@ -255,7 +271,9 @@ const Editor=()=>
             const {x1,y1,x2,y2} = resizeCoordinates(clientX,clientY,selectedPosition,coordinates);
             updateElement(index, x1,y1,x2,y2, tool);
             drawAll();
+            context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)    
             drawSelectedBox({tool,x1,y1,x2,y2},context)
+            context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
         }
        
         
@@ -288,7 +306,9 @@ const Editor=()=>
             html2canvas(document.body,{x:spx,y:spy,width:epx-spx,height:epy-spy}).then(function(canvas) {
                 document.body.appendChild(canvas);
             }); CAPTURE CODE*/
+            context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)   
             drawSelectedBox({tool:'rectangle',x1:minX,y1:minY,x2:maxX,y2:maxY},context)
+            context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
         }
         if(action === 'drawing' && (tool==='rectangle' || tool === 'line')){
             const index = doc.getRoot().shapes.length-1
@@ -408,6 +428,7 @@ const Editor=()=>
             e.preventDefault();
             if (e.ctrlKey) {
                 scp-=e.deltaY/500
+
                 setScalePer(scp)
              
               
@@ -455,13 +476,13 @@ const Editor=()=>
                 style={{
                     backgroundColor:'white',
                     transform: `translate(${canvasX}px,${canvasY}px)`,
-                    width:`${window.innerWidth*scalePer}px`,
-                    height:`${window.innerHeight*scalePer-30}px`,
+                    width:`${window.innerHeight*(21/29.7)*scalePer}px`,
+                    height:`${window.innerHeight*scalePer}px`,
                     display:`${loading?'none':'block'}`,
             }}
                 id="canvas"
-                width={window.innerWidth*scalePer*window.devicePixelRatio}
-                height={(window.innerHeight*scalePer-30)*window.devicePixelRatio}
+                width={window.innerHeight*(21/29.7)*scalePer*window.devicePixelRatio}
+                height={(window.innerHeight*scalePer)*window.devicePixelRatio}
                 onMouseDown={(e)=>{
                     
                     onmousedown(e,'des')}}
@@ -520,7 +541,7 @@ const Editor=()=>
                 <input value={scalePer} className={tool==='asd'?"toolBox-button-active":"toolBox-button"}></input>
                 <div className="toolBox-colorBox">
                     <div className="toolBox-colorBox-desc">선</div>
-                    <button onClick={()=>{setStrokePicker(1)}} style={{width:15,height:15,border:'1px solid white',backgroundColor:`${strokeColor}`}}></button>
+                    <button onClick={()=>{setStrokePicker(1)}} style={{width:15,height:15,border:'1px solid black',backgroundColor:`${strokeColor}`}}></button>
                     {strokePicker?
                         <div style={{position:'absolute',top:0}}>
                             <div onClick={()=>{setStrokePicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
@@ -531,7 +552,7 @@ const Editor=()=>
                 </div>
                 <div className="toolBox-colorBox">
                     <div className="toolBox-colorBox-desc">채우기</div>
-                    <button onClick={()=>{setFillPicker(1)}} style={{width:15,height:15,border:'1px solid white',backgroundColor:`${fillColor}`}}></button>
+                    <button onClick={()=>{setFillPicker(1)}} style={{width:15,height:15,border:'1px solid black',backgroundColor:`${fillColor}`}}></button>
                     {fillPicker?
                         <div style={{position:'absolute',top:0}}>
                             <div onClick={()=>{setFillPicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
