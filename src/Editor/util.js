@@ -87,13 +87,13 @@ export const getMinMaxXY=(elements,indexList)=>
 }
 export const createSelectingBox=(context,x1,y1,x2,y2)=>
 {
-    context.scale(window.devicePixelRatio,window.devicePixelRatio)
+
     context.lineWidth = 1; // 선 굵기 10픽셀
     context.strokeStyle="rgb(0, 60, 255)";
     context.strokeRect(x1,y1,x2-x1,y2-y1);
     context.fillStyle="rgba(0,60,255,0.1)"
     context.fillRect(x1,y1,x2-x1,y2-y1);
-    context.scale(1/window.devicePixelRatio,1/window.devicePixelRatio)
+  
 }
 const drawCircle=(x,y,context)=>
 {
@@ -111,7 +111,6 @@ export const drawSelectedBox=(element,context,pencilRange)=>
     //draw circle//
     if(!element) return;
     const {tool,x1,y1,x2,y2}=element;
-    context.scale(window.devicePixelRatio,window.devicePixelRatio)
     if(tool =='rectangle')
     {  
     context.lineWidth = 1; // 선 굵기 10픽셀
@@ -153,7 +152,6 @@ export const drawSelectedBox=(element,context,pencilRange)=>
         context.fillStyle="rgba(0,60,255,0.1)"
         context.fillRect(x1,y1,element.width,15);
     }
-    context.scale(1/window.devicePixelRatio,1/window.devicePixelRatio)
 
     
     
