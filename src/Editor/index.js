@@ -6,6 +6,7 @@ import "./Editor.scss"
 import { SketchPicker } from 'react-color'
 import html2canvas from 'html2canvas'
 import {twoFingers} from '@skilitics/two-fingers'
+import {toPdf} from './toPdf'
 var client=null;
 var doc= null;
 var canvas= null;
@@ -15,6 +16,8 @@ var pencilStart=null;
 
 const Editor=()=>
 {
+    //canvas pages//
+    const [pageNum,setPageNum]=useState(1)
     //canvas position//
     const [canvasX,setCanvasX]=useState(0)
     var cx=0
@@ -369,7 +372,7 @@ const Editor=()=>
         
 
     }
-
+    
     //Yorkie//
     async function activateClient()
     {
@@ -429,18 +432,22 @@ const Editor=()=>
         frame.addEventListener("wheel", function(e){
             e.preventDefault();
             if (e.ctrlKey) {
-                const ratioX=((scp-1)/scp)
-                const ratioY=((scp-1)/scp)
-                const clientX=e.clientX-cx*(1/scp)-e.clientX*ratioX
-                const clientY=e.clientY-cy*(1/scp)-e.clientY*ratioY
-
-                scp-=e.deltaY/200
-                setScalePer(scp)
-                cx+=(e.deltaY/200)*clientX
-                cy+=(e.deltaY/200)*clientY
+                if(scp-e.deltaY/200>=0.2 && scp-e.deltaY/200<=2)
+                {
+                    const ratioX=((scp-1)/scp)
+                    const ratioY=((scp-1)/scp)
+                    const clientX=e.clientX-cx*(1/scp)-e.clientX*ratioX
+                    const clientY=e.clientY-cy*(1/scp)-e.clientY*ratioY
+    
+                    scp-=e.deltaY/200
+                    setScalePer(scp)
+                    cx+=(e.deltaY/200)*clientX
+                    cy+=(e.deltaY/200)*clientY
+                    
+                    setCanvasY(cy)
+                    setCanvasX(cx)
+                }
                 
-                setCanvasY(cy)
-                setCanvasX(cx)
              
               
             } else {
@@ -464,6 +471,10 @@ const Editor=()=>
     )
     useEffect(()=>
     {
+        drawAll()
+    },[pageNum])
+    useEffect(()=>
+    {
         if(action==='writing')
         {
             console.log(action)
@@ -483,18 +494,18 @@ const Editor=()=>
             
             {loading?<div>Loading</div>:null}
             {
-            <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:'100vh'}}>
+            <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${window.innerHeight}px`}}>
                 <canvas
                 style={{
                     backgroundColor:'white',
                     transform: `translate(${canvasX}px,${canvasY}px)`,
                     width:`${window.innerHeight*(21/29.7)*scalePer}px`,
-                    height:`${window.innerHeight*scalePer}px`,
+                    height:`${window.innerHeight*scalePer*pageNum}px`,
                     display:`${loading?'none':'block'}`,
             }}
                 id="canvas"
                 width={window.innerHeight*(21/29.7)*scalePer*window.devicePixelRatio}
-                height={(window.innerHeight*scalePer)*window.devicePixelRatio}
+                height={(window.innerHeight*scalePer*pageNum)*window.devicePixelRatio}
                 onMouseDown={(e)=>{
                     
                     onmousedown(e,'des')}}
@@ -543,16 +554,27 @@ const Editor=()=>
                 const t=user in Object.keys(doc.getRoot().mouse)?doc.getRoot().mouse[user].top:0
             return(<MousePointer color="yellow" left={l} top={t}></MousePointer>)})*/}
             <div className="toolBox">
-                <button className={tool==='pencil'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('pencil')}}>그리기</button>
-                <button className={tool==='line'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('line')}}>선</button>
-                <button className={tool==='rectangle'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('rectangle')}}>직사각형</button>
-                {<button className={tool==='text'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('text')}}>텍스트</button>}
-                <button className={tool==='selection'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('selection')}}>선택</button>
-                <button className={tool==='eraser'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('eraser')}}>지우개</button>
+                <button className={tool==='pencil'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('pencil')}}>
+                    <img className={tool==='pencil'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-draw.png")}></img>
+                </button>
+                <button className={tool==='line'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('line')}}>
+                    <img className={tool==='line'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-shape.png")}></img>
+                </button>
+                <button className={tool==='rectangle'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('rectangle')}}>
+                    <img className={tool==='rectangle'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-shape.png")}></img>    
+                </button>
+                {<button className={tool==='text'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('text')}}>
+                    <img className={tool==='text'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-text.png")}></img>
+                </button>}
+                <button className={tool==='selection'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('selection')}}>
+                <img className={tool==='selection'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-select.png")}></img>
+                </button>
+                <button className={tool==='eraser'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('eraser')}}>
+                <img className={tool==='eraser'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-eraser.png")}></img>
+                </button>
                 <button className={tool==='asd'?"toolBox-button-active":"toolBox-button"} onClick={()=>{doc.update((root)=>root.shapes=[]);drawAll()}}>초기화</button>
-                <input value={scalePer} className={tool==='asd'?"toolBox-button-active":"toolBox-button"}></input>
                 <div className="toolBox-colorBox">
-                    <div className="toolBox-colorBox-desc">선</div>
+
                     <button onClick={()=>{setStrokePicker(1)}} style={{width:15,height:15,border:'1px solid black',backgroundColor:`${strokeColor}`}}></button>
                     {strokePicker?
                         <div style={{position:'absolute',top:0}}>
@@ -563,7 +585,7 @@ const Editor=()=>
                     
                 </div>
                 <div className="toolBox-colorBox">
-                    <div className="toolBox-colorBox-desc">채우기</div>
+                    
                     <button onClick={()=>{setFillPicker(1)}} style={{width:15,height:15,border:'1px solid black',backgroundColor:`${fillColor}`}}></button>
                     {fillPicker?
                         <div style={{position:'absolute',top:0}}>
@@ -571,6 +593,12 @@ const Editor=()=>
                             <div style={{position:'absolute',transform:'translate(-100px,50px)'}}><SketchPicker color={fillColor} onChange={(color)=>{setFillColor(`rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${color.rgb.a})`)}}></SketchPicker></div>
                         </div>:null
             }
+                </div>
+                <div className="toolBox-button" onClick={()=>{toPdf(canvas)}}>
+                    <div>다운로드</div>
+                </div>
+                <div className="toolBox-button" onClick={()=>{setPageNum(pageNum+1)}}>
+                    <div>페이지추가</div>
                 </div>
             </div>
             

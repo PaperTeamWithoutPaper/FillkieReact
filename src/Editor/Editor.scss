@@ -3,29 +3,35 @@
     top:10px;
     background-color: rgb(255, 255, 255);
     display:flex;
-    width:40vw;
+
     height:50px;
     border-radius: 10px;
     justify-content: center;
-    box-shadow: 0px 0px 5px 2px rgb(233, 233, 233);
+    box-shadow: 0px 3px 5px 2px rgb(184, 184, 184);
     left: 50vw;
     transform: translateX(-50%);
+    padding:5px;
     
     &-button{
         background-color: rgb(255, 255, 255);
         width:50px;
         border: 0;
-        color:rgb(146, 146, 146);
+        border-radius: 10px;
+        margin-right:5px;
+        
+        color:rgb(0, 0, 0);
         transition: all ease 0.2s;
     }
     &-button:hover{
         background-color: rgb(240, 240, 240);
     }
     &-button-active{
+        margin-right:5px;
+        border-radius: 10px;
         background-color: orange;
         width:50px;
         border: 0;
-        color:white;
+        color:rgb(255, 255, 255);
         transition: all ease 0.2s;
     }
     &-colorBox{
@@ -35,8 +41,19 @@
         align-items: center;
         justify-content: center;
         &-desc{
-            color:rgb(150, 150, 150);
+            color:rgb(12, 12, 12);
             font-size: 13px;
         }
+    }
+    &-icon{
+        width:25px;
+        height:25px;
+        transition: all ease 0.2s;
+    }
+    &-icon-active{
+        width:30px;
+        height:30px;
+        transition: all ease 0.2s;
+        filter: invert(100);
     }
 }
