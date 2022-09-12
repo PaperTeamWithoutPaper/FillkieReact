@@ -1,12 +1,14 @@
-import {useEffect, useLayoutEffect,useState,useRef, useSyncExternalStore} from 'react'
+import {useEffect, useLayoutEffect,useState,useRef} from 'react'
 import {getMinMaxXY,getElementsAtPosition, drawSelectedBox, drawElement,createSelectingBox,createElement,getElementAtPosition,adjustElementCoordinates,cursorForPosition,resizeCoordinates} from './util'
 import yorkie from 'yorkie-js-sdk'
 import { useParams } from 'react-router'
 import "./Editor.scss"
 import { SketchPicker } from 'react-color'
 import html2canvas from 'html2canvas'
-import {twoFingers} from '@skilitics/two-fingers'
 import {toPdf} from './toPdf'
+import MyDocument from './Pdf'
+import Loading from '../Loading/Loading'
+
 var client=null;
 var doc= null;
 var canvas= null;
@@ -492,7 +494,7 @@ const Editor=()=>
     return(
         <div>
             
-            {loading?<div>Loading</div>:null}
+            {loading?<Loading></Loading>:null}
             {
             <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${window.innerHeight}px`}}>
                 <canvas
@@ -601,7 +603,7 @@ const Editor=()=>
                     <div>페이지추가</div>
                 </div>
             </div>
-            
+            <MyDocument></MyDocument>
             
             
         </div>
