@@ -19,7 +19,7 @@ var pencilStart=null;
 const Editor=()=>
 {
     //canvas pages//
-    const [pageNum,setPageNum]=useState(1)
+    const [pageNum,setPageNum]=useState(4)
     //canvas position//
     const [canvasX,setCanvasX]=useState(0)
     var cx=0
@@ -497,16 +497,20 @@ const Editor=()=>
             {loading?<Loading></Loading>:null}
             {
             <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${window.innerHeight}px`}}>
+                <div style={{transformOrigin: 'left' | 'top', transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`}}>
+                <MyDocument></MyDocument>
+                </div>
                 <canvas
                 style={{
-                    backgroundColor:'white',
+      
+                    
                     transform: `translate(${canvasX}px,${canvasY}px)`,
-                    width:`${window.innerHeight*(21/29.7)*scalePer}px`,
+                    width:`${window.innerHeight*(21.59/28.25)*scalePer}px`,
                     height:`${window.innerHeight*scalePer*pageNum}px`,
                     display:`${loading?'none':'block'}`,
             }}
                 id="canvas"
-                width={window.innerHeight*(21/29.7)*scalePer*window.devicePixelRatio}
+                width={window.innerHeight*(21.59/28.25)*scalePer*window.devicePixelRatio}
                 height={(window.innerHeight*scalePer*pageNum)*window.devicePixelRatio}
                 onMouseDown={(e)=>{
                     
@@ -519,6 +523,7 @@ const Editor=()=>
                 onTouchEnd={(e)=>{onmouseup(e,'mob')}} >
                 
                 </canvas>
+                
             </div>
             }
             {
@@ -603,7 +608,7 @@ const Editor=()=>
                     <div>페이지추가</div>
                 </div>
             </div>
-            <MyDocument></MyDocument>
+            
             
             
         </div>
