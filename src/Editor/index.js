@@ -126,18 +126,18 @@ const Editor=()=>
                 {
                     pencilStart={x:clientX,y:clientY}
 
-                    context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)
+                    context.scale(window.devicePixelRatio,window.devicePixelRatio)
                     drawSelectedBox(element,context,pencilRange)
-                    context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
+                    context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
                     const offsetX=pencilRange.x1-element.moveXY.x+(clientX-pencilRange.x1);
                     const offsetY=pencilRange.y1-element.moveXY.y+(clientY-pencilRange.y1);;
                     setSelectedElement({...element,offsetX,offsetY})
                 }
 
                 else{
-                    context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)
+                    context.scale(window.devicePixelRatio,window.devicePixelRatio)
                     drawSelectedBox(element,context,pencilRange)
-                    context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
+                    context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
                     const offsetX=clientX-element.x1;
                     const offsetY=clientY-element.y1;
                     setSelectedElement({...element,offsetX,offsetY})
@@ -197,9 +197,9 @@ const Editor=()=>
             }
             else{
                 drawAll()
-                context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)    
+                context.scale(window.devicePixelRatio,window.devicePixelRatio)    
                 createSelectingBox(context,downPosition.x,downPosition.y,clientX,clientY)
-                context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
+                context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
             }
         }
         
@@ -236,9 +236,9 @@ const Editor=()=>
                 
                 updateElement(index,newX,newY,newX+width,newY+height,tool);
                 drawAll();
-                context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)    
+                context.scale(window.devicePixelRatio,window.devicePixelRatio)    
                 drawSelectedBox({tool,x1:newX,y1:newY,x2:newX+width,y2:newY+height},context)
-                context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
+                context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
 
             }
             else if(selectedElement.tool==='text')
@@ -247,9 +247,9 @@ const Editor=()=>
                 
                 updateElement(index,x1+clientX-pencilStart.x,y1+clientY-pencilStart.y,null,null,tool,text);
                 drawAll();
-                context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)    
+                context.scale(window.devicePixelRatio,window.devicePixelRatio)    
                 drawSelectedBox({tool,x1:x1+clientX-pencilStart.x,y1:y1+clientY-pencilStart.y,x2:null,y2:null,width:selectedElement.width},context)
-                context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
+                context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
 
             }
             else if(selectedElement.tool==='pencil')
@@ -261,13 +261,13 @@ const Editor=()=>
                 movePencil(index,tool,clientX-offsetX,clientY-offsetY)
                 drawAll();
 
-                context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)    
+                context.scale(window.devicePixelRatio,window.devicePixelRatio)    
                 drawSelectedBox(selectedElement,context,{
                     x1:pencilR.x1+clientX-pencilStart.x,
                     y1:pencilR.y1+clientY-pencilStart.y,
                     x2:pencilR.x2+clientX-pencilStart.x,
                     y2:pencilR.y2+clientY-pencilStart.y})
-                context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
+                context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
 
             }
             
@@ -278,9 +278,9 @@ const Editor=()=>
             const {x1,y1,x2,y2} = resizeCoordinates(clientX,clientY,selectedPosition,coordinates);
             updateElement(index, x1,y1,x2,y2, tool);
             drawAll();
-            context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)    
+            context.scale(window.devicePixelRatio,window.devicePixelRatio)    
             drawSelectedBox({tool,x1,y1,x2,y2},context)
-            context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
+            context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
         }
        
         
@@ -313,9 +313,9 @@ const Editor=()=>
             html2canvas(document.body,{x:spx,y:spy,width:epx-spx,height:epy-spy}).then(function(canvas) {
                 document.body.appendChild(canvas);
             }); CAPTURE CODE*/
-            context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)   
+            context.scale(window.devicePixelRatio,window.devicePixelRatio)   
             drawSelectedBox({tool:'rectangle',x1:minX,y1:minY,x2:maxX,y2:maxY},context)
-            context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
+            context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
         }
         if(action === 'drawing' && (tool==='rectangle' || tool === 'line')){
             const index = doc.getRoot().shapes.length-1
@@ -368,9 +368,9 @@ const Editor=()=>
         img.onload = function(){
         context.drawImage(img, 10, 10);
         }*/
-        context.scale(window.devicePixelRatio*scalePer,window.devicePixelRatio*scalePer)
+        context.scale(window.devicePixelRatio,window.devicePixelRatio)
         root.shapes.forEach(element => drawElement(context, element));
-        context.scale(1/(window.devicePixelRatio*scalePer),1/(window.devicePixelRatio*scalePer))
+        context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
         
 
     }
@@ -445,9 +445,10 @@ const Editor=()=>
                     setScalePer(scp)
                     cx+=(e.deltaY/200)*clientX
                     cy+=(e.deltaY/200)*clientY
-                    
-                    setCanvasY(cy)
                     setCanvasX(cx)
+                    setCanvasY(cy)
+                    
+                 
                 }
                 
              
@@ -500,18 +501,22 @@ const Editor=()=>
                 <div style={{transformOrigin: 'left' | 'top', transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`}}>
                 <MyDocument></MyDocument>
                 </div>
+                <div style={{
+                    transformOrigin: 'top left',
+                    transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
+                }}>
                 <canvas
                 style={{
       
                     
-                    transform: `translate(${canvasX}px,${canvasY}px)`,
-                    width:`${window.innerHeight*(21.59/28.25)*scalePer}px`,
-                    height:`${window.innerHeight*scalePer*pageNum}px`,
+                    
+                    width:`${window.innerHeight*(21.59/28.25)}px`,
+                    height:`${window.innerHeight*pageNum}px`,
                     display:`${loading?'none':'block'}`,
             }}
                 id="canvas"
-                width={window.innerHeight*(21.59/28.25)*scalePer*window.devicePixelRatio}
-                height={(window.innerHeight*scalePer*pageNum)*window.devicePixelRatio}
+                width={window.innerHeight*(21.59/28.25)*window.devicePixelRatio}
+                height={(window.innerHeight*pageNum)*window.devicePixelRatio}
                 onMouseDown={(e)=>{
                     
                     onmousedown(e,'des')}}
@@ -523,6 +528,7 @@ const Editor=()=>
                 onTouchEnd={(e)=>{onmouseup(e,'mob')}} >
                 
                 </canvas>
+                </div>
                 
             </div>
             }

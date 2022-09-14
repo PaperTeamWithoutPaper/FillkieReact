@@ -1,19 +1,31 @@
 import getStroke from 'perfect-freehand'
 import { useState } from 'react';
 //pencil
-function getSvgPathFromStroke(stroke) {
-    if (!stroke.length) return ''
-    const d = stroke.reduce(
-      (acc, [x0, y0], i, arr) => {
-        const [x1, y1] = arr[(i + 1) % arr.length]
-        acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2)
-        return acc
-      },
-      ['M', ...stroke[0], 'Q']
-    )
-    d.push('Z')
-    return d.join(' ')
+const average = (a, b) => (a + b) / 2
+
+function getSvgPathFromStroke(points) {
+  const len = points.length
+
+  if (!len) {
+    return ''
   }
+
+  const first = points[0]
+  let result = `M${first[0].toFixed(3)},${first[1].toFixed(3)}Q`
+
+  for (let i = 0, max = len - 1; i < max; i++) {
+    const a = points[i]
+    const b = points[i + 1]
+    result += `${a[0].toFixed(3)},${a[1].toFixed(3)} ${average(
+      a[0],
+      b[0]
+    ).toFixed(3)},${average(a[1], b[1]).toFixed(3)} `
+  }
+
+  result += 'Z'
+
+  return result
+}
 
 //selection
 export const getElementsAtPosition=(elements,x1,y1,x2,y2)=>
