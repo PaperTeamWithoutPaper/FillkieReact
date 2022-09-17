@@ -1,19 +1,31 @@
 import getStroke from 'perfect-freehand'
 import { useState } from 'react';
 //pencil
-function getSvgPathFromStroke(stroke) {
-    if (!stroke.length) return ''
-    const d = stroke.reduce(
-      (acc, [x0, y0], i, arr) => {
-        const [x1, y1] = arr[(i + 1) % arr.length]
-        acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2)
-        return acc
-      },
-      ['M', ...stroke[0], 'Q']
-    )
-    d.push('Z')
-    return d.join(' ')
+const average = (a, b) => (a + b) / 2
+
+function getSvgPathFromStroke(points) {
+  const len = points.length
+
+  if (!len) {
+    return ''
   }
+
+  const first = points[0]
+  let result = `M${first[0].toFixed(3)},${first[1].toFixed(3)}Q`
+
+  for (let i = 0, max = len - 1; i < max; i++) {
+    const a = points[i]
+    const b = points[i + 1]
+    result += `${a[0].toFixed(3)},${a[1].toFixed(3)} ${average(
+      a[0],
+      b[0]
+    ).toFixed(3)},${average(a[1], b[1]).toFixed(3)} `
+  }
+
+  result += 'Z'
+
+  return result
+}
 
 //selection
 export const getElementsAtPosition=(elements,x1,y1,x2,y2)=>
@@ -88,19 +100,17 @@ export const getMinMaxXY=(elements,indexList)=>
 export const createSelectingBox=(context,x1,y1,x2,y2)=>
 {
 
-    context.lineWidth = 1; // 선 굵기 10픽셀
-    context.strokeStyle="rgb(0, 60, 255)";
-    context.strokeRect(x1,y1,x2-x1,y2-y1);
+
     context.fillStyle="rgba(0,60,255,0.1)"
     context.fillRect(x1,y1,x2-x1,y2-y1);
   
 }
 const drawCircle=(x,y,context)=>
 {
-    
+    context.setLineDash([0]) 
     context.beginPath();
     context.arc(x, y, 4, 0, Math.PI * 2);
-    context.strokeStyle="rgb(0, 60, 255)"
+    context.strokeStyle="rgb(0,0,0)"
     context.fillStyle="white"
     context.fill()
     context.stroke();
@@ -111,17 +121,17 @@ export const drawSelectedBox=(element,context,pencilRange)=>
     //draw circle//
     if(!element) return;
     const {tool,x1,y1,x2,y2}=element;
+    context.setLineDash([5]) 
     if(tool =='rectangle')
     {  
     context.lineWidth = 1; // 선 굵기 10픽셀
-    context.strokeStyle="rgb(0, 60, 255)";
-    context.strokeRect(x1,y1,x2-x1,y2-y1);
-    context.fillStyle="rgba(0,60,255,0.1)"
-    context.fillRect(x1,y1,x2-x1,y2-y1);
-    drawCircle(x1,y1,context)
-    drawCircle(x2,y2,context)
-    drawCircle(x1,y2,context)
-    drawCircle(x2,y1,context)
+    context.strokeStyle="rgb(0, 0, 0)";
+    context.strokeRect(x1-5,y1-5,x2-x1+10,y2-y1+10);
+
+    drawCircle(x1-5,y1-5,context)
+    drawCircle(x2+5,y2+5,context)
+    drawCircle(x1-5,y2+5,context)
+    drawCircle(x2+5,y1-5,context)
 
     }
     if(tool==='line')
@@ -130,7 +140,7 @@ export const drawSelectedBox=(element,context,pencilRange)=>
         context.moveTo(x1,y1)
         context.lineTo(x2,y2)
         context.lineWidth = 1
-        context.strokeStyle = "rgb(0, 60, 255)"
+        context.strokeStyle = "rgb(0, 0, 0)"
         context.stroke();
         drawCircle(x1,y1,context)
         drawCircle(x2,y2,context)
@@ -139,10 +149,8 @@ export const drawSelectedBox=(element,context,pencilRange)=>
     {
         
         context.lineWidth = 1; // 선 굵기 10픽셀
-        context.strokeStyle="rgb(0, 60, 255)";
+        context.strokeStyle="rgb(0, 0, 0)";
         context.strokeRect(pencilRange.x1,pencilRange.y1,pencilRange.x2-pencilRange.x1,pencilRange.y2-pencilRange.y1);
-        context.fillStyle="rgba(0,60,255,0.1)"
-        context.fillRect(pencilRange.x1,pencilRange.y1,pencilRange.x2-pencilRange.x1,pencilRange.y2-pencilRange.y1);
     }
     if(tool==='text')
     {
@@ -152,6 +160,7 @@ export const drawSelectedBox=(element,context,pencilRange)=>
         context.fillStyle="rgba(0,60,255,0.1)"
         context.fillRect(x1,y1,element.width,15);
     }
+    context.setLineDash([0]) 
 
     
     
@@ -207,7 +216,7 @@ export const drawElement=(context, element)=>
                 tempXY.y=element.points[i].y+element.moveXY.y
                 XY.push(tempXY)
             }
-            const stroke = getSvgPathFromStroke(getStroke(XY,{size:4}))
+            const stroke = getSvgPathFromStroke(getStroke(XY,{size:1}))
             context.fill(new Path2D(stroke))
             break;
 
