@@ -18,6 +18,75 @@ var pencilStart=null;
 
 const Editor=()=>
 {
+    //selecting//
+    const [selectedObjects,setSelectedObjects]=useState([])
+    const [selectedObjPosition,setSelectedObjPosition]=useState({x1:0,y1:0,x2:0,y2:0})
+    const [selectedObjIdx,setSelectedObjIdx]=useState([])
+    const moveElement=(element,clientX,clientY,flag)=>
+    {
+        
+        if(element.tool==='line' || element.tool === "rectangle")
+            {
+                const {index,x1,x2,y1,y2,tool,offsetX,offsetY} = element
+                const width=x2-x1;
+                const height=y2-y1;
+                const newX=clientX-offsetX
+                const newY=clientY-offsetY
+                
+                updateElement(index,newX,newY,newX+width,newY+height,tool);
+                drawAll();
+                if(flag=='each')
+                {
+                    context.scale(window.devicePixelRatio,window.devicePixelRatio)    
+                    drawSelectedBox({tool,x1:newX,y1:newY,x2:newX+width,y2:newY+height},context)
+                    context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+                }
+                
+            }
+            else if(element.tool==='text')
+            {
+                const {index,x1,y1,tool,text} = element
+                
+                updateElement(index,x1+clientX-pencilStart.x,y1+clientY-pencilStart.y,null,null,tool,text);
+                drawAll();
+                if(flag=='each')
+                {
+                context.scale(window.devicePixelRatio,window.devicePixelRatio)    
+                drawSelectedBox({tool,x1:x1+clientX-pencilStart.x,y1:y1+clientY-pencilStart.y,x2:null,y2:null,width:element.width},context)
+                context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+                }
+
+            }
+            else if(element.tool==='pencil')
+            {
+                
+                const {index,tool,offsetX,offsetY} = element
+                const shape=doc.getRoot().shapes[index]
+                
+                movePencil(index,tool,clientX-offsetX,clientY-offsetY)
+                drawAll();
+
+                if(flag=='each')
+                {
+                context.scale(window.devicePixelRatio,window.devicePixelRatio)    
+                drawSelectedBox(element,context,{
+                    x1:pencilR.x1+clientX-pencilStart.x,
+                    y1:pencilR.y1+clientY-pencilStart.y,
+                    x2:pencilR.x2+clientX-pencilStart.x,
+                    y2:pencilR.y2+clientY-pencilStart.y})
+                context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+                }
+
+            }
+            if(flag=='all')
+        {
+            const diffX=downPosition.x-clientX
+            const diffY=downPosition.y-clientY
+            context.scale(window.devicePixelRatio,window.devicePixelRatio)   
+            drawSelectedBox({tool:'rectangle',x1:selectedObjPosition.x1-diffX,y1:selectedObjPosition.y1-diffY,x2:selectedObjPosition.x2-diffX,y2:selectedObjPosition.y2-diffY},context)
+            context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+        }
+    }
     //canvas pages//
     const [pageNum,setPageNum]=useState(4)
     //canvas position//
@@ -116,6 +185,19 @@ const Editor=()=>
         drawAll()
         if(tool==='selection')
         {
+            if(action==='selected')
+            {
+                if(selectedObjPosition.x1<clientX && clientX<selectedObjPosition.x2
+                    && selectedObjPosition.y1<clientY && clientY<selectedObjPosition.y2)
+                    {
+                        console.log('asdasdasddas')
+                        setAction('reselect')
+                        context.scale(window.devicePixelRatio,window.devicePixelRatio)   
+                        drawSelectedBox({tool:'rectangle',...selectedObjPosition},context)
+                        context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+                        return
+                    }
+            }
             const getElement=getElementAtPosition(clientX,clientY,doc.getRoot().shapes)
             if(getElement)
             {
@@ -157,7 +239,7 @@ const Editor=()=>
                     setAction("resizing")
                 }
             }
-            else{
+            else {
                 setAction("selecting")
             }
     
@@ -189,20 +271,34 @@ const Editor=()=>
        
         if(tool === 'selection')
         {
-            if(action !== 'selecting')
+            if(action !== 'selecting') //이전에 드래그 선택이 안됐을 때
             {
                 const elements=doc.getRoot().shapes;
                 const element = getElementAtPosition(clientX,clientY,elements)
                 e.target.style.cursor = element ? cursorForPosition(element.position): "default"
             }
-            else{
+            else{ //이전에 드래그 선택이 됐을 때
                 drawAll()
                 context.scale(window.devicePixelRatio,window.devicePixelRatio)    
                 createSelectingBox(context,downPosition.x,downPosition.y,clientX,clientY)
                 context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
             }
         }
-        
+        if(action==='selected' || action==='reselect')
+        {
+            if(selectedObjPosition.x1<clientX && clientX<selectedObjPosition.x2
+                && selectedObjPosition.y1<clientY && clientY<selectedObjPosition.y2)
+                {
+                    e.target.style.cursor='move';
+                }
+            if(action==='reselect')
+            {
+     
+                selectedObjects.forEach((element)=>{
+                    moveElement({...element,offsetX:downPosition.x-element.x1,offsetY:downPosition.y-element.y1},clientX,clientY,'all')})
+                
+            }
+        }
         if(action==='drawing')
         { 
             const elements=doc.getRoot().shapes;
@@ -225,51 +321,8 @@ const Editor=()=>
         }
         if(action==='moving')
         {
+            moveElement(selectedElement,clientX,clientY,'each')
             
-            if(selectedElement.tool==='line' || selectedElement.tool === "rectangle")
-            {
-                const {index,x1,x2,y1,y2,tool,offsetX,offsetY} = selectedElement
-                const width=x2-x1;
-                const height=y2-y1;
-                const newX=clientX-offsetX
-                const newY=clientY-offsetY
-                
-                updateElement(index,newX,newY,newX+width,newY+height,tool);
-                drawAll();
-                context.scale(window.devicePixelRatio,window.devicePixelRatio)    
-                drawSelectedBox({tool,x1:newX,y1:newY,x2:newX+width,y2:newY+height},context)
-                context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
-
-            }
-            else if(selectedElement.tool==='text')
-            {
-                const {index,x1,y1,tool,text} = selectedElement
-                
-                updateElement(index,x1+clientX-pencilStart.x,y1+clientY-pencilStart.y,null,null,tool,text);
-                drawAll();
-                context.scale(window.devicePixelRatio,window.devicePixelRatio)    
-                drawSelectedBox({tool,x1:x1+clientX-pencilStart.x,y1:y1+clientY-pencilStart.y,x2:null,y2:null,width:selectedElement.width},context)
-                context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
-
-            }
-            else if(selectedElement.tool==='pencil')
-            {
-                
-                const {index,tool,offsetX,offsetY} = selectedElement
-                const shape=doc.getRoot().shapes[index]
-                
-                movePencil(index,tool,clientX-offsetX,clientY-offsetY)
-                drawAll();
-
-                context.scale(window.devicePixelRatio,window.devicePixelRatio)    
-                drawSelectedBox(selectedElement,context,{
-                    x1:pencilR.x1+clientX-pencilStart.x,
-                    y1:pencilR.y1+clientY-pencilStart.y,
-                    x2:pencilR.x2+clientX-pencilStart.x,
-                    y2:pencilR.y2+clientY-pencilStart.y})
-                context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
-
-            }
             
         }
         if(action==='resizing')
@@ -287,8 +340,10 @@ const Editor=()=>
     }
     const onmouseup=(e,type)=>
     {
-        const clientX=type=="des"?e.clientX:e.touches[0].clientX
-        const clientY=type=="des"?e.clientY:e.touches[0].clientY
+        const ratioX=((scalePer-1)/scalePer)
+        const ratioY=((scalePer-1)/scalePer)
+        var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX
+        var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.touches[0].clientY-canvasY
         const elements=doc.getRoot().shapes
         if(action==='selecting')
         {
@@ -296,15 +351,24 @@ const Editor=()=>
             const adjustXY=adjustElementCoordinates({tool:'rectangle',x1:downPosition.x,y1:downPosition.y,x2:clientX,y2:clientY});
             
             const indexList=getElementsAtPosition(elements,adjustXY.x1,adjustXY.y1,adjustXY.x2,adjustXY.y2)
+            
             if(indexList===undefined || indexList.length===0)
             {
                 drawAll();
                 setAction('none')
                 return;
             }
-            const {minX,minY,maxX,maxY} = getMinMaxXY(elements,indexList)
-
             
+            const {minX,minY,maxX,maxY} = getMinMaxXY(elements,indexList)
+            const selectedObjList=[]
+            indexList.forEach((idx)=>
+            {
+                const element=doc.getRoot().shapes[idx]
+                selectedObjList.push({...element})
+            })
+            setSelectedObjIdx(indexList)
+            setSelectedObjects(selectedObjList)
+            setSelectedObjPosition({x1:minX,y1:minY,x2:maxX,y2:maxY}) 
             drawAll()
             /*const spx=Math.min(downPosition.x,clientX)
             const spy=Math.min(downPosition.y,clientY)
@@ -316,6 +380,23 @@ const Editor=()=>
             context.scale(window.devicePixelRatio,window.devicePixelRatio)   
             drawSelectedBox({tool:'rectangle',x1:minX,y1:minY,x2:maxX,y2:maxY},context)
             context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+            setAction('selected')
+            return
+        }
+        if(action==='reselect')
+        {
+            const selectedObjList=[]
+            selectedObjIdx.forEach((idx)=>
+            {
+                const element=doc.getRoot().shapes[idx]
+                selectedObjList.push({...element})
+            })
+            setSelectedObjects(selectedObjList)
+            const diffX=downPosition.x-clientX
+            const diffY=downPosition.y-clientY
+            setSelectedObjPosition({x1:selectedObjPosition.x1-diffX,y1:selectedObjPosition.y1-diffY,x2:selectedObjPosition.x2-diffX,y2:selectedObjPosition.y2-diffY}) 
+            setAction('selected')
+            return
         }
         if(action === 'drawing' && (tool==='rectangle' || tool === 'line')){
             const index = doc.getRoot().shapes.length-1
@@ -333,7 +414,7 @@ const Editor=()=>
         {
         return
         }
-        
+
         setAction('none')
         setSelectedElement(null);
     }
@@ -434,7 +515,7 @@ const Editor=()=>
         frame.addEventListener("wheel", function(e){
             e.preventDefault();
             if (e.ctrlKey) {
-                if(scp-e.deltaY/200>=0.2 && scp-e.deltaY/200<=2)
+                if(scp-e.deltaY/200>=0.2 && scp-e.deltaY/200<=5)
                 {
                     const ratioX=((scp-1)/scp)
                     const ratioY=((scp-1)/scp)

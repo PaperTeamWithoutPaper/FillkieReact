@@ -100,19 +100,17 @@ export const getMinMaxXY=(elements,indexList)=>
 export const createSelectingBox=(context,x1,y1,x2,y2)=>
 {
 
-    context.lineWidth = 1; // 선 굵기 10픽셀
-    context.strokeStyle="rgb(0, 60, 255)";
-    context.strokeRect(x1,y1,x2-x1,y2-y1);
+
     context.fillStyle="rgba(0,60,255,0.1)"
     context.fillRect(x1,y1,x2-x1,y2-y1);
   
 }
 const drawCircle=(x,y,context)=>
 {
-    
+    context.setLineDash([0]) 
     context.beginPath();
     context.arc(x, y, 4, 0, Math.PI * 2);
-    context.strokeStyle="rgb(0, 60, 255)"
+    context.strokeStyle="rgb(0,0,0)"
     context.fillStyle="white"
     context.fill()
     context.stroke();
@@ -123,17 +121,17 @@ export const drawSelectedBox=(element,context,pencilRange)=>
     //draw circle//
     if(!element) return;
     const {tool,x1,y1,x2,y2}=element;
+    context.setLineDash([5]) 
     if(tool =='rectangle')
     {  
     context.lineWidth = 1; // 선 굵기 10픽셀
-    context.strokeStyle="rgb(0, 60, 255)";
-    context.strokeRect(x1,y1,x2-x1,y2-y1);
-    context.fillStyle="rgba(0,60,255,0.1)"
-    context.fillRect(x1,y1,x2-x1,y2-y1);
-    drawCircle(x1,y1,context)
-    drawCircle(x2,y2,context)
-    drawCircle(x1,y2,context)
-    drawCircle(x2,y1,context)
+    context.strokeStyle="rgb(0, 0, 0)";
+    context.strokeRect(x1-5,y1-5,x2-x1+10,y2-y1+10);
+
+    drawCircle(x1-5,y1-5,context)
+    drawCircle(x2+5,y2+5,context)
+    drawCircle(x1-5,y2+5,context)
+    drawCircle(x2+5,y1-5,context)
 
     }
     if(tool==='line')
@@ -142,7 +140,7 @@ export const drawSelectedBox=(element,context,pencilRange)=>
         context.moveTo(x1,y1)
         context.lineTo(x2,y2)
         context.lineWidth = 1
-        context.strokeStyle = "rgb(0, 60, 255)"
+        context.strokeStyle = "rgb(0, 0, 0)"
         context.stroke();
         drawCircle(x1,y1,context)
         drawCircle(x2,y2,context)
@@ -151,10 +149,8 @@ export const drawSelectedBox=(element,context,pencilRange)=>
     {
         
         context.lineWidth = 1; // 선 굵기 10픽셀
-        context.strokeStyle="rgb(0, 60, 255)";
+        context.strokeStyle="rgb(0, 0, 0)";
         context.strokeRect(pencilRange.x1,pencilRange.y1,pencilRange.x2-pencilRange.x1,pencilRange.y2-pencilRange.y1);
-        context.fillStyle="rgba(0,60,255,0.1)"
-        context.fillRect(pencilRange.x1,pencilRange.y1,pencilRange.x2-pencilRange.x1,pencilRange.y2-pencilRange.y1);
     }
     if(tool==='text')
     {
@@ -164,6 +160,7 @@ export const drawSelectedBox=(element,context,pencilRange)=>
         context.fillStyle="rgba(0,60,255,0.1)"
         context.fillRect(x1,y1,element.width,15);
     }
+    context.setLineDash([0]) 
 
     
     
@@ -219,7 +216,7 @@ export const drawElement=(context, element)=>
                 tempXY.y=element.points[i].y+element.moveXY.y
                 XY.push(tempXY)
             }
-            const stroke = getSvgPathFromStroke(getStroke(XY,{size:4}))
+            const stroke = getSvgPathFromStroke(getStroke(XY,{size:1}))
             context.fill(new Path2D(stroke))
             break;
 
