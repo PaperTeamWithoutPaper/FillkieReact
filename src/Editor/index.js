@@ -605,6 +605,16 @@ const Editor=()=>
             <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${window.innerHeight}px`}}>
                 <div style={{transformOrigin: 'left' | 'top', transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`}}>
                 <MyDocument></MyDocument>
+                <div>
+                {users.map((user,key,idx)=>{
+                    if(user==client.getID()) {return}
+                    return(<div style={{position:'absolute',
+                    transformOrigin: 'top left',
+                    transform: `translate(${mouses[user].x}px,${mouses[user].y}px)`
+                    }}>
+                        <img width={20} height={20} src={require('./Icons/multi-mouse.png')}></img>
+                    </div>)})}
+                </div>
                 </div>
                 <div style={{
                     transformOrigin: 'top left',
@@ -666,13 +676,7 @@ const Editor=()=>
                 {users.map((user,key)=>{return(<div key={user}>{user}</div>)})}
 
             </div>
-            <div>
-                {users.map((user,key,idx)=>{
-                    if(user==client.getID()) {return}
-                    return(<div style={{position:'absolute',left:`${mouses[user].x}px`,top:`${mouses[user].y}px`}}>
-                        <img width={20} height={20} src={require('./Icons/multi-mouse.png')}></img>
-                    </div>)})}
-            </div>
+            
             {/*users.map((user,index)=>{
                 if(index===0) return
                 const l= user in Object.keys(doc.getRoot().mouse)?doc.getRoot().mouse[user].left:0
