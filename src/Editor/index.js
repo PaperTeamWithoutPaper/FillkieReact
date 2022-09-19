@@ -18,6 +18,8 @@ var pencilStart=null;
 
 const Editor=()=>
 {
+    //mousePos//
+    const [mouses,setMouses]=useState({})
     //selecting//
     const [selectedObjects,setSelectedObjects]=useState([])
     const [selectedObjPosition,setSelectedObjPosition]=useState({x1:0,y1:0,x2:0,y2:0})
@@ -190,7 +192,6 @@ const Editor=()=>
                 if(selectedObjPosition.x1<clientX && clientX<selectedObjPosition.x2
                     && selectedObjPosition.y1<clientY && clientY<selectedObjPosition.y2)
                     {
-                        console.log('asdasdasddas')
                         setAction('reselect')
                         context.scale(window.devicePixelRatio,window.devicePixelRatio)   
                         drawSelectedBox({tool:'rectangle',...selectedObjPosition},context)
@@ -264,11 +265,18 @@ const Editor=()=>
     }
     const onmousemove=(e,type)=>
     {
+        
         const ratioX=((scalePer-1)/scalePer)
         const ratioY=((scalePer-1)/scalePer)
         var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX
         var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.touches[0].clientY-canvasY
-       
+            doc.update((root) => {
+                
+                root.mouses[client.getID()].x=clientX
+                root.mouses[client.getID()].y=clientY
+                });
+        
+
         if(tool === 'selection')
         {
             if(action !== 'selecting') //이전에 드래그 선택이 안됐을 때
@@ -421,7 +429,6 @@ const Editor=()=>
     const onblur=(e)=>
     {
         const {index, x1,y1,tool} = selectedElement;
-        console.log(e.target.value)
         if(e.target.value==="")
         {
             removeElement(selectedElement)
@@ -452,8 +459,7 @@ const Editor=()=>
         context.scale(window.devicePixelRatio,window.devicePixelRatio)
         root.shapes.forEach(element => drawElement(context, element));
         context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
-        
-
+        setMouses(doc.getRoot().mouses)
     }
     
     //Yorkie//
@@ -462,21 +468,18 @@ const Editor=()=>
      
             setLoading(1)
             client = new yorkie.Client(`https://api.fillkie.com`)
-            console.log(client)
             await client.activate();   
             doc = new yorkie.Document(docKey);   
             await client.attach(doc);
-            subscribeDoc();   
             doc.update((root) => {
                 if(root.shapes)
                 {
                     return
                 }
                 root.shapes=[]
-
-
-
                 });
+            subscribeDoc();   
+            
             setLoading(0)
             
             drawAll()
@@ -498,8 +501,30 @@ const Editor=()=>
         client.subscribe((event) => {
             
             if (event.type === 'peers-changed') {
+                doc.update((root) => {
+                    if(!root.shapes)
+                    {
+                        root.shapes=[]
+                    }
+                    if(!root.mouses)
+                    {
+                        root.mouses={}
+                    }    
+                    if(!root.users)
+                    {
+                        root.users=[]
+                    }    
+                    
+                    });
+                
                 setUsers(Object.keys(event.value[`${docKey}`]))
-                console.log(Object.keys(event.value[`${docKey}`]))
+                Object.keys(event.value[`${docKey}`]).forEach((user)=>{
+                    doc.update((root) => {
+                        root.mouses[user]={'x':0,'y':0}
+                        });
+                    
+                })
+                setMouses(doc.getRoot().mouses)
             } else if (event.type === 'stream-connection-status-changed') {
                 
             }
@@ -561,7 +586,6 @@ const Editor=()=>
     {
         if(action==='writing')
         {
-            console.log(action)
             setTimeout(()=>{textRef.current.focus()},1)
         }
     },[action,selectedElement])
@@ -639,8 +663,15 @@ const Editor=()=>
             <div style={{position:'absolute', right:'10px', top:'50px'}}>
                 <div>사용자</div>
                 
-                {users.map((user,key)=>{return(<div key={user}>{user}asd</div>)})}
+                {users.map((user,key)=>{return(<div key={user}>{user}</div>)})}
 
+            </div>
+            <div>
+                {users.map((user,key,idx)=>{
+                    if(user==client.getID()) {return}
+                    return(<div style={{position:'absolute',left:`${mouses[user].x}px`,top:`${mouses[user].y}px`}}>
+                        <img width={20} height={20} src={require('./Icons/multi-mouse.png')}></img>
+                    </div>)})}
             </div>
             {/*users.map((user,index)=>{
                 if(index===0) return
