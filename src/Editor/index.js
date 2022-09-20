@@ -702,32 +702,48 @@ const Editor=()=>
                 <img className={tool==='eraser'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-eraser.png")}></img>
                 </button>
                 <button className={tool==='asd'?"toolBox-button-active":"toolBox-button"} onClick={()=>{doc.update((root)=>root.shapes=[]);drawAll()}}>초기화</button>
-                <div className="toolBox-colorBox">
-
-                    <button onClick={()=>{setStrokePicker(1)}} style={{width:15,height:15,border:'1px solid black',backgroundColor:`${strokeColor}`}}></button>
-                    {strokePicker?
-                        <div style={{position:'absolute',top:0}}>
-                            <div onClick={()=>{setStrokePicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
-                            <div style={{position:'absolute',transform:'translate(-100px,50px)'}}><SketchPicker color={strokeColor} onChange={(color)=>{setStrokeColor(`rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${color.rgb.a})`)}}></SketchPicker></div>
-                        </div>:null
-            }
-                    
-                </div>
-                <div className="toolBox-colorBox">
-                    
-                    <button onClick={()=>{setFillPicker(1)}} style={{width:15,height:15,border:'1px solid black',backgroundColor:`${fillColor}`}}></button>
-                    {fillPicker?
-                        <div style={{position:'absolute',top:0}}>
-                            <div onClick={()=>{setFillPicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
-                            <div style={{position:'absolute',transform:'translate(-100px,50px)'}}><SketchPicker color={fillColor} onChange={(color)=>{setFillColor(`rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${color.rgb.a})`)}}></SketchPicker></div>
-                        </div>:null
-            }
-                </div>
+                
                 <div className="toolBox-button" onClick={()=>{toPdf(canvas)}}>
                     <div>다운로드</div>
                 </div>
                 <div className="toolBox-button" onClick={()=>{setPageNum(pageNum+1)}}>
                     <div>페이지추가</div>
+                </div>
+            </div>
+            {/*사이드 툴바 */}
+            <div className="toolDetail">
+                <div className="toolDetail-detailBox">
+                    <div className="toolDetail-detailBox-desc">굵기</div>
+                    <div className="toolDetail-detailBox-buttonBox">
+                        <button className="toolDetail-detailBox-buttonBox-button"></button>
+                    </div>
+                </div>
+                <div className="toolDetail-detailBox">
+                    <div className="toolDetail-detailBox-desc">색상</div>
+                    <div className="toolDetail-detailBox-buttonBox">
+                    <div className="toolBox-colorBox">
+
+<button onClick={()=>{setStrokePicker(1)}} style={{width:15,height:15,border:'1px solid black',backgroundColor:`${strokeColor}`}}></button>
+{strokePicker?
+    <div style={{position:'absolute',top:0}}>
+        <div onClick={()=>{setStrokePicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
+        <div style={{position:'absolute',transform:'translate(-100px,50px)'}}><SketchPicker color={strokeColor} onChange={(color)=>{setStrokeColor(`rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${color.rgb.a})`)}}></SketchPicker></div>
+    </div>:null
+}
+
+</div>
+<div className="toolBox-colorBox">
+
+<button onClick={()=>{setFillPicker(1)}} style={{width:15,height:15,border:'1px solid black',backgroundColor:`${fillColor}`}}></button>
+{fillPicker?
+    <div style={{position:'absolute',top:0}}>
+        <div onClick={()=>{setFillPicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
+        <div style={{position:'absolute',transform:'translate(-100px,50px)'}}><SketchPicker color={fillColor} onChange={(color)=>{setFillColor(`rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${color.rgb.a})`)}}></SketchPicker></div>
+    </div>:null
+}
+</div>
+                        
+                    </div>
                 </div>
             </div>
             

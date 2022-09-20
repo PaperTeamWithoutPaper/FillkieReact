@@ -4,7 +4,7 @@
     background-color: rgba(255, 255, 255, 0.774);
     display:flex;
     z-index:3;
-    height:50px;
+    height:40px;
     border-radius: 10px;
     justify-content: center;
     box-shadow: 0px 3px 5px 2px rgb(184, 184, 184);
@@ -14,7 +14,7 @@
     
     &-button{
         background-color: rgba(255, 255, 255, 0);
-        width:50px;
+        width:40px;
         border: 0;
         border-radius: 10px;
         margin-right:5px;
@@ -28,8 +28,8 @@
     &-button-active{
         margin-right:5px;
         border-radius: 10px;
-        background-color: rgb(0, 174, 255);
-        width:50px;
+        background-color: rgb(66, 87, 97);
+        width:40px;
         border: 0;
         color:rgb(255, 255, 255);
         transition: all ease 0.2s;
@@ -46,14 +46,40 @@
         }
     }
     &-icon{
-        width:25px;
-        height:25px;
+        width:20px;
+        height:20px;
         transition: all ease 0.2s;
     }
     &-icon-active{
-        width:30px;
-        height:30px;
+        width:25px;
+        height:25px;
         transition: all ease 0.2s;
         filter: invert(100);
     }
+}
+.toolDetail{
+    position: fixed;
+    top:10px;
+    left:10px;
+    width:300px;
+    background-color: white;
+    box-shadow: 0px 3px 5px 2px rgb(184, 184, 184);
+    border-radius: 10px;
+    display:flex;
+    flex-direction: column;
+    &-detailBox{
+        margin:10px;
+        &-buttonBox{
+            display:flex;
+            flex-direction: row;
+            &-button{
+                width:30px;
+                height:30px;
+                background-color: rgb(221, 221, 221);
+                border-radius: 5px;
+                border: 0;
+            }
+        }
+    }
+
 }
