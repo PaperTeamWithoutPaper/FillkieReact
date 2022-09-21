@@ -1,4 +1,4 @@
-import {useEffect, useLayoutEffect,useState,useRef} from 'react'
+import {useEffect, useLayoutEffect,useState,useRef,useCallback} from 'react'
 import {getMinMaxXY,getElementsAtPosition, drawSelectedBox, drawElement,createSelectingBox,createElement,getElementAtPosition,adjustElementCoordinates,cursorForPosition,resizeCoordinates} from './util'
 import yorkie from 'yorkie-js-sdk'
 import { useParams } from 'react-router'
@@ -15,7 +15,7 @@ var canvas= null;
 var context=null;
 var pencilR=null;
 var pencilStart=null;
-
+var myFont=null;
 const Editor=()=>
 {
     //mousePos//
@@ -101,6 +101,8 @@ const Editor=()=>
     //scale//
     var scp=1
     const [scalePer,setScalePer]=useState(1)
+    //shape//
+    const [selectedShape,setSelectedShape]=useState(0)
     //strokeWidth//
     const [strokeWidth,setStrokeWidth]=useState(1)
     const [selectedStrokeWidth,setSelectedStrokeWidth]=useState(0)
@@ -160,13 +162,19 @@ const Editor=()=>
                 root.shapes[index].points.push({x: x2,y: y2}))
                 break;
             case "text":
+                var lines = text.split('\n');
+                var maxLen=0
+                for (var i = 0; i<lines.length; i++)
+                {
+                    maxLen=Math.max(context.measureText(lines[i]).width,maxLen)
+                }
                 doc.update((root)=>{
                     root.shapes[index].index=index
                     root.shapes[index].x1=x1
                     root.shapes[index].y1=y1
                     root.shapes[index].text=text
-                    root.shapes[index].width=context.measureText(text).width
-                    root.shapes[index].height=15
+                    root.shapes[index].width=maxLen
+                    root.shapes[index].height=38*lines.length
                 })
                 
                 break;
@@ -255,7 +263,7 @@ const Editor=()=>
         else{
             setAction(tool=== "text"?"writing":'drawing');
    
-            const element=createElement(id,clientX,clientY,clientX,clientY,tool,strokeColor,fillColor,strokeWidth)
+            const element=createElement(id,clientX,clientY,clientX,clientY,tool,strokeColor,fillColor,strokeWidth,'30px myFont')
             setSelectedElement(element)
             setCurrentTextColor(fillColor)
             doc.update((root)=>{
@@ -536,6 +544,12 @@ const Editor=()=>
         
     }
     useLayoutEffect(()=> {
+        myFont = new FontFace('myFont', 'url(https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Manse.woff)');
+        myFont.load().then(function(font){
+        document.fonts.add(font);
+        console.log('Font loaded');
+
+        });
         canvas=document.getElementById('canvas');
         context=canvas.getContext('2d');
         window.addEventListener("wheel",function(e){e.preventDefault()},{passive: false})
@@ -600,6 +614,12 @@ const Editor=()=>
         }
         
     },[scalePer])
+    //textarea resize//
+
+    const handleResizeHeight = useCallback(() => {
+        textRef.current.style.height = textRef.current.scrollHeight + "px";
+  }, []);
+    
     return(
         <div>
             
@@ -628,6 +648,31 @@ const Editor=()=>
                         <img width={20} height={20} src={require('./Icons/multi-mouse.png')}></img>
                     </div>)})}
                 </div>
+                {
+                    action === "writing"?
+                        <textarea
+                        onInput={handleResizeHeight}
+                        onChange={(e)=>{const {index, x1,y1,tool} = selectedElement; updateElement(index,x1,y1,null,null,tool,e.target.value)}}
+                        onBlur={(e)=>{onblur(e)}}
+                        style={{
+                            
+                            position:'fixed', 
+                            top:selectedElement.y1-4,
+                            left:selectedElement.x1,
+                            font: "30px myFont",
+                            margin: 0,
+                            padding:0,
+                            border:0,
+                            outline: 0,
+                            resize: 'auto',
+                            overflow: 'hiddent',
+                            whiteSpace: 'pre',
+                            background: 'transparent',
+                            color: fillColor
+                }}
+                        ref={textRef}></textarea>:null
+
+                } 
                 <canvas
                 style={{
       
@@ -656,29 +701,7 @@ const Editor=()=>
                 
             </div>
             }
-            {
-                action === "writing"?
-            <textarea
-            
-            onBlur={(e)=>{onblur(e)}}
-            style={{
-                position:'fixed', 
-                top:selectedElement.y1-2,
-                left:selectedElement.x1,
-                font: "15px serif",
-                margin: 0,
-                padding:0,
-                border:0,
-                outline: 0,
-                resize: 'auto',
-                overflow: 'hiddent',
-                whiteSpace: 'pre',
-                background: 'transparent',
-                color: fillColor
-    }}
-            ref={textRef}></textarea>:null
-
-            }  
+             
             <div style={{position:'absolute', right:'10px', top:'50px'}}>
                 <div>사용자</div>
                 
@@ -690,11 +713,8 @@ const Editor=()=>
                 <button className={tool==='pencil'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('pencil')}}>
                     <img className={tool==='pencil'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-draw.png")}></img>
                 </button>
-                <button className={tool==='line'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('line')}}>
-                    <img className={tool==='line'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-shape.png")}></img>
-                </button>
-                <button className={tool==='rectangle'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('rectangle')}}>
-                    <img className={tool==='rectangle'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-shape.png")}></img>    
+                <button className={tool==='line' || tool==='rectangle'?"toolBox-button-active":"toolBox-button"} onClick={()=>{selectedShape===0?setTool('line'):setTool('rectangle')}}>
+                    <img className={tool==='line' || tool==='rectangle'? "toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-shape.png")}></img>
                 </button>
                 {<button className={tool==='text'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('text')}}>
                     <img className={tool==='text'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-text.png")}></img>
@@ -715,7 +735,23 @@ const Editor=()=>
                 </div>
             </div>
             {/*사이드 툴바 */}
+            {tool!=='selection' && tool!=='eraser'?
             <div className="toolDetail">
+                {tool==='line' || tool==='rectangle'?
+                <div className="toolDetail-detailBox">
+                        <div className="toolDetail-detailBox-desc">도형</div>
+                        <div className="toolDetail-detailBox-buttonBox">
+                            <button className={selectedShape===0?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setSelectedShape(0);setTool('line')}}>
+                                <div style={{width:'18px', height:'3px', backgroundColor:'black'}}></div>
+                            </button>
+                            <button className={selectedShape===1?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setSelectedShape(1); setTool('rectangle')}}>
+                                <div style={{width:'18px', height:'18px', outline: 'solid 2px black'}}></div>
+                            </button>
+                            
+                        </div>
+                </div>:null
+                }
+                
                 <div className="toolDetail-detailBox">
                     <div className="toolDetail-detailBox-desc">굵기</div>
                     <div className="toolDetail-detailBox-buttonBox">
@@ -733,6 +769,7 @@ const Editor=()=>
                         </button>
                     </div>
                 </div>
+                {tool!=='text'?
                 <div className="toolDetail-detailBox">
                     <div className="toolDetail-detailBox-desc">선 색상</div>
                         <div className="toolDetail-detailBox-buttonBox">
@@ -746,10 +783,11 @@ const Editor=()=>
                             }
                             </div>
                         </div>
-                </div>
+                </div>:null
+                }   
                 
-                {tool==='rectangle'?<div className="toolDetail-detailBox">
-                    <div className="toolDetail-detailBox-desc">배경색</div>
+                {tool==='rectangle' || tool==='text'?<div className="toolDetail-detailBox">
+                    <div className="toolDetail-detailBox-desc">{tool==='text'?'텍스트 색':'배경 색'}</div>
                         <div className="toolDetail-detailBox-buttonBox">
                             <div className="toolBox-colorBox">
                                 <button onClick={()=>{setFillPicker(1)}} style={{borderRadius: '5px', width:30,height:30,border:'1px solid lightgray',backgroundColor:`${fillColor}`}}></button>
@@ -763,7 +801,7 @@ const Editor=()=>
                         </div>
                 </div>:null}
             </div>
-                
+            :null}
          
         </div>
     )

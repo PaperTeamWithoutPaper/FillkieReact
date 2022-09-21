@@ -28,7 +28,7 @@
     &-button-active{
         margin-right:5px;
         border-radius: 10px;
-        background-color: rgb(52, 56, 58);
+        background-color: rgb(96, 118, 238);
         width:40px;
         border: 0;
         color:rgb(255, 255, 255);
@@ -79,6 +79,7 @@
                 border-radius: 5px;
                 border: 0;
                 margin: 5px 5px 0px 0px;
+                transition: all ease 0.2s;
             }
             &-activeButton{
                 width:30px;
@@ -87,6 +88,7 @@
                 border-radius: 5px;
                 border: 0;
                 margin: 5px 5px 0px 0px;
+                transition: all ease 0.2s;
 
             }
         }
