@@ -47,7 +47,7 @@ export const getElementsAtPosition=(elements,x1,y1,x2,y2)=>
                 if(element.x1>=x1 && element.x2<=x2 && element.y1>=y1 && element.y2<=y2) returnIndex=[...returnIndex,element.index]
                 break;
             case 'text':
-                if(element.x1>=x1 && element.x1+element.width<=x2 && element.y1>=y1 && element.y1+15<=y2) returnIndex=[...returnIndex,element.index]
+                if(element.x1>=x1 && element.x1+element.width<=x2 && element.y1>=y1 && element.y1+element.height<=y2) returnIndex=[...returnIndex,element.index]
                 break;
         }
     }
@@ -91,7 +91,7 @@ export const getMinMaxXY=(elements,indexList)=>
                 minX=minX<element.x1?minX:element.x1
                 minY=minY<element.y1?minY:element.y1
                 maxX=maxX>element.x1+element.width?maxX:element.x1+element.width
-                maxY=maxY>element.y1+15?maxY:element.y1+15
+                maxY=maxY>element.y1+element.height?maxY:element.y1+element.height
                 break;
         }
     }
@@ -155,17 +155,16 @@ export const drawSelectedBox=(element,context,pencilRange)=>
     if(tool==='text')
     {
         context.lineWidth = 1; // 선 굵기 10픽셀
-        context.strokeStyle="rgb(0, 60, 255)";
-        context.strokeRect(x1,y1,element.width,15);
-        context.fillStyle="rgba(0,60,255,0.1)"
-        context.fillRect(x1,y1,element.width,15);
+        context.strokeStyle = "rgb(0, 0, 0)"
+        context.strokeRect(x1,y1,element.width,element.height);
+
     }
     context.setLineDash([0]) 
 
     
     
 }
-export const createElement=(index,x1,y1,x2,y2,tool,strokeColor,fillColor,strokeWidth)=>
+export const createElement=(index,x1,y1,x2,y2,tool,strokeColor,fillColor,strokeWidth,font)=>
 {
     switch (tool)
     {
@@ -175,7 +174,7 @@ export const createElement=(index,x1,y1,x2,y2,tool,strokeColor,fillColor,strokeW
         case 'pencil':
             return {index, points: [{x:x1,y:y1}],tool,moveXY:{x:4,y:0},removed:false,strokeColor,strokeWidth}
         case 'text':
-            return {index, x1,y1,tool,removed:false,text:'',width:0,height:15,fillColor}
+            return {index, x1,y1,tool,removed:false,text:'',width:0,height:30,fillColor,font}
         default:
             throw new Error(`Type not recognized: ${tool}`)
 
@@ -221,10 +220,14 @@ export const drawElement=(context, element)=>
             break;
 
         case 'text':
+
+
             context.textBaseline="top"
             context.fillStyle=element.fillColor
-            context.font = '15px serif';
-            context.fillText(element.text, element.x1, element.y1);
+            context.font = element.font;
+            var lines = element.text.split('\n');
+            for (var i = 0; i<lines.length; i++)
+                context.fillText(lines[i], element.x1, element.y1 + (i*38) );
             break;
         default:
             throw new Error(`Type not recognized: ${element.tool}`)
@@ -304,7 +307,7 @@ export const positionWithinElement=(x,y,element)=>
     else if (tool==='text')
     {
         
-        const inside = x1<=x && x<=x1+element.width && y1<=y&& y<=y1+15?'inside':null;
+        const inside = x1<=x && x<=x1+element.width && y1<=y&& y<=y1+element.height?'inside':null;
         
         return {position:inside}
         
