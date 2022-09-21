@@ -608,21 +608,26 @@ const Editor=()=>
             <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${window.innerHeight}px`}}>
                 <div style={{transformOrigin: 'left' | 'top', transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`}}>
                 <MyDocument></MyDocument>
-                <div>
+                
+                </div>
+                
+                <div style={{
+                    zIndex:'1',
+                    transformOrigin: 'top left',
+                    transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
+                }}>
+                    <div>
                 {users.map((user,key,idx)=>{
                     if(user==client.getID()) {return}
-                    return(<div style={{position:'absolute',
-                    transformOrigin: 'top left',
+                    return(<div style={{
+                        zIndex:'2',
+                        position:'absolute',
+                        transformOrigin: 'left' | 'top',
                     transform: `translate(${mouses[user].x}px,${mouses[user].y}px)`
                     }}>
                         <img width={20} height={20} src={require('./Icons/multi-mouse.png')}></img>
                     </div>)})}
                 </div>
-                </div>
-                <div style={{
-                    transformOrigin: 'top left',
-                    transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
-                }}>
                 <canvas
                 style={{
       
@@ -646,6 +651,7 @@ const Editor=()=>
                 onTouchEnd={(e)=>{onmouseup(e,'mob')}} >
                 
                 </canvas>
+                
                 </div>
                 
             </div>
@@ -680,11 +686,6 @@ const Editor=()=>
 
             </div>
             
-            {/*users.map((user,index)=>{
-                if(index===0) return
-                const l= user in Object.keys(doc.getRoot().mouse)?doc.getRoot().mouse[user].left:0
-                const t=user in Object.keys(doc.getRoot().mouse)?doc.getRoot().mouse[user].top:0
-            return(<MousePointer color="yellow" left={l} top={t}></MousePointer>)})*/}
             <div className="toolBox">
                 <button className={tool==='pencil'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('pencil')}}>
                     <img className={tool==='pencil'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-draw.png")}></img>
