@@ -101,6 +101,8 @@ const Editor=()=>
     //scale//
     var scp=1
     const [scalePer,setScalePer]=useState(1)
+    //shape//
+    const [selectedShape,setSelectedShape]=useState(0)
     //strokeWidth//
     const [strokeWidth,setStrokeWidth]=useState(1)
     const [selectedStrokeWidth,setSelectedStrokeWidth]=useState(0)
@@ -690,11 +692,8 @@ const Editor=()=>
                 <button className={tool==='pencil'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('pencil')}}>
                     <img className={tool==='pencil'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-draw.png")}></img>
                 </button>
-                <button className={tool==='line'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('line')}}>
-                    <img className={tool==='line'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-shape.png")}></img>
-                </button>
-                <button className={tool==='rectangle'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('rectangle')}}>
-                    <img className={tool==='rectangle'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-shape.png")}></img>    
+                <button className={tool==='line' || tool==='rectangle'?"toolBox-button-active":"toolBox-button"} onClick={()=>{selectedShape===0?setTool('line'):setTool('rectangle')}}>
+                    <img className={tool==='line' || tool==='rectangle'? "toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-shape.png")}></img>
                 </button>
                 {<button className={tool==='text'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('text')}}>
                     <img className={tool==='text'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-text.png")}></img>
@@ -716,6 +715,20 @@ const Editor=()=>
             </div>
             {/*사이드 툴바 */}
             <div className="toolDetail">
+                {tool==='line' || tool==='rectangle'?
+                <div className="toolDetail-detailBox">
+                        <div className="toolDetail-detailBox-desc">도형</div>
+                        <div className="toolDetail-detailBox-buttonBox">
+                            <button className={selectedShape===0?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setSelectedShape(0);setTool('line')}}>
+                                <div style={{width:'18px', height:'3px', backgroundColor:'black'}}></div>
+                            </button>
+                            <button className={selectedShape===1?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setSelectedShape(1); setTool('rectangle')}}>
+                                <div style={{width:'18px', height:'18px', outline: 'solid 2px black'}}></div>
+                            </button>
+                            
+                        </div>
+                </div>:null
+                }
                 <div className="toolDetail-detailBox">
                     <div className="toolDetail-detailBox-desc">굵기</div>
                     <div className="toolDetail-detailBox-buttonBox">
