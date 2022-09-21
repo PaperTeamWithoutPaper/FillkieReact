@@ -125,7 +125,8 @@ const Editor=()=>
     const [loading, setLoading]= useState(0);
     const [downPosition,setDownPosition]=useState({x:0,y:0})
     //const [eraseList,setEraseList]=useState([]);
-
+    //toPDF//
+    
     const movePencil=(index,tool,offsetX,offsetY)=>
     {
         doc.update((root)=>
@@ -621,41 +622,48 @@ const Editor=()=>
   }, []);
     
     return(
-        <div>
-            
+        <div >
             {loading?<Loading></Loading>:null}
             {
             <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${window.innerHeight}px`}}>
-                <div style={{transformOrigin: 'left' | 'top', transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`}}>
-                <MyDocument></MyDocument>
-                
-                </div>
-                
-                <div style={{
-                    zIndex:'1',
-                    transformOrigin: 'top left',
-                    transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
-                }}>
-                    <div>
-                {users.map((user,key,idx)=>{
-                    if(user==client.getID()) {return}
-                    return(<div style={{
-                        zIndex:'2',
-                        position:'absolute',
-                        transformOrigin: 'left' | 'top',
-                    transform: `translate(${mouses[user].x}px,${mouses[user].y}px)`
+               
+                    <div id="test" style={{
+                        width:`${window.innerHeight*(21.59/28.25)}px`,
+                        height:`${window.innerHeight*pageNum}px`,
+                        zIndex:'1',
+                        transformOrigin: 'top left',
+                        transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
                     }}>
-                        <img width={20} height={20} src={require('./Icons/multi-mouse.png')}></img>
-                    </div>)})}
-                </div>
+                   
+                    
+                <canvas
+                style={{
+                    position:'absolute',
+                    zIndex:'1000',
+                    width:`${window.innerHeight*(21.59/28.25)}px`,
+                    height:`${window.innerHeight*pageNum}px`,
+                    display:`${loading?'none':'block'}`,
+                    }}
+                id="canvas"
+                width={window.innerHeight*(21.59/28.25)*window.devicePixelRatio}
+                height={(window.innerHeight*pageNum)*window.devicePixelRatio}
+                onMouseDown={(e)=>{onmousedown(e,'des')}}        
+                onMouseMove={(e)=>{onmousemove(e,'des')}}
+                onMouseUp={(e)=>{onmouseup(e,'des')}}
+                onTouchStart={(e)=>{onmousedown(e,'mob')}}
+                onTouchMove={(e)=>{onmousemove(e,'mob')}}
+                onTouchEnd={(e)=>{onmouseup(e,'mob')}} >  
+                </canvas>   
+
+                <MyDocument></MyDocument>
                 {
                     action === "writing"?
-                        <textarea
+                    <textarea
+                        data-html2canvas-ignore="true" 
                         onInput={handleResizeHeight}
                         onChange={(e)=>{const {index, x1,y1,tool} = selectedElement; updateElement(index,x1,y1,null,null,tool,e.target.value)}}
                         onBlur={(e)=>{onblur(e)}}
                         style={{
-                            
                             position:'fixed', 
                             top:selectedElement.y1-4,
                             left:selectedElement.x1,
@@ -669,36 +677,22 @@ const Editor=()=>
                             whiteSpace: 'pre',
                             background: 'transparent',
                             color: fillColor
-                }}
+                            }}
                         ref={textRef}></textarea>:null
-
-                } 
-                <canvas
-                style={{
-      
-                    
-                    
-                    width:`${window.innerHeight*(21.59/28.25)}px`,
-                    height:`${window.innerHeight*pageNum}px`,
-                    display:`${loading?'none':'block'}`,
-            }}
-                id="canvas"
-                width={window.innerHeight*(21.59/28.25)*window.devicePixelRatio}
-                height={(window.innerHeight*pageNum)*window.devicePixelRatio}
-                onMouseDown={(e)=>{
-                    
-                    onmousedown(e,'des')}}
-                
-                onMouseMove={(e)=>{onmousemove(e,'des')}}
-                onMouseUp={(e)=>{onmouseup(e,'des')}}
-                onTouchStart={(e)=>{onmousedown(e,'mob')}}
-                onTouchMove={(e)=>{onmousemove(e,'mob')}}
-                onTouchEnd={(e)=>{onmouseup(e,'mob')}} >
-                
-                </canvas>
-                
+                }
+                 <div data-html2canvas-ignore="true" >
+                        {users.map((user,key,idx)=>{
+                            if(user==client.getID()) {return}
+                            return(<div style={{
+                                zIndex:'2',
+                                position:'absolute',
+                                transformOrigin: 'left' | 'top',
+                                transform: `translate(${mouses[user].x}px,${mouses[user].y}px)`
+                            }}>
+                                <img width={20} height={20} src={require('./Icons/multi-mouse.png')}></img>
+                            </div>)})}
+                </div> 
                 </div>
-                
             </div>
             }
              
@@ -727,7 +721,7 @@ const Editor=()=>
                 </button>
                 <button className={tool==='asd'?"toolBox-button-active":"toolBox-button"} onClick={()=>{doc.update((root)=>root.shapes=[]);drawAll()}}>초기화</button>
                 
-                <div className="toolBox-button" onClick={()=>{toPdf(canvas)}}>
+                <div className="toolBox-button" onClick={()=>{toPdf(document.getElementById('test'))}}>
                     <div>다운로드</div>
                 </div>
                 <div className="toolBox-button" onClick={()=>{setPageNum(pageNum+1)}}>
