@@ -165,15 +165,15 @@ export const drawSelectedBox=(element,context,pencilRange)=>
     
     
 }
-export const createElement=(index,x1,y1,x2,y2,tool,strokeColor,fillColor)=>
+export const createElement=(index,x1,y1,x2,y2,tool,strokeColor,fillColor,strokeWidth)=>
 {
     switch (tool)
     {
         case "line":
         case 'rectangle':
-        return {index,x1,y1,x2,y2,tool,removed:false,strokeColor,fillColor}
+        return {index,x1,y1,x2,y2,tool,removed:false,strokeColor,fillColor,strokeWidth}
         case 'pencil':
-            return {index, points: [{x:x1,y:y1}],tool,moveXY:{x:4,y:0},removed:false,fillColor}
+            return {index, points: [{x:x1,y:y1}],tool,moveXY:{x:4,y:0},removed:false,strokeColor,strokeWidth}
         case 'text':
             return {index, x1,y1,tool,removed:false,text:'',width:0,height:15,fillColor}
         default:
@@ -192,7 +192,7 @@ export const drawElement=(context, element)=>
             context.beginPath();
             context.moveTo(x1,y1)
             context.lineTo(x2,y2)
-            context.lineWidth = 2
+            context.lineWidth = element.strokeWidth
             context.strokeStyle = element.strokeColor
             context.stroke();
             
@@ -200,14 +200,14 @@ export const drawElement=(context, element)=>
             break;
         case 'rectangle':
             
-            context.lineWidth = 2; // 선 굵기 10픽셀
+            context.lineWidth = element.strokeWidth;
             context.strokeStyle=element.strokeColor;
             context.strokeRect(x1,y1,x2-x1,y2-y1);
             context.fillStyle=element.fillColor
             context.fillRect(x1,y1,x2-x1,y2-y1);
             break;
         case 'pencil':
-            context.fillStyle=element.fillColor
+            context.fillStyle=element.strokeColor
             var XY=[]
             for(var i=0; i<element.points.length;i++)
             {
@@ -216,7 +216,7 @@ export const drawElement=(context, element)=>
                 tempXY.y=element.points[i].y+element.moveXY.y
                 XY.push(tempXY)
             }
-            const stroke = getSvgPathFromStroke(getStroke(XY,{size:1}))
+            const stroke = getSvgPathFromStroke(getStroke(XY,{size:element.strokeWidth}))
             context.fill(new Path2D(stroke))
             break;
 
