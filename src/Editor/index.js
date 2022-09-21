@@ -101,6 +101,9 @@ const Editor=()=>
     //scale//
     var scp=1
     const [scalePer,setScalePer]=useState(1)
+    //strokeWidth//
+    const [strokeWidth,setStrokeWidth]=useState(1)
+    const [selectedStrokeWidth,setSelectedStrokeWidth]=useState(0)
     //color//
     const [strokePicker,setStrokePicker]=useState(0)
     const [fillPicker,setFillPicker]=useState(0)
@@ -252,7 +255,7 @@ const Editor=()=>
         else{
             setAction(tool=== "text"?"writing":'drawing');
    
-            const element=createElement(id,clientX,clientY,clientX,clientY,tool,strokeColor,fillColor)
+            const element=createElement(id,clientX,clientY,clientX,clientY,tool,strokeColor,fillColor,strokeWidth)
             setSelectedElement(element)
             setCurrentTextColor(fillColor)
             doc.update((root)=>{
@@ -605,11 +608,26 @@ const Editor=()=>
             <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${window.innerHeight}px`}}>
                 <div style={{transformOrigin: 'left' | 'top', transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`}}>
                 <MyDocument></MyDocument>
+                
                 </div>
+                
                 <div style={{
+                    zIndex:'1',
                     transformOrigin: 'top left',
                     transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
                 }}>
+                    <div>
+                {users.map((user,key,idx)=>{
+                    if(user==client.getID()) {return}
+                    return(<div style={{
+                        zIndex:'2',
+                        position:'absolute',
+                        transformOrigin: 'left' | 'top',
+                    transform: `translate(${mouses[user].x}px,${mouses[user].y}px)`
+                    }}>
+                        <img width={20} height={20} src={require('./Icons/multi-mouse.png')}></img>
+                    </div>)})}
+                </div>
                 <canvas
                 style={{
       
@@ -633,6 +651,7 @@ const Editor=()=>
                 onTouchEnd={(e)=>{onmouseup(e,'mob')}} >
                 
                 </canvas>
+                
                 </div>
                 
             </div>
@@ -666,18 +685,7 @@ const Editor=()=>
                 {users.map((user,key)=>{return(<div key={user}>{user}</div>)})}
 
             </div>
-            <div>
-                {users.map((user,key,idx)=>{
-                    if(user==client.getID()) {return}
-                    return(<div style={{position:'absolute',left:`${mouses[user].x}px`,top:`${mouses[user].y}px`}}>
-                        <img width={20} height={20} src={require('./Icons/multi-mouse.png')}></img>
-                    </div>)})}
-            </div>
-            {/*users.map((user,index)=>{
-                if(index===0) return
-                const l= user in Object.keys(doc.getRoot().mouse)?doc.getRoot().mouse[user].left:0
-                const t=user in Object.keys(doc.getRoot().mouse)?doc.getRoot().mouse[user].top:0
-            return(<MousePointer color="yellow" left={l} top={t}></MousePointer>)})*/}
+            
             <div className="toolBox">
                 <button className={tool==='pencil'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('pencil')}}>
                     <img className={tool==='pencil'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-draw.png")}></img>
@@ -698,27 +706,7 @@ const Editor=()=>
                 <img className={tool==='eraser'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-eraser.png")}></img>
                 </button>
                 <button className={tool==='asd'?"toolBox-button-active":"toolBox-button"} onClick={()=>{doc.update((root)=>root.shapes=[]);drawAll()}}>초기화</button>
-                <div className="toolBox-colorBox">
-
-                    <button onClick={()=>{setStrokePicker(1)}} style={{width:15,height:15,border:'1px solid black',backgroundColor:`${strokeColor}`}}></button>
-                    {strokePicker?
-                        <div style={{position:'absolute',top:0}}>
-                            <div onClick={()=>{setStrokePicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
-                            <div style={{position:'absolute',transform:'translate(-100px,50px)'}}><SketchPicker color={strokeColor} onChange={(color)=>{setStrokeColor(`rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${color.rgb.a})`)}}></SketchPicker></div>
-                        </div>:null
-            }
-                    
-                </div>
-                <div className="toolBox-colorBox">
-                    
-                    <button onClick={()=>{setFillPicker(1)}} style={{width:15,height:15,border:'1px solid black',backgroundColor:`${fillColor}`}}></button>
-                    {fillPicker?
-                        <div style={{position:'absolute',top:0}}>
-                            <div onClick={()=>{setFillPicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
-                            <div style={{position:'absolute',transform:'translate(-100px,50px)'}}><SketchPicker color={fillColor} onChange={(color)=>{setFillColor(`rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${color.rgb.a})`)}}></SketchPicker></div>
-                        </div>:null
-            }
-                </div>
+                
                 <div className="toolBox-button" onClick={()=>{toPdf(canvas)}}>
                     <div>다운로드</div>
                 </div>
@@ -726,9 +714,57 @@ const Editor=()=>
                     <div>페이지추가</div>
                 </div>
             </div>
-            
-            
-            
+            {/*사이드 툴바 */}
+            <div className="toolDetail">
+                <div className="toolDetail-detailBox">
+                    <div className="toolDetail-detailBox-desc">굵기</div>
+                    <div className="toolDetail-detailBox-buttonBox">
+                        <button className={selectedStrokeWidth===0?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setStrokeWidth(1); setSelectedStrokeWidth(0)}}>
+                            <div style={{width:'18px', height:'1px', backgroundColor:'black'}}></div>
+                        </button>
+                        <button className={selectedStrokeWidth===1?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setStrokeWidth(3);setSelectedStrokeWidth(1)}}>
+                            <div style={{width:'18px', height:'3px', backgroundColor:'black'}}></div>
+                        </button>
+                        <button className={selectedStrokeWidth===2?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setStrokeWidth(5);setSelectedStrokeWidth(2)}}>
+                            <div style={{width:'18px', height:'5px', backgroundColor:'black'}}></div>
+                        </button>
+                        <button className={selectedStrokeWidth===3?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setStrokeWidth(20);setSelectedStrokeWidth(3)}}>
+                            <div style={{width:'18px', height:'20px', backgroundColor:'black'}}></div>
+                        </button>
+                    </div>
+                </div>
+                <div className="toolDetail-detailBox">
+                    <div className="toolDetail-detailBox-desc">선 색상</div>
+                        <div className="toolDetail-detailBox-buttonBox">
+                            <div className="toolBox-colorBox">
+                            <button onClick={()=>{setStrokePicker(1)}} style={{borderRadius: '5px', width:30,height:30,border:'1px solid lightgray',backgroundColor:`${strokeColor}`}}></button>
+                            {strokePicker?
+                                <div >
+                                    <div onClick={()=>{setStrokePicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
+                                    <div style={{position:'absolute',transform:'translate(0px,0px)'}}><SketchPicker color={strokeColor} onChange={(color)=>{setStrokeColor(`rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${color.rgb.a})`)}}></SketchPicker></div>
+                                </div>:null
+                            }
+                            </div>
+                        </div>
+                </div>
+                
+                {tool==='rectangle'?<div className="toolDetail-detailBox">
+                    <div className="toolDetail-detailBox-desc">배경색</div>
+                        <div className="toolDetail-detailBox-buttonBox">
+                            <div className="toolBox-colorBox">
+                                <button onClick={()=>{setFillPicker(1)}} style={{borderRadius: '5px', width:30,height:30,border:'1px solid lightgray',backgroundColor:`${fillColor}`}}></button>
+                                {fillPicker?
+                                    <div>
+                                        <div onClick={()=>{setFillPicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
+                                        <div style={{position:'absolute',transform:'translate(0px, 0px)'}}><SketchPicker color={fillColor} onChange={(color)=>{setFillColor(`rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${color.rgb.a})`)}}></SketchPicker></div>
+                                    </div>:null
+                                }
+                            </div>
+                        </div>
+                </div>:null}
+            </div>
+                
+         
         </div>
     )
 }

@@ -4,17 +4,17 @@
     background-color: rgba(255, 255, 255, 0.774);
     display:flex;
     z-index:3;
-    height:50px;
+    height:40px;
     border-radius: 10px;
     justify-content: center;
-    box-shadow: 0px 3px 5px 2px rgb(184, 184, 184);
+    box-shadow: 0px 1px 3px 1px rgb(221, 221, 221);
     left: 50vw;
     transform: translateX(-50%);
     padding:5px;
     
     &-button{
         background-color: rgba(255, 255, 255, 0);
-        width:50px;
+        width:40px;
         border: 0;
         border-radius: 10px;
         margin-right:5px;
@@ -28,32 +28,68 @@
     &-button-active{
         margin-right:5px;
         border-radius: 10px;
-        background-color: rgb(0, 174, 255);
-        width:50px;
+        background-color: rgb(52, 56, 58);
+        width:40px;
         border: 0;
         color:rgb(255, 255, 255);
         transition: all ease 0.2s;
     }
     &-colorBox{
-        width:50px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        margin: 5px 5px 0px 0px;
         &-desc{
             color:rgb(12, 12, 12);
             font-size: 13px;
         }
     }
     &-icon{
-        width:25px;
-        height:25px;
+        width:20px;
+        height:20px;
         transition: all ease 0.2s;
     }
     &-icon-active{
-        width:30px;
-        height:30px;
+        width:22px;
+        height:22px;
         transition: all ease 0.2s;
         filter: invert(100);
     }
+}
+.toolDetail{
+    position: fixed;
+    top:10px;
+    left:10px;
+  
+    background-color: rgba(255, 255, 255, 0.774);
+    box-shadow: 0px 1px 3px 1px rgb(221, 221, 221);
+    border-radius: 10px;
+    display:flex;
+    flex-direction: column;
+    &-detailBox{
+        margin:10px;
+        &-desc{
+            font-size: 13px;
+            font-weight: bold;
+        }
+        &-buttonBox{
+            display:flex;
+            flex-direction: row;
+            &-button{
+                width:30px;
+                height:30px;
+                background-color: rgb(221, 221, 221);
+                border-radius: 5px;
+                border: 0;
+                margin: 5px 5px 0px 0px;
+            }
+            &-activeButton{
+                width:30px;
+                height:30px;
+                background-color: rgb(96, 118, 238);
+                border-radius: 5px;
+                border: 0;
+                margin: 5px 5px 0px 0px;
+
+            }
+        }
+    }
+
 }
