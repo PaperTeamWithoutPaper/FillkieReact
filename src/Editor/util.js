@@ -164,7 +164,7 @@ export const drawSelectedBox=(element,context,pencilRange)=>
     
     
 }
-export const createElement=(index,x1,y1,x2,y2,tool,strokeColor,fillColor,strokeWidth,font)=>
+export const createElement=(index,x1,y1,x2,y2,tool,strokeColor,fillColor,strokeWidth,fontSize,font)=>
 {
     switch (tool)
     {
@@ -174,7 +174,7 @@ export const createElement=(index,x1,y1,x2,y2,tool,strokeColor,fillColor,strokeW
         case 'pencil':
             return {index, points: [{x:x1,y:y1}],tool,moveXY:{x:4,y:0},removed:false,strokeColor,strokeWidth}
         case 'text':
-            return {index, x1,y1,tool,removed:false,text:'',width:0,height:30,fillColor,font}
+            return {index, x1,y1,tool,removed:false,text:'',width:0,height:30,fillColor,fontSize,font}
         default:
             throw new Error(`Type not recognized: ${tool}`)
 
@@ -220,14 +220,12 @@ export const drawElement=(context, element)=>
             break;
 
         case 'text':
-
-
             context.textBaseline="top"
             context.fillStyle=element.fillColor
-            context.font = element.font;
+            context.font = `${element.fontSize}px myFont`;
             var lines = element.text.split('\n');
             for (var i = 0; i<lines.length; i++)
-                context.fillText(lines[i], element.x1, element.y1 + (i*38) );
+                context.fillText(lines[i], element.x1, element.y1 + (i*(element.fontSize+element.fontSize/3.5)) );
             break;
         default:
             throw new Error(`Type not recognized: ${element.tool}`)
