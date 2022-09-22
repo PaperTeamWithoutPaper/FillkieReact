@@ -52,6 +52,7 @@
         transition: all ease 0.2s;
         filter: invert(100);
     }
+    
 }
 .toolDetail{
     position: fixed;
@@ -69,6 +70,7 @@
             font-size: 13px;
             font-weight: bold;
         }
+
         &-buttonBox{
             display:flex;
             flex-direction: row;

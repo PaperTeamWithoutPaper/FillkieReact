@@ -101,6 +101,9 @@ const Editor=()=>
     //scale//
     var scp=1
     const [scalePer,setScalePer]=useState(1)
+    //textSize//
+    const [selectedTextSize,setSelectedTextSize]=useState(0)
+    const [textSize, setTextSize]=useState(10)
     //shape//
     const [selectedShape,setSelectedShape]=useState(0)
     //strokeWidth//
@@ -175,7 +178,7 @@ const Editor=()=>
                     root.shapes[index].y1=y1
                     root.shapes[index].text=text
                     root.shapes[index].width=maxLen
-                    root.shapes[index].height=38*lines.length
+                    root.shapes[index].height=(root.shapes[index].fontSize+root.shapes[index].fontSize/3.5)*lines.length
                 })
                 
                 break;
@@ -264,7 +267,7 @@ const Editor=()=>
         else{
             setAction(tool=== "text"?"writing":'drawing');
    
-            const element=createElement(id,clientX,clientY,clientX,clientY,tool,strokeColor,fillColor,strokeWidth,'30px myFont')
+            const element=createElement(id,clientX,clientY,clientX,clientY,tool,strokeColor,fillColor,strokeWidth,textSize,myFont)
             setSelectedElement(element)
             setCurrentTextColor(fillColor)
             doc.update((root)=>{
@@ -591,7 +594,7 @@ const Editor=()=>
         
         if(client===null)
         {
-            activateClient();   
+           activateClient();   
         }
        
     },[]
@@ -665,9 +668,9 @@ const Editor=()=>
                         onBlur={(e)=>{onblur(e)}}
                         style={{
                             position:'fixed', 
-                            top:selectedElement.y1-4,
+                            top:selectedElement.y1-selectedElement.fontSize/7,
                             left:selectedElement.x1,
-                            font: "30px myFont",
+                            font: `${textSize}px myFont`,
                             margin: 0,
                             padding:0,
                             border:0,
@@ -697,10 +700,8 @@ const Editor=()=>
             }
              
             <div style={{position:'absolute', right:'10px', top:'50px'}}>
-                <div>사용자</div>
-                
+                <div>사용자</div>    
                 {users.map((user,key)=>{return(<div key={user}>{user}</div>)})}
-
             </div>
             
             <div className="toolBox">
@@ -793,6 +794,24 @@ const Editor=()=>
                                 }
                             </div>
                         </div>
+                </div>:null}
+                {tool==='text'?<div className="toolDetail-detailBox">
+                    <div className="toolDetail-detailBox-desc">텍스트 크기</div>
+                    <div className="toolDetail-detailBox-buttonBox">
+                        <button className={selectedTextSize===0?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setTextSize(10); setSelectedTextSize(0)}}>
+                            <div style={{fontWeight:'bold'}}>S</div>
+                        </button>
+                        <button className={selectedTextSize===1?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setTextSize(15);setSelectedTextSize(1)}}>
+                            <div style={{fontWeight:'bold'}}>M</div>
+                        </button>
+                        <button className={selectedTextSize===2?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setTextSize(20);setSelectedTextSize(2)}}>
+                            <div style={{fontWeight:'bold'}}>L</div>
+                        </button>
+                        <button className={selectedTextSize===3?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setTextSize(25);setSelectedTextSize(3)}}>
+                            <div style={{fontWeight:'bold'}}>XL</div>
+                        </button>
+                    </div>
+                        
                 </div>:null}
             </div>
             :null}
