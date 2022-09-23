@@ -658,7 +658,7 @@ const Editor=()=>
                 onTouchEnd={(e)=>{onmouseup(e,'mob')}} >  
                 </canvas>   
 
-                <MyDocument></MyDocument>
+                <MyDocument pageNum={pageNum}></MyDocument>
                 {
                     action === "writing"?
                     <textarea
@@ -720,14 +720,16 @@ const Editor=()=>
                 <button className={tool==='eraser'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('eraser')}}>
                 <img className={tool==='eraser'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-eraser.png")}></img>
                 </button>
-                <button className={tool==='asd'?"toolBox-button-active":"toolBox-button"} onClick={()=>{doc.update((root)=>root.shapes=[]);drawAll()}}>초기화</button>
                 
-                <div className="toolBox-button" onClick={()=>{toPdf(document.getElementById('test'))}}>
-                    <div>다운로드</div>
-                </div>
-                <div className="toolBox-button" onClick={()=>{setPageNum(pageNum+1)}}>
-                    <div>페이지추가</div>
-                </div>
+                <button className="toolBox-button" onClick={()=>{doc.update((root)=>root.shapes=[]);drawAll()}} >
+                <img className="toolBox-icon" src={require("./Icons/tool-recycle.png")}></img>
+                </button>
+                <button className="toolBox-button" onClick={()=>{toPdf(document.getElementById('test'))}}>
+                <img className="toolBox-icon" src={require("./Icons/tool-download.png")}></img>
+                </button>
+                <button className="toolBox-button" onClick={()=>{setPageNum(pageNum+1)}}>
+                <img className="toolBox-icon" src={require("./Icons/tool-addPage.png")}></img>
+                </button>
             </div>
             {/*사이드 툴바 */}
             {tool!=='selection' && tool!=='eraser'?
