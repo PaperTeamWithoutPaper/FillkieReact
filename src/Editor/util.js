@@ -132,6 +132,7 @@ export const drawSelectedBox=(element,context,pencilRange)=>
     drawCircle(x2+5,y2+5,context)
     drawCircle(x1-5,y2+5,context)
     drawCircle(x2+5,y1-5,context)
+    drawCircle((x2-x1)/2+x1,y1-20,context)
 
     }
     if(tool==='line')
@@ -198,12 +199,16 @@ export const drawElement=(context, element)=>
 
             break;
         case 'rectangle':
+
+            
             
             context.lineWidth = element.strokeWidth;
             context.strokeStyle=element.strokeColor;
             context.strokeRect(x1,y1,x2-x1,y2-y1);
             context.fillStyle=element.fillColor
             context.fillRect(x1,y1,x2-x1,y2-y1);
+
+            
             break;
         case 'pencil':
             context.fillStyle=element.strokeColor
@@ -274,8 +279,9 @@ export const positionWithinElement=(x,y,element)=>
         const topRight = nearPoint(x,y,x2,y1,'tr')
         const bottomLeft = nearPoint(x,y,x1,y2,'bl')
         const bottomRight = nearPoint(x,y,x2,y2,'br')
+        const middleUp= nearPoint(x,y,x1+(x2-x1)/2,y1-20,'mu')
         const inside = x>=x1 && x<=x2 && y>=y1 && y<=y2 ? "inside" : null;
-        return {position:topLeft || topRight || bottomLeft || bottomRight || inside}
+        return {position:topLeft || topRight || bottomLeft || bottomRight || inside || middleUp}
     }else if(tool==='line'){
         const a={x:x1,y:y1}
         const b={x:x2,y:y2}
@@ -372,6 +378,8 @@ export const resizeCoordinates=(clientX,clientY,position,coordinates)=>
             return {x1:clientX,y1,x2,y2:clientY}
         case "br":
             return {x1,y1,x2:clientX,y2:clientY}
+        case "mu":
+            return {x1,y1,x2:clientX,y2:clientY}
         case "start":
             return {x1:clientX,y1:clientY,x2,y2}
         case "end":
@@ -385,3 +393,4 @@ export const useHistory = (initialState)=>
 {
     const [elements, setElements] = useState(initialState)
 }
+//const getDiffRotation()

@@ -97,3 +97,36 @@
     }
 
 }
+.participants{
+    position: fixed;
+    top:10px;
+    right:10px;
+  
+    background-color: rgba(255, 255, 255, 0.774);
+    box-shadow: 0px 1px 3px 1px rgb(221, 221, 221);
+    border-radius: 10px;
+    display:flex;
+    flex-direction: column;
+    padding:10px;
+    &-desc{
+        font-size: 13px;
+        font-weight: bold;
+    }
+    &-box{
+        margin-top:10px;
+        display:flex;
+        flex-direction: row;
+        &-img{
+            width: 40px;
+            height:40px;
+            border-radius: 100px;
+        }
+        &-desc{
+            padding:0px 10px 0px 10px;
+            height:40px;
+            transform:translateY(10px);
+            
+        }
+    }
+    
+}

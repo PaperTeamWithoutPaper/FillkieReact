@@ -699,9 +699,16 @@ const Editor=()=>
             </div>
             }
              
-            <div style={{position:'absolute', right:'10px', top:'50px'}}>
-                <div>사용자</div>    
-                {users.map((user,key)=>{return(<div key={user}>{user}</div>)})}
+            <div className="participants">
+                <div className="participants-desc">사용자</div>    
+                {users.map((user,key)=>{return(
+                <div key={user} className="participants-box">
+                     <img className="participants-box-img" src="https://picsum.photos/200">
+                    </img>
+                    <div className="participants-box-desc">
+                        {user}
+                    </div>
+                </div>)})}
             </div>
             
             <div className="toolBox">
