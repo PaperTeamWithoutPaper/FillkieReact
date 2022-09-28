@@ -1,0 +1,46 @@
+const moveElement=(element)=>
+    {
+        if(element.tool==='line' || element.tool === "rectangle")
+            {
+                const {index,x1,x2,y1,y2,tool,offsetX,offsetY} = element
+                const width=x2-x1;
+                const height=y2-y1;
+                const newX=clientX-offsetX
+                const newY=clientY-offsetY
+                
+                updateElement(index,newX,newY,newX+width,newY+height,tool);
+                drawAll();
+                context.scale(window.devicePixelRatio,window.devicePixelRatio)    
+                drawSelectedBox({tool,x1:newX,y1:newY,x2:newX+width,y2:newY+height},context)
+                context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+
+            }
+            else if(element.tool==='text')
+            {
+                const {index,x1,y1,tool,text} = element
+                
+                updateElement(index,x1+clientX-pencilStart.x,y1+clientY-pencilStart.y,null,null,tool,text);
+                drawAll();
+                context.scale(window.devicePixelRatio,window.devicePixelRatio)    
+                drawSelectedBox({tool,x1:x1+clientX-pencilStart.x,y1:y1+clientY-pencilStart.y,x2:null,y2:null,width:element.width},context)
+                context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+
+            }
+            else if(element.tool==='pencil')
+            {
+                
+                const {index,tool,offsetX,offsetY} = element
+                const shape=doc.getRoot().shapes[index]
+                
+                movePencil(index,tool,clientX-offsetX,clientY-offsetY)
+                drawAll();
+
+                context.scale(window.devicePixelRatio,window.devicePixelRatio)    
+                drawSelectedBox(element,context,{
+                    x1:pencilR.x1+clientX-pencilStart.x,
+                    y1:pencilR.y1+clientY-pencilStart.y,
+                    x2:pencilR.x2+clientX-pencilStart.x,
+                    y2:pencilR.y2+clientY-pencilStart.y})
+                context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+
+            }

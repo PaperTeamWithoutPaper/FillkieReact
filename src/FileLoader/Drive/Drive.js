@@ -68,7 +68,6 @@ const Drive=()=>
         if(e.dataTransfer.items.length!==0){
         setOver(1)
         }
-        
     }
     const ondragout=(e)=>
     {
