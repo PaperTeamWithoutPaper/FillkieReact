@@ -27,7 +27,7 @@ const MyDocument=(props)=> {
     }
       setNewPages(pageList);
   }
-  )
+  ,[])
   
   
 
