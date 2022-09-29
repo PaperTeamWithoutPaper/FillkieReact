@@ -8,7 +8,10 @@ import html2canvas from 'html2canvas'
 import {toPdf} from './toPdf'
 import MyDocument from './Pdf'
 import Loading from '../Loading/Loading'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router';
+import { setUserInfo } from '../reducer/user_reducer'
+import { springAxios } from '../apis/api'
 var client=null;
 var doc= null;
 var canvas= null;
@@ -18,6 +21,13 @@ var pencilStart=null;
 var myFont=null;
 const Editor=()=>
 {
+    //navigate//
+    //redux//
+    const dispatch=useDispatch()
+    const { user_email, user_profile } = useSelector(state => ({
+        user_email: state.user_reducer.user_email,
+        user_profile: state.user_reducer.user_profile
+      }));
     //mousePos//
     const [mouses,setMouses]=useState({})
     //selecting//
@@ -121,6 +131,8 @@ const Editor=()=>
     const {docKey}=useParams()
 
     const [users,setUsers]=useState([])
+    const [emails,setEmails]=useState([])
+    const [profiles,setProfiles]=useState([])
     const [tool,setTool]=useState('pencil')
     const [action,setAction]=useState('none')
     const [selectedElement,setSelectedElement]=useState(null);
@@ -476,13 +488,15 @@ const Editor=()=>
         context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
         setMouses(doc.getRoot().mouses)
     }
-    
+    //api call//
     //Yorkie//
     async function activateClient()
     {
-     
             setLoading(1)
-            client = new yorkie.Client(`https://api.fillkie.com`)
+            client = new yorkie.Client(`https://api.fillkie.com`,{presence: {
+                username: user_email,
+                image: user_profile,
+              }})
             await client.activate();   
             doc = new yorkie.Document(docKey);   
             await client.attach(doc);
@@ -498,9 +512,7 @@ const Editor=()=>
             setLoading(0)
             
             drawAll()
-            
-            
-            
+                 
     }
 
 
@@ -539,6 +551,10 @@ const Editor=()=>
                         });
                     
                 })
+                setEmails([])
+                for (const [clientID, presence] of Object.entries(event.value[`${docKey}`])) {
+                    setEmails((before)=>[...before,presence.username])
+                  }
                 setMouses(doc.getRoot().mouses)
             } else if (event.type === 'stream-connection-status-changed') {
                 
@@ -547,11 +563,11 @@ const Editor=()=>
             
         
     }
-    useLayoutEffect(()=> {
+    useEffect(()=> {
+        springAxios.get('/user/profile').then((response)=>{dispatch(setUserInfo(response.data.data.userName,response.data.data.userImage))}).catch(()=>{dispatch(setUserInfo('test@email.com','response.data.data.userImage'))})
         myFont = new FontFace('myFont', 'url(https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Manse.woff)');
         myFont.load().then(function(font){
         document.fonts.add(font);
-        console.log('Font loaded');
 
         });
         canvas=document.getElementById('canvas');
@@ -574,12 +590,7 @@ const Editor=()=>
                     cy+=(e.deltaY/200)*clientY
                     setCanvasX(cx)
                     setCanvasY(cy)
-                    
-                 
-                }
-                
-             
-              
+                }        
             } else {
   
                 cx-=e.deltaX
@@ -589,15 +600,13 @@ const Editor=()=>
               setCanvasX(cx)
 
             }
-          }, {passive: false})
-
+          }, {passive: false})  
         
-        if(client===null)
+        if(client===null && user_email!=='asd')
         {
            activateClient();   
         }
-       
-    },[]
+    },[user_email]
     )
     useEffect(()=>
     {
@@ -701,7 +710,7 @@ const Editor=()=>
              
             <div className="participants">
                 <div className="participants-desc">사용자</div>    
-                {users.map((user,key)=>{return(
+                {emails.map((user,key)=>{return(
                 <div key={user} className="participants-box">
                      <img className="participants-box-img" src="https://picsum.photos/200">
                     </img>
