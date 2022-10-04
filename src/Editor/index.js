@@ -564,7 +564,7 @@ const Editor=()=>
         
     }
     useEffect(()=> {
-        springAxios.get('/user/profile').then((response)=>{dispatch(setUserInfo(response.data.data.userName,response.data.data.userImage))}).catch(()=>{dispatch(setUserInfo('test@email.com','response.data.data.userImage'))})
+        springAxios.get('/user/profile').then((response)=>{dispatch(setUserInfo(response.data.data.userName,response.data.data.userImage))}).catch(()=>{dispatch(setUserInfo('test@email.com','https://picsum.photos/200'))})
         myFont = new FontFace('myFont', 'url(https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Manse.woff)');
         myFont.load().then(function(font){
         document.fonts.add(font);
@@ -712,7 +712,7 @@ const Editor=()=>
                 <div className="participants-desc">사용자</div>    
                 {emails.map((user,key)=>{return(
                 <div key={user} className="participants-box">
-                     <img className="participants-box-img" src="https://picsum.photos/200">
+                     <img className="participants-box-img" src={user_profile}>
                     </img>
                     <div className="participants-box-desc">
                         {user}
