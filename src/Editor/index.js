@@ -552,8 +552,10 @@ const Editor=()=>
                     
                 })
                 setEmails([])
+                setProfiles([])
                 for (const [clientID, presence] of Object.entries(event.value[`${docKey}`])) {
                     setEmails((before)=>[...before,presence.username])
+                    setProfiles((before)=>[...before,presence.image])
                   }
                 setMouses(doc.getRoot().mouses)
             } else if (event.type === 'stream-connection-status-changed') {
@@ -710,9 +712,9 @@ const Editor=()=>
              
             <div className="participants">
                 <div className="participants-desc">사용자</div>    
-                {emails.map((user,key)=>{return(
+                {emails.map((user,idx,key)=>{console.log(idx);return(
                 <div key={user} className="participants-box">
-                     <img className="participants-box-img" src={user_profile}>
+                     <img className="participants-box-img" src={profiles[idx]}>
                     </img>
                     <div className="participants-box-desc">
                         {user}
