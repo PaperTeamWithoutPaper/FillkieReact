@@ -640,20 +640,19 @@ const Editor=()=>
             {loading?<Loading></Loading>:null}
             {
             <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${window.innerHeight}px`}}>
-               
-                    <div id="test" style={{
+                <div id="test" style={{
                         width:`${window.innerHeight*(21.59/28.25)}px`,
                         height:`${window.innerHeight*pageNum}px`,
                         zIndex:'1',
                         transformOrigin: 'top left',
                         transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
-                    }}>
+                }}>
                    
                     
                 <canvas
                 style={{
                     position:'absolute',
-                    zIndex:'1000',
+                    zIndex:'5',
                     width:`${window.innerHeight*(21.59/28.25)}px`,
                     height:`${window.innerHeight*pageNum}px`,
                     display:`${loading?'none':'block'}`,
@@ -694,11 +693,11 @@ const Editor=()=>
                             }}
                         ref={textRef}></textarea>:null
                 }
-                 <div data-html2canvas-ignore="true" >
+                 <div data-html2canvas-ignore="true" style={{zIndex:'10',position:'relative'}} >
                         {users.map((user,idx,key)=>{
                             if(user==client.getID()) {return}
                             return(<div style={{
-                                zIndex:'2',
+                                
                                 position:'absolute',
                                 transformOrigin: 'left' | 'top',
                                 transform: `translate(${mouses[user].x}px,${mouses[user].y}px)`,
