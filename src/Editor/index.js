@@ -695,15 +695,17 @@ const Editor=()=>
                         ref={textRef}></textarea>:null
                 }
                  <div data-html2canvas-ignore="true" >
-                        {users.map((user,key,idx)=>{
+                        {users.map((user,idx,key)=>{
                             if(user==client.getID()) {return}
                             return(<div style={{
                                 zIndex:'2',
                                 position:'absolute',
                                 transformOrigin: 'left' | 'top',
-                                transform: `translate(${mouses[user].x}px,${mouses[user].y}px)`
+                                transform: `translate(${mouses[user].x}px,${mouses[user].y}px)`,
+                                transition: 'all ease 0.1s'
                             }}>
                                 <img width={20} height={20} src={require('./Icons/multi-mouse.png')}></img>
+                                <img style={{borderRadius:'100px',position:'relative', top:'15px',right:'15px',}} width={20} height={20} src={profiles[idx]}></img>
                             </div>)})}
                 </div> 
                 </div>
