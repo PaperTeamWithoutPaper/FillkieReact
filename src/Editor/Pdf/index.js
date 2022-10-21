@@ -3,34 +3,27 @@ import { useEffect, useState } from 'react';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import { pdfjs } from 'react-pdf';
 import pdf from './test.pdf'
+import {useSelector,useDispatch} from 'react-redux'
+import {setPdfPages} from '../../reducer/pdf_reducer'
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 const MyDocument=(props)=> {
   const [numPages, setNumPages] = useState([]);
   const [newPages, setNewPages]=useState([])
   const [pageNumber, setPageNumber] = useState(1);
-
+  const [creatingPage, setCreatingPage]=useState(0)
+  const dispatch=useDispatch()
+  const pages=useSelector(state=>state.pdf_reducer.pages)
   function onDocumentLoadSuccess(params) {
     
     var tempList=[]
+    dispatch(setPdfPages(params.numPages))
     for(var i=1;i<=params.numPages;i++)
     {
         tempList.push(i)
     }
-    
     setNumPages(tempList);
   }
-  useEffect(()=>{
-    var pageList=[]
-    for(var i=1;i<=props.pageNum-numPages.length;i++)
-    {
-        pageList.push(i)
-    }
-      setNewPages(pageList);
-  }
-  ,[])
   
-  
-
 
   return (
     <div style={{ position:'fixed',left:'0px',top:'0px',zIndex:'0',transform:'scale(1)'}}>
@@ -44,12 +37,7 @@ const MyDocument=(props)=> {
             )})
         }
         </Document>
-        {newPages.map((pageNumber)=>{return( 
-            <div>
-        <div style={{backgroundColor:'white', width:`${window.innerHeight*(21.59/28.25)}px`, height:`${window.innerHeight}px`}}>
-        </div>
-        <div style={{height:1, backgroundColor:'gray'}}></div>
-        </div>)})}
+
        
 
 

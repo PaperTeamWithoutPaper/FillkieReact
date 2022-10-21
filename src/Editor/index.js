@@ -100,7 +100,7 @@ const Editor=()=>
         }
     }
     //canvas pages//
-    const [pageNum,setPageNum]=useState(4)
+    const pageNum=useSelector(state=>state.pdf_reducer.pages)
     //canvas position//
     const [canvasX,setCanvasX]=useState(0)
     var cx=0
@@ -693,6 +693,7 @@ const Editor=()=>
                             }}
                         ref={textRef}></textarea>:null
                 }
+                
                  <div data-html2canvas-ignore="true" style={{zIndex:'10',position:'relative'}} >
                         {users.map((user,idx,key)=>{
                             if(user==client.getID()) {return}
@@ -703,7 +704,7 @@ const Editor=()=>
                                 transform: `translate(${mouses[user].x}px,${mouses[user].y}px)`,
                                 transition: 'all ease 0.1s'
                             }}>
-                                <img width={20} height={20} src={require('./Icons/multi-mouse.png')}></img>
+                                <img  width={20} height={20} src={require('./Icons/multi-mouse.png')}></img>
                                 <img style={{borderRadius:'100px',position:'relative', top:'15px',right:'15px',}} width={20} height={20} src={profiles[idx]}></img>
                             </div>)})}
                 </div> 
@@ -746,9 +747,8 @@ const Editor=()=>
                 <button className="toolBox-button" onClick={()=>{toPdf(document.getElementById('test'))}}>
                 <img className="toolBox-icon" src={require("./Icons/tool-download.png")}></img>
                 </button>
-                <button className="toolBox-button" onClick={()=>{setPageNum(pageNum+1)}}>
-                <img className="toolBox-icon" src={require("./Icons/tool-addPage.png")}></img>
-                </button>
+
+
             </div>
             {/*사이드 툴바 */}
             {tool!=='selection' && tool!=='eraser'?
