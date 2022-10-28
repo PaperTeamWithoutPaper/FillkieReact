@@ -31,7 +31,7 @@ const MyDocument=(props)=> {
         {
             numPages.map((pageNumber)=>{return(
                 <div>
-                    <Page wrap={false} size="A4" height={window.innerHeight} pageNumber={pageNumber} />
+                    <Page wrap={false} size="A4" height={1000} pageNumber={pageNumber} />
                     <div style={{height:1, backgroundColor:'gray'}}></div>
                 </div>
             )})

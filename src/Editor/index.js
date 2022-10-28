@@ -139,6 +139,8 @@ const Editor=()=>
     const [selectedPosition, setSelectedPosition]=useState(null);
     const [loading, setLoading]= useState(0);
     const [downPosition,setDownPosition]=useState({x:0,y:0})
+    //conflict Management"
+    const [selectingIndex,setSelectingIndex]=useState(0)
     //const [eraseList,setEraseList]=useState([]);
     //toPDF//
     
@@ -280,6 +282,7 @@ const Editor=()=>
             setAction(tool=== "text"?"writing":'drawing');
    
             const element=createElement(id,clientX,clientY,clientX,clientY,tool,strokeColor,fillColor,strokeWidth,textSize,myFont)
+            setSelectingIndex(id)
             setSelectedElement(element)
             setCurrentTextColor(fillColor)
             doc.update((root)=>{
@@ -337,7 +340,7 @@ const Editor=()=>
         if(action==='drawing')
         { 
             const elements=doc.getRoot().shapes;
-            const index=elements.length-1;
+            const index=selectingIndex
             const {x1,y1}=elements[index];
             updateElement(index,x1,y1,clientX,clientY,tool)
             drawAll()
@@ -639,10 +642,10 @@ const Editor=()=>
         <div >
             {loading?<Loading></Loading>:null}
             {
-            <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${window.innerHeight}px`}}>
+            <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${1000}px`}}>
                 <div id="test" style={{
-                        width:`${window.innerHeight*(21.59/28.25)}px`,
-                        height:`${window.innerHeight*pageNum}px`,
+                        width:`${1000*(21.59/28.25)}px`,
+                        height:`${1000*pageNum}px`,
                         zIndex:'1',
                         transformOrigin: 'top left',
                         transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
@@ -653,13 +656,13 @@ const Editor=()=>
                 style={{
                     position:'absolute',
                     zIndex:'5',
-                    width:`${window.innerHeight*(21.59/28.25)}px`,
-                    height:`${window.innerHeight*pageNum}px`,
+                    width:`${1000*(21.59/28.25)}px`,
+                    height:`${1000*pageNum}px`,
                     display:`${loading?'none':'block'}`,
                     }}
                 id="canvas"
-                width={window.innerHeight*(21.59/28.25)*window.devicePixelRatio}
-                height={(window.innerHeight*pageNum)*window.devicePixelRatio}
+                width={1000*(21.59/28.25)*window.devicePixelRatio}
+                height={(1000*pageNum)*window.devicePixelRatio}
                 onMouseDown={(e)=>{onmousedown(e,'des')}}        
                 onMouseMove={(e)=>{onmousemove(e,'des')}}
                 onMouseUp={(e)=>{onmouseup(e,'des')}}
