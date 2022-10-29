@@ -12,12 +12,14 @@ import DocLoader from "./Editor"
 import Loading from "./Loading/Loading"
 import PermissionComponent from "./Permission"
 import FileUpload from "./FIleUpload"
+import TemplateComponent from "./landing/TemplateComponent"
 //import DocLoader from "./Editor"
 const App=()=>
 {
   return (
     <div >
     <Routes>
+      <Route path="/hello" element={<TemplateComponent></TemplateComponent>}/>
       <Route path="/" element={<Login_browser></Login_browser>}/>
       <Route path="/main" element={<MainComponent></MainComponent>}/>
       <Route path="/loginapi" element={<Login_api></Login_api>}/>

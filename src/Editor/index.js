@@ -101,6 +101,7 @@ const Editor=()=>
     }
     //canvas pages//
     const pageNum=useSelector(state=>state.pdf_reducer.pages)
+    const [newPage,setNewPage]=useState(0)
     //canvas position//
     const [canvasX,setCanvasX]=useState(0)
     var cx=0
@@ -644,25 +645,25 @@ const Editor=()=>
             {
             <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${1000}px`}}>
                 <div id="test" style={{
-                        width:`${1000*(21.59/28.25)}px`,
-                        height:`${1000*pageNum}px`,
+                        width:`${1000*(595.28/841.89)}px`,
+                        height:`${1000*(pageNum+newPage)}px`,
                         zIndex:'1',
                         transformOrigin: 'top left',
                         transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
                 }}>
                    
-                    
+                <button onClick={()=>{setNewPage(newPage+1);setScalePer(scalePer+0.00001)}} style={{width:`${1000*(595.28/841.89)}px`, position:'absolute',zIndex:'6',transform:`translateY(${1000*(pageNum+newPage)}px)`}}>Add Page</button>
                 <canvas
                 style={{
                     position:'absolute',
                     zIndex:'5',
-                    width:`${1000*(21.59/28.25)}px`,
-                    height:`${1000*pageNum}px`,
+                    width:`${1000*(595.28/841.89)}px`,
+                    height:`${1000*(pageNum+newPage)}px`,
                     display:`${loading?'none':'block'}`,
                     }}
                 id="canvas"
-                width={1000*(21.59/28.25)*window.devicePixelRatio}
-                height={(1000*pageNum)*window.devicePixelRatio}
+                width={1000*(595.28/841.89)*window.devicePixelRatio}
+                height={(1000*(pageNum+newPage))*window.devicePixelRatio}
                 onMouseDown={(e)=>{onmousedown(e,'des')}}        
                 onMouseMove={(e)=>{onmousemove(e,'des')}}
                 onMouseUp={(e)=>{onmouseup(e,'des')}}
@@ -671,7 +672,7 @@ const Editor=()=>
                 onTouchEnd={(e)=>{onmouseup(e,'mob')}} >  
                 </canvas>   
 
-                <MyDocument pageNum={pageNum}></MyDocument>
+                <MyDocument pageNums={newPage}></MyDocument>
                 {
                     action === "writing"?
                     <textarea
@@ -696,6 +697,7 @@ const Editor=()=>
                             }}
                         ref={textRef}></textarea>:null
                 }
+                
                 
                  <div data-html2canvas-ignore="true" style={{zIndex:'10',position:'relative'}} >
                         {users.map((user,idx,key)=>{
