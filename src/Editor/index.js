@@ -101,6 +101,7 @@ const Editor=()=>
     }
     //canvas pages//
     const pageNum=useSelector(state=>state.pdf_reducer.pages)
+    const [newPage,setNewPage]=useState(0)
     //canvas position//
     const [canvasX,setCanvasX]=useState(0)
     var cx=0
@@ -139,6 +140,8 @@ const Editor=()=>
     const [selectedPosition, setSelectedPosition]=useState(null);
     const [loading, setLoading]= useState(0);
     const [downPosition,setDownPosition]=useState({x:0,y:0})
+    //conflict Management"
+    const [selectingIndex,setSelectingIndex]=useState(0)
     //const [eraseList,setEraseList]=useState([]);
     //toPDF//
     
@@ -280,6 +283,7 @@ const Editor=()=>
             setAction(tool=== "text"?"writing":'drawing');
    
             const element=createElement(id,clientX,clientY,clientX,clientY,tool,strokeColor,fillColor,strokeWidth,textSize,myFont)
+            setSelectingIndex(id)
             setSelectedElement(element)
             setCurrentTextColor(fillColor)
             doc.update((root)=>{
@@ -337,7 +341,7 @@ const Editor=()=>
         if(action==='drawing')
         { 
             const elements=doc.getRoot().shapes;
-            const index=elements.length-1;
+            const index=selectingIndex
             const {x1,y1}=elements[index];
             updateElement(index,x1,y1,clientX,clientY,tool)
             drawAll()
@@ -468,14 +472,17 @@ const Editor=()=>
         e.target.value=""
         drawAll();
     }
-
+    useEffect(()=>
+    {
+        setScalePer(scalePer+0.00001);
+    },[newPage])
 
     //캔버스 생성//
     function drawAll()
     {
         if(doc==null) return
         const root = doc.getRoot();
-        
+        if(root.shapes===undefined) return
         context.clearRect(0,0,canvas.width,canvas.height);
         
         /*var img = new Image();
@@ -521,12 +528,14 @@ const Editor=()=>
         
         doc.subscribe((event) => {
             if (event.type === 'remote-change') {
+                setNewPage(doc.getRoot().pages)
                 drawAll()
+                
+
             }
             });
 
         client.subscribe((event) => {
-            
             if (event.type === 'peers-changed') {
                 doc.update((root) => {
                     if(!root.shapes)
@@ -541,6 +550,10 @@ const Editor=()=>
                     {
                         root.users=[]
                     }    
+                    if(!root.pages)
+                    {
+                        root.pages=0
+                    }
                     
                     });
                 
@@ -549,7 +562,6 @@ const Editor=()=>
                     doc.update((root) => {
                         root.mouses[user]={'x':0,'y':0}
                         });
-                    
                 })
                 setEmails([])
                 setProfiles([])
@@ -558,6 +570,7 @@ const Editor=()=>
                     setProfiles((before)=>[...before,presence.image])
                   }
                 setMouses(doc.getRoot().mouses)
+                
             } else if (event.type === 'stream-connection-status-changed') {
                 
             }
@@ -639,27 +652,32 @@ const Editor=()=>
         <div >
             {loading?<Loading></Loading>:null}
             {
-            <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${window.innerHeight}px`}}>
+            <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${1000}px`}}>
                 <div id="test" style={{
-                        width:`${window.innerHeight*(21.59/28.25)}px`,
-                        height:`${window.innerHeight*pageNum}px`,
+                        width:`${1000*(595.28/841.89)}px`,
+                        height:`${1000*(pageNum+newPage)}px`,
                         zIndex:'1',
                         transformOrigin: 'top left',
                         transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
                 }}>
                    
-                    
+                <button onClick={()=>{
+                    setNewPage(newPage+1);
+                    doc.update((root) => {
+                        root.pages=root.pages+1
+                        });}} 
+                style={{width:`${1000*(595.28/841.89)}px`, position:'absolute',zIndex:'6',transform:`translateY(${1000*(pageNum+newPage)}px)`}}>Add Page</button>
                 <canvas
                 style={{
                     position:'absolute',
                     zIndex:'5',
-                    width:`${window.innerHeight*(21.59/28.25)}px`,
-                    height:`${window.innerHeight*pageNum}px`,
+                    width:`${1000*(595.28/841.89)}px`,
+                    height:`${1000*(pageNum+newPage)}px`,
                     display:`${loading?'none':'block'}`,
                     }}
                 id="canvas"
-                width={window.innerHeight*(21.59/28.25)*window.devicePixelRatio}
-                height={(window.innerHeight*pageNum)*window.devicePixelRatio}
+                width={1000*(595.28/841.89)*window.devicePixelRatio}
+                height={(1000*(pageNum+newPage))*window.devicePixelRatio}
                 onMouseDown={(e)=>{onmousedown(e,'des')}}        
                 onMouseMove={(e)=>{onmousemove(e,'des')}}
                 onMouseUp={(e)=>{onmouseup(e,'des')}}
@@ -668,7 +686,7 @@ const Editor=()=>
                 onTouchEnd={(e)=>{onmouseup(e,'mob')}} >  
                 </canvas>   
 
-                <MyDocument pageNum={pageNum}></MyDocument>
+                <MyDocument pageNums={newPage}></MyDocument>
                 {
                     action === "writing"?
                     <textarea
@@ -693,6 +711,7 @@ const Editor=()=>
                             }}
                         ref={textRef}></textarea>:null
                 }
+                
                 
                  <div data-html2canvas-ignore="true" style={{zIndex:'10',position:'relative'}} >
                         {users.map((user,idx,key)=>{

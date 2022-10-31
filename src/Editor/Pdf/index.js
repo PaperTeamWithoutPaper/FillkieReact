@@ -6,15 +6,27 @@ import pdf from './test.pdf'
 import {useSelector,useDispatch} from 'react-redux'
 import {setPdfPages} from '../../reducer/pdf_reducer'
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-const MyDocument=(props)=> {
+const MyDocument=({pageNums})=> {
   const [numPages, setNumPages] = useState([]);
   const [newPages, setNewPages]=useState([])
   const [pageNumber, setPageNumber] = useState(1);
   const [creatingPage, setCreatingPage]=useState(0)
   const dispatch=useDispatch()
   const pages=useSelector(state=>state.pdf_reducer.pages)
+  useEffect(()=>
+  {
+    var tempList=[]
+    for(var i=0;i<pageNums;i++)
+    {
+      
+      tempList.push(pageNums)
+    }
+    setNewPages(tempList)
+    console.log(tempList)
+  },[pageNums])
+
   function onDocumentLoadSuccess(params) {
-    
+    console.log(params)
     var tempList=[]
     dispatch(setPdfPages(params.numPages))
     for(var i=1;i<=params.numPages;i++)
@@ -31,12 +43,18 @@ const MyDocument=(props)=> {
         {
             numPages.map((pageNumber)=>{return(
                 <div>
-                    <Page wrap={false} size="A4" height={window.innerHeight} pageNumber={pageNumber} />
-                    <div style={{height:1, backgroundColor:'gray'}}></div>
+                    <Page wrap={false} height={1000} pageNumber={pageNumber} />
+                    <div data-html2canvas-ignore="true" style={{height:1, backgroundColor:'gray'}}></div>
                 </div>
             )})
         }
         </Document>
+        {newPages.map((pageNumber)=>{return(
+          <div>
+            <div style={{height:'1000px',width:1000*(595.28/841.89),backgroundColor:'white'}}></div>
+            <div data-html2canvas-ignore="true" style={{height:1, backgroundColor:'gray'}}></div>
+          </div>
+        )})}
 
        
 
