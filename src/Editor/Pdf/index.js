@@ -44,7 +44,7 @@ const MyDocument=({pageNums})=> {
             numPages.map((pageNumber)=>{return(
                 <div>
                     <Page wrap={false} height={1000} pageNumber={pageNumber} />
-                    <div style={{height:1, backgroundColor:'gray'}}></div>
+                    <div data-html2canvas-ignore="true" style={{height:1, backgroundColor:'gray'}}></div>
                 </div>
             )})
         }
@@ -52,7 +52,7 @@ const MyDocument=({pageNums})=> {
         {newPages.map((pageNumber)=>{return(
           <div>
             <div style={{height:'1000px',width:1000*(595.28/841.89),backgroundColor:'white'}}></div>
-            <div style={{height:1, backgroundColor:'gray'}}></div>
+            <div data-html2canvas-ignore="true" style={{height:1, backgroundColor:'gray'}}></div>
           </div>
         )})}
 

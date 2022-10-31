@@ -472,14 +472,17 @@ const Editor=()=>
         e.target.value=""
         drawAll();
     }
-
+    useEffect(()=>
+    {
+        setScalePer(scalePer+0.00001);
+    },[newPage])
 
     //캔버스 생성//
     function drawAll()
     {
         if(doc==null) return
         const root = doc.getRoot();
-        
+        if(root.shapes===undefined) return
         context.clearRect(0,0,canvas.width,canvas.height);
         
         /*var img = new Image();
@@ -525,12 +528,14 @@ const Editor=()=>
         
         doc.subscribe((event) => {
             if (event.type === 'remote-change') {
+                setNewPage(doc.getRoot().pages)
                 drawAll()
+                
+
             }
             });
 
         client.subscribe((event) => {
-            
             if (event.type === 'peers-changed') {
                 doc.update((root) => {
                     if(!root.shapes)
@@ -545,6 +550,10 @@ const Editor=()=>
                     {
                         root.users=[]
                     }    
+                    if(!root.pages)
+                    {
+                        root.pages=0
+                    }
                     
                     });
                 
@@ -553,7 +562,6 @@ const Editor=()=>
                     doc.update((root) => {
                         root.mouses[user]={'x':0,'y':0}
                         });
-                    
                 })
                 setEmails([])
                 setProfiles([])
@@ -562,6 +570,7 @@ const Editor=()=>
                     setProfiles((before)=>[...before,presence.image])
                   }
                 setMouses(doc.getRoot().mouses)
+                
             } else if (event.type === 'stream-connection-status-changed') {
                 
             }
@@ -652,7 +661,12 @@ const Editor=()=>
                         transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
                 }}>
                    
-                <button onClick={()=>{setNewPage(newPage+1);setScalePer(scalePer+0.00001)}} style={{width:`${1000*(595.28/841.89)}px`, position:'absolute',zIndex:'6',transform:`translateY(${1000*(pageNum+newPage)}px)`}}>Add Page</button>
+                <button onClick={()=>{
+                    setNewPage(newPage+1);
+                    doc.update((root) => {
+                        root.pages=root.pages+1
+                        });}} 
+                style={{width:`${1000*(595.28/841.89)}px`, position:'absolute',zIndex:'6',transform:`translateY(${1000*(pageNum+newPage)}px)`}}>Add Page</button>
                 <canvas
                 style={{
                     position:'absolute',

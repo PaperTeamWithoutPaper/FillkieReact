@@ -9,7 +9,7 @@ export const toPdf= async (object)=>
     //2.이미지화
     const imageFile = cv.toDataURL('image/png');
     //3.pdf준비
-    const doc = new jsPDF('p','mm',[282.5, 215.9]);
+    const doc = new jsPDF('p','mm',[595.28, 841.89]);
     //pdf 가로 세로 사이즈
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();

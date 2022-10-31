@@ -20,7 +20,7 @@ import axios from 'axios';
 import { getCookie } from '../cookie';
 import { setProjectInfo } from '../reducer/project_reducer';
 import { springAxios,nodeAxios } from '../apis/api';
-import FloatingButton from '../buttons/FloatingButton';
+import FloatingButton from '../FloatingButton';
 
 ///
 
