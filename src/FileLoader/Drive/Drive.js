@@ -92,7 +92,7 @@ const Drive=()=>
             {isContext?<div style={{position:'absolute',left:`${position.x}px`,top:`${position.y-70}px`,zIndex:'3'}}><ContextModal></ContextModal></div>:null}
             <div style={{transition: 'all ease 0.3s', opacity:`${100-fileLoadingVal*50}%`}}>
             <div className="Drive-flex" onMouseDown={()=>{setIsContext(0)}}>
-                {file!=undefined?(file.map((data)=>{return(<Card pid={id} id={data.key} type={data.type} thumbnail={data.thumbnail} title={data.name} desc={data.desc}></Card>)})):null}
+                {file!=undefined?(file.map((data)=>{return(<Card name={data.name} pid={id} id={data.key} type={data.type} thumbnail={data.thumbnail} title={data.name} desc={data.desc}></Card>)})):null}
             </div>
             </div>
             

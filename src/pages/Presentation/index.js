@@ -14,6 +14,9 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
+import qs from "querystring";
+
+import './Login.scss'
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -47,6 +50,28 @@ import footerRoutes from "footer.routes";
 import bgImage from "assets/images/page_bg.jpg";
 
 function Presentation() {
+  const onLogin=()=>{
+        
+        const OATUH_HOST = 'https://accounts.google.com/o/oauth2/auth';
+        const client_id = '1034908248402-q3m195dsmf7k513svjnqs5npkkehm482.apps.googleusercontent.com';
+        // api의 callback 주소로 code를 받을 시 돌아옴
+        const redirect_uri = 'https://api.fillkie.com/spring/user/oauth/google';
+        const response_type = "code";
+        const scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/drive ';
+        const access_type= "offline";
+        const prompt= "consent";
+        const AUTHORIZE_URI = `${OATUH_HOST}?${qs.stringify({
+            client_id,
+            redirect_uri,
+            response_type,
+            scope,
+            access_type,
+            prompt,
+        })}`;
+        window.location.href = AUTHORIZE_URI;
+        
+        
+    }
   return (
     <>
 
@@ -87,16 +112,10 @@ function Presentation() {
             </MKTypography>
             <Grid item
             mt={5}>
-            <MKSocialButton
-                  mt={6}
-
-                  href="https://fillkie.com/hello"
-                  target="_blank"
-                  color="gray"
-                >
-                  <i className="fab fa-twitter" />
-                  &nbsp;시작하기
-                </MKSocialButton>
+            <div onClick={onLogin} className="Login-google-button" >
+                <img className="Login-button-logo" src={require('./Icon/googleLogo.png')}></img>
+                <div className="Login-button-desc">Sign in with google</div>
+            </div>
             </Grid>
           </Grid>
 

@@ -48,7 +48,7 @@ const DirectoryPath=()=>
             </div>
             <div className="DirectoryPath-files">
                 <div onClick={readFile} className="DirectoryPath-title">PROJECT1</div>
-                {file!=undefined?file.map((e)=>{if(e.type==2){return(<DirectoryBar id={e.key} depth={0} title={e.name}></DirectoryBar>)}else{return(<FileBar  key={e.key} depth={0} title={e.name}></FileBar>)}}):null}
+                {file!=undefined?file.map((e)=>{if(e.type==2){return(<DirectoryBar name={e.name} id={e.key} depth={0} title={e.name}></DirectoryBar>)}else{return(<FileBar name={e.name} key={e.key} depth={0} title={e.name}></FileBar>)}}):null}
             </div>
         </div>
     )
