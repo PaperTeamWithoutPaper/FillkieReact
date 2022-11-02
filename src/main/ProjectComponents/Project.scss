@@ -27,33 +27,32 @@
     }
 }
 .Card{
-    $opacity:0;
     &-body{
-        width: 200px;
-        height:250px;
+        width: 160px;
+        height: 140px;
         background-color: rgb(255, 255, 255);
-        border-radius: 10px;
+        border-radius: 10px 10px 0px 0px;
         box-shadow: 0px 2px 3px lightgray;
         margin:10px;
     }
-    &-body-over{
-        width:200px;
-        height:250px;
-        background-color: rgb(255, 255, 255);
-        border-radius: 10px;
-        box-shadow: 0px 2px 3px lightgray;
-        outline: solid 5px rgba(247, 122, 5, 0.37);
-        margin:10px;
-
-    }
+   
     &-body:hover{
         cursor: pointer;
     }
-
-    &-title{
+    &-icon{
         position:absolute;
-        transform:translateY(195px);
-        margin:10px;
+        font-size: 120px;
+        transform: translateX(15px);
+        text-align: center;
+    }
+    &-title{
+        width:140px;
+        height:auto;
+        background-color: white;
+        word-break: break-all;
+        border-radius: 0px 0px 10px 10px;
+        box-shadow: 0px 2px 3px lightgray;
+        padding: 10px;
     }
     &-desc-active{
         position:absolute;
@@ -73,16 +72,16 @@
     }
     &-shadow-active{
         position:relative;
-        width:200px;
-        height:200px;
+        width:160px;
+        height:140px;
         background-color: rgba(0, 0, 0, 0.4);
         border-radius: 10px 10px 0px 0px;
         transition: all ease 0.3s;
     }
     &-shadow-hidden{
         position:relative;
-        width:200px;
-        height:200px;
+        width:160px;
+        height:140px;
         background-color: rgba(0, 0, 0, 0);
         border-radius: 10px 10px 0px 0px;
         transition: all ease 0.3s;

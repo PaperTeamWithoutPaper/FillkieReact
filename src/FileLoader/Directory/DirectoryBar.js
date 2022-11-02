@@ -51,7 +51,7 @@ const DirectoryBar=(props)=>
                     {<div>📁</div>} 
                     <div style={{marginLeft:'5px'}}>{props.title}</div>
                 </div>
-            {file!=undefined?(file.map((e)=>{if(e.type==2 && isclicked==1){return(<DirectoryBar title={e.name} id={e.key} depth={props.depth+1} ></DirectoryBar>)}else if(isclicked==1){return(<FileBar  title={e.name} id={e.key} depth={props.depth+1} ></FileBar>)}})):null}
+            {file!=undefined?(file.map((e)=>{if(e.type==2 && isclicked==1){return(<DirectoryBar name={e.name} title={e.name} id={e.key} depth={props.depth+1} ></DirectoryBar>)}else if(isclicked==1){return(<FileBar name={e.name} title={e.name} id={e.key} depth={props.depth+1} ></FileBar>)}})):null}
             </div>
         </div>
     )

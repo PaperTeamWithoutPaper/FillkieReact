@@ -6,10 +6,10 @@ import { useNavigate } from "react-router";
 import { nodeAxios } from "../../apis/api";
 import { setFileInfo,fileLoading, setCurDir, setDragFrom } from "../../reducer/file_reducer";
 const Card=(props)=>
-
 {
     const [ishover,setIshover]=useState(0)
     const [isover,setIsover]=useState(0)
+    const [myImage,setMyImage]=useState('')
     const dragFromId=useSelector(state=>state.file_reducer.dragFromId)
     const ondragover=()=>
     {
@@ -37,6 +37,24 @@ const Card=(props)=>
     }
     const dispatch=useDispatch();
     const navigate=useNavigate();
+
+    const getIcon=()=>
+    {
+        if(props.type==1)
+        {
+            if(props.name.slice(-5)=='.json')
+                return '📝'
+            if(props.name.slice(-4)=='.png' || props.name.slice(-4)=='.jpg')
+                return '🏞'
+        }
+        if(props.type==2)
+            return '📁'
+        if(props.type==3)
+            return '➕'
+        if(props.type==4)
+            return '🗂'
+        
+    }
     return(
         <div 
             draggable={props.type!=3?'true':'false'}
@@ -44,22 +62,42 @@ const Card=(props)=>
             onDragOver={props.type==2?ondragover: null}
             onDragLeave={props.type==2?ondragleave:null}
             onDrop={props.type==2?ondrop:null}
-            className={isover?"Card-body-over":"Card-body"}
+            className={"Card-body"}
             onMouseOver={()=>{setIshover(1)}} 
             onMouseOut={()=>{setIshover(0)}}
             onClick={()=>{if(props.type==3){dispatch(IsCreateProject(1))}
             if(props.type==2){readFile()}
             if(props.type==4){navigate(`/board/${props.id}/${props.pid}`)}
-            if(props.type==1){navigate(`/meeting/${props.id}`)}
+            if(props.type==1){
+                if(getIcon()=='📝')
+                {
+                    navigate(`/meeting/${props.id}`)
+                }
+                else{
+                    nodeAxios.get(`/file?projectId=${props.pid}&fileId=${props.id}`,{responseType: 'blob'}).then((response)=>{
+                    let url = window.URL || window.webkitURL;
+                    let imgsrc = url.createObjectURL(response.data);
+                    setMyImage(imgsrc);
+
+                })
+            }
+                
+                
+                //
+            }
         }
             
         }
             onContextMenu={(e)=>{
                 e.preventDefault();
                 console.log('a')}}>
-            <div className="Card-title">{props.type==3?'➕':props.type==4?'🗂':props.type==1?'📝':'📁'} {props.title}</div>
+   
+            <div className="Card-icon">{getIcon()}</div>
             <div className={ishover?"Card-shadow-active":"Card-shadow-hidden"}></div>
             <div className={ishover?"Card-desc-active":"Card-desc-hidden"}>{props.desc}</div>
+            <div className="Card-title">{getIcon()} {props.title}</div>
+            {myImage && <img src={myImage} style={{ width: "100px", height: "100px"}}></img>}
+        
         </div>
     )
 }

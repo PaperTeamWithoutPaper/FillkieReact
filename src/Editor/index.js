@@ -296,7 +296,7 @@ const Editor=()=>
     }
     const onmousemove=(e,type)=>
     {
-        
+        e.preventDefault();
         const ratioX=((scalePer-1)/scalePer)
         const ratioY=((scalePer-1)/scalePer)
         var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX
@@ -579,12 +579,14 @@ const Editor=()=>
         
     }
     useEffect(()=> {
+        //프로필 불러오기//
         springAxios.get('/user/profile').then((response)=>{dispatch(setUserInfo(response.data.data.userName,response.data.data.userImage))}).catch(()=>{dispatch(setUserInfo('test@email.com','https://picsum.photos/200'))})
+        //폰트 불러오기//
         myFont = new FontFace('myFont', 'url(https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Manse.woff)');
         myFont.load().then(function(font){
         document.fonts.add(font);
-
         });
+        //캔버스 사이즈//
         canvas=document.getElementById('canvas');
         context=canvas.getContext('2d');
         window.addEventListener("wheel",function(e){e.preventDefault()},{passive: false})
@@ -616,7 +618,7 @@ const Editor=()=>
 
             }
           }, {passive: false})  
-        
+        //클라이언트 활성화//
         if(client===null && user_email!=='asd')
         {
            activateClient();   

@@ -37,19 +37,7 @@ const Login_browser=()=>
             2.Please sign in using your Google ID in the window.
             </p>}
              type={0}></Appbar>
- 
-        <div className="Login-box">
-            <div className="Login-title">Sign in</div>
-            <input className="Login-input-id" placeholder="Type your ID"></input>
-            <input className="Login-input-pw" placeholder="Type your Password"></input>
-            <div className="Login-normal-button" onClick={onLogin}>
-                <div className="Login-button-desc">Sign in</div>
-            </div>
-            <div className="Login-register-box">
-                <div className="Login-register-desc">Do you need account?</div>   
-                <div className="Login-register">Register</div>
-            </div>
-        </div>
+        <img className="Login-logo" src={require("./Icon/logo.png")}></img>
         <div className="Login-google-button" onClick={onLogin}>
                 <img className="Login-button-logo" src={require('./Icon/googleLogo.png')}></img>
                 <div className="Login-button-desc">Sign in with google</div>
