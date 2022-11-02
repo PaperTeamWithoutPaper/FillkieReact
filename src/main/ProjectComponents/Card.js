@@ -5,6 +5,7 @@ import { IsCreateProject } from "../../reducer/project_reducer";
 import { useNavigate } from "react-router";
 import { nodeAxios } from "../../apis/api";
 import { setFileInfo,fileLoading, setCurDir, setDragFrom } from "../../reducer/file_reducer";
+import Loading from "Loading/Loading";
 const Card=(props)=>
 {
     const [ishover,setIshover]=useState(0)
@@ -74,10 +75,14 @@ const Card=(props)=>
                     navigate(`/meeting/${props.id}`)
                 }
                 else{
+                    setMyImage('asd')
                     nodeAxios.get(`/file?projectId=${props.pid}&fileId=${props.id}`,{responseType: 'blob'}).then((response)=>{
+                    
                     let url = window.URL || window.webkitURL;
                     let imgsrc = url.createObjectURL(response.data);
-                    setMyImage(imgsrc);
+                    
+                    window.open(imgsrc);
+                    setMyImage()
 
                 })
             }
@@ -91,12 +96,14 @@ const Card=(props)=>
             onContextMenu={(e)=>{
                 e.preventDefault();
                 console.log('a')}}>
-   
-            <div className="Card-icon">{getIcon()}</div>
-            <div className={ishover?"Card-shadow-active":"Card-shadow-hidden"}></div>
-            <div className={ishover?"Card-desc-active":"Card-desc-hidden"}>{props.desc}</div>
-            <div className="Card-title">{getIcon()} {props.title}</div>
-            {myImage && <img src={myImage} style={{ width: "100px", height: "100px"}}></img>}
+
+                <div className="Card-icon">{getIcon()}</div>
+                <div className={ishover?"Card-shadow-active":"Card-shadow-hidden"}></div>
+                <div className={ishover?"Card-desc-active":"Card-desc-hidden"}>{props.desc}</div>
+                {myImage && <div className="lds-dual-ring"></div>}
+                <div className="Card-title">{getIcon()} {props.title}</div>
+
+            
         
         </div>
     )
