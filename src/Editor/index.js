@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router';
 import { setUserInfo } from '../reducer/user_reducer'
 import { springAxios } from '../apis/api'
+import { useLocation } from 'react-router-dom';
 var client=null;
 var doc= null;
 var canvas= null;
@@ -21,7 +22,11 @@ var pencilStart=null;
 var myFont=null;
 const Editor=()=>
 {
+
     //navigate//
+    const location = useLocation();
+    const myPdf=location.state.pdf;
+    console.log(myPdf)
     //redux//
     const dispatch=useDispatch()
     const { user_email, user_profile } = useSelector(state => ({
@@ -688,7 +693,7 @@ const Editor=()=>
                 onTouchEnd={(e)=>{onmouseup(e,'mob')}} >  
                 </canvas>   
 
-                <MyDocument pageNums={newPage}></MyDocument>
+                <MyDocument pdf={myPdf} pageNums={newPage}></MyDocument>
                 {
                     action === "writing"?
                     <textarea

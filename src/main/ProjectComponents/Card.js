@@ -43,7 +43,7 @@ const Card=(props)=>
     {
         if(props.type==1)
         {
-            if(props.name.slice(-5)=='.json')
+            if(props.name.slice(-8)=='.fillkie' || props.name.slice(-4)=='.pdf')
                 return '📝'
             if(props.name.slice(-4)=='.png' || props.name.slice(-4)=='.jpg')
                 return '🏞'
@@ -72,7 +72,28 @@ const Card=(props)=>
             if(props.type==1){
                 if(getIcon()=='📝')
                 {
-                    navigate(`/meeting/${props.id}`)
+                    if(props.name.slice(-4)=='.pdf')
+                    {
+                        setMyImage('asd')
+                        nodeAxios.get(`/file?projectId=${props.pid}&fileId=${props.id}`,{responseType: 'blob'}).then((response)=>{
+                        
+                        let url = window.URL || window.webkitURL;
+                        let imgsrc = url.createObjectURL(response.data); 
+                        navigate(`/meeting/${props.id}`,{
+                            state: {
+                              pdf: imgsrc
+                            }
+                          })
+                        setMyImage()
+                    })}
+                    else{
+                    navigate(`/meeting/${props.id}`,{
+                        state: {
+                          pdf: 'none'
+                        }
+                      })
+                    }
+                    
                 }
                 else{
                     setMyImage('asd')

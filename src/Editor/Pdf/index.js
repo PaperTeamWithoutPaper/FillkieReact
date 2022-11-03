@@ -2,11 +2,11 @@
 import { useEffect, useState } from 'react';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import { pdfjs } from 'react-pdf';
-import pdf from './test.pdf'
+
 import {useSelector,useDispatch} from 'react-redux'
 import {setPdfPages} from '../../reducer/pdf_reducer'
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-const MyDocument=({pageNums})=> {
+const MyDocument=({pdf, pageNums})=> {
   const [numPages, setNumPages] = useState([]);
   const [newPages, setNewPages]=useState([])
   const [pageNumber, setPageNumber] = useState(1);
@@ -39,7 +39,10 @@ const MyDocument=({pageNums})=> {
 
   return (
     <div style={{ position:'fixed',left:'0px',top:'0px',zIndex:'0',transform:'scale(1)'}}>
-        <Document pageLayout='oneColumn' file={pdf}  onLoadSuccess={onDocumentLoadSuccess}>
+        <Document options={{
+    cMapUrl: 'cmaps/',
+    cMapPacked: true,
+  }}  pageLayout='oneColumn' file={pdf}  onLoadSuccess={onDocumentLoadSuccess}>
         {
             numPages.map((pageNumber)=>{return(
                 <div>
