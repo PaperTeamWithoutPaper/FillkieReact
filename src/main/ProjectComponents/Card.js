@@ -96,7 +96,7 @@ const Card=(props)=>
                     
                 }
                 else{
-                    setMyImage('asd')
+                    setMyImage('./test.pdf')
                     nodeAxios.get(`/file?projectId=${props.pid}&fileId=${props.id}`,{responseType: 'blob'}).then((response)=>{
                     
                     let url = window.URL || window.webkitURL;

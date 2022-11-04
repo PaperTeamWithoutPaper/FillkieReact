@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router';
 import { setUserInfo } from '../reducer/user_reducer'
 import { springAxios } from '../apis/api'
 import { useLocation } from 'react-router-dom';
+import {listenWindowResize} from 'react-size'
 var client=null;
 var doc= null;
 var canvas= null;
