@@ -8,10 +8,11 @@ const FileBar=(props)=>
     const getIcon=()=>
     {
 
-        if(props.name.slice(-5)=='.json')
+        if(props.name.slice(-8)=='.fillkie' || props.name.slice(-4)=='.pdf')
             return '📝'
         if(props.name.slice(-4)=='.png' || props.name.slice(-4)=='.jpg')
             return '🏞'
+        return '💾'
 
         
     }

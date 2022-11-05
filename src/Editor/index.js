@@ -23,7 +23,8 @@ var pencilStart=null;
 var myFont=null;
 const Editor=()=>
 {
-
+    //move//
+    const [isMove,setIsMove]=useState(-1)
     //navigate//
     const location = useLocation();
     const myPdf=location.state.pdf;
@@ -212,11 +213,16 @@ const Editor=()=>
 
     const onmousedown=(e,type)=>
     {
+        if(isMove==1) 
+        {
+            setAction('move')
+            return
+        }
         if(textRef.current) return
         const ratioX=((scalePer-1)/scalePer)
         const ratioY=((scalePer-1)/scalePer)
-        var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX
-        var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.touches[0].clientY-canvasY
+        var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX*(1/scalePer)-e.touches[0].clientX*ratioX
+        var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.touches[0].clientY-canvasY*(1/scalePer)-e.touches[0].clientY*ratioY
 
         setDownPosition({x:clientX,y:clientY})  
         const id = doc.getRoot().shapes.length;
@@ -302,11 +308,19 @@ const Editor=()=>
     }
     const onmousemove=(e,type)=>
     {
-        e.preventDefault();
+        if(action=='move')
+        {
+            cx-=e.movementX
+            cy-=e.movementY
+
+            setCanvasY(cy)
+            setCanvasX(cx)
+            return
+        }
         const ratioX=((scalePer-1)/scalePer)
         const ratioY=((scalePer-1)/scalePer)
-        var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX
-        var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.touches[0].clientY-canvasY
+        var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX*(1/scalePer)-e.touches[0].clientX*ratioX
+        var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.touches[0].clientY-canvasY*(1/scalePer)-e.touches[0].clientY*ratioY
             doc.update((root) => {
                 
                 root.mouses[client.getID()].x=clientX
@@ -385,6 +399,11 @@ const Editor=()=>
     }
     const onmouseup=(e,type)=>
     {
+        if(action=='move')
+        {
+            setAction('')
+            return
+        }
         const ratioX=((scalePer-1)/scalePer)
         const ratioY=((scalePer-1)/scalePer)
         var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX
@@ -576,6 +595,7 @@ const Editor=()=>
                     setProfiles((before)=>[...before,presence.image])
                   }
                 setMouses(doc.getRoot().mouses)
+                console.log('changed!')
                 
             } else if (event.type === 'stream-connection-status-changed') {
                 
@@ -584,6 +604,11 @@ const Editor=()=>
             
         
     }
+    useLayoutEffect(()=>
+    {
+        client=null
+        document.body.style.overflow = "hidden";
+    },[])
     useEffect(()=> {
         //프로필 불러오기//
         springAxios.get('/user/profile').then((response)=>{dispatch(setUserInfo(response.data.data.userName,response.data.data.userImage))}).catch(()=>{dispatch(setUserInfo('test@email.com','https://picsum.photos/200'))})
@@ -657,7 +682,7 @@ const Editor=()=>
   }, []);
     
     return(
-        <div >
+        <div>
             {loading?<Loading></Loading>:null}
             {
             <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${1000}px`}}>
@@ -741,8 +766,8 @@ const Editor=()=>
              
             <div className="participants">
                 <div className="participants-desc">사용자</div>    
-                {emails.map((user,idx,key)=>{console.log(idx);return(
-                <div key={user} className="participants-box">
+                {emails.map((user,idx,key)=>{return(
+                <div className="participants-box">
                      <img className="participants-box-img" src={profiles[idx]}>
                     </img>
                     <div className="participants-box-desc">
@@ -774,6 +799,7 @@ const Editor=()=>
                 <button className="toolBox-button" onClick={()=>{toPdf(document.getElementById('test'))}}>
                 <img className="toolBox-icon" src={require("./Icons/tool-download.png")}></img>
                 </button>
+                <button onClick={()=>{setIsMove(isMove*(-1))}}>test</button>
 
 
             </div>
