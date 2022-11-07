@@ -43,7 +43,7 @@ const MyDocument=({pdf, pageNums})=> {
   
     pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
-    if(pdf=='none')
+    if(pdf=='none' || pdf==null)
     {
       setMyPdf(testPdf)
     }

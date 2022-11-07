@@ -21,14 +21,18 @@ var context=null;
 var pencilR=null;
 var pencilStart=null;
 var myFont=null;
+
+var tempTouchXY={x:0,y:0}
+var startTouchXY={x:0,y:0}
 const Editor=()=>
 {
+    let cx=0
+    let cy=0
     //move//
     const [isMove,setIsMove]=useState(-1)
     //navigate//
     const location = useLocation();
-    const myPdf=location.state.pdf;
-    console.log(myPdf)
+    const myPdf=location.state?location.state.pdf:null;
     //redux//
     const dispatch=useDispatch()
     const { user_email, user_profile } = useSelector(state => ({
@@ -111,11 +115,8 @@ const Editor=()=>
     const [newPage,setNewPage]=useState(0)
     //canvas position//
     const [canvasX,setCanvasX]=useState(0)
-    var cx=0
-    var tcx=0
+
     const [canvasY,setCanvasY]=useState(0)
-    var cy=0
-    var tcy=0
     //scale//
     var scp=1
     const [scalePer,setScalePer]=useState(1)
@@ -213,8 +214,10 @@ const Editor=()=>
 
     const onmousedown=(e,type)=>
     {
-        if(isMove==1) 
+        if(isMove==1 && type=='mob') 
         {
+            tempTouchXY={x:e.touches[0].clientX-canvasX,y:e.touches[0].clientY-canvasY}
+            startTouchXY={x:e.touches[0].clientX,y:e.touches[0].clientY}
             setAction('move')
             return
         }
@@ -310,9 +313,11 @@ const Editor=()=>
     {
         if(action=='move')
         {
-            cx-=e.movementX
-            cy-=e.movementY
-
+            const diffX=startTouchXY.x-e.touches[0].clientX
+            const diffY=startTouchXY.y-e.touches[0].clientY
+            startTouchXY={x:canvasX-diffX+tempTouchXY.x,y:canvasY-diffY+tempTouchXY.y}
+            cy=canvasY-diffY
+            cx=canvasX-diffX
             setCanvasY(cy)
             setCanvasX(cx)
             return
@@ -406,8 +411,8 @@ const Editor=()=>
         }
         const ratioX=((scalePer-1)/scalePer)
         const ratioY=((scalePer-1)/scalePer)
-        var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX
-        var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.touches[0].clientY-canvasY
+        var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.changedTouches[0].clientX-canvasX*(1/scalePer)-e.changedTouches[0].clientX*ratioX
+        var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.changedTouches[0].clientY-canvasY*(1/scalePer)-e.changedTouches[0].clientY*ratioY
         const elements=doc.getRoot().shapes
         if(action==='selecting')
         {
@@ -638,14 +643,14 @@ const Editor=()=>
                     cy+=(e.deltaY/200)*clientY
                     setCanvasX(cx)
                     setCanvasY(cy)
+                    
                 }        
             } else {
   
                 cx-=e.deltaX
                 cy-=e.deltaY
-
-              setCanvasY(cy)
-              setCanvasX(cx)
+                setCanvasY(cy)
+                setCanvasX(cx)
 
             }
           }, {passive: false})  
