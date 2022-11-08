@@ -13,7 +13,8 @@ import { useNavigate } from 'react-router';
 import { setUserInfo } from '../reducer/user_reducer'
 import { springAxios } from '../apis/api'
 import { useLocation } from 'react-router-dom';
-import {listenWindowResize} from 'react-size'
+import PanZoomMap from "react-pan-zoom-map";
+import {useMediaQuery} from 'react-responsive'
 var client=null;
 var doc= null;
 var canvas= null;
@@ -26,6 +27,9 @@ var tempTouchXY={x:0,y:0}
 var startTouchXY={x:0,y:0}
 const Editor=()=>
 {
+    //responsive//
+    const device=useMediaQuery({ query: '(min-width: 800px)' })
+    console.log(device)
     let cx=0
     let cy=0
     //move//
@@ -214,13 +218,7 @@ const Editor=()=>
 
     const onmousedown=(e,type)=>
     {
-        if(isMove==1 && type=='mob') 
-        {
-            tempTouchXY={x:e.touches[0].clientX-canvasX,y:e.touches[0].clientY-canvasY}
-            startTouchXY={x:e.touches[0].clientX,y:e.touches[0].clientY}
-            setAction('move')
-            return
-        }
+
         if(textRef.current) return
         const ratioX=((scalePer-1)/scalePer)
         const ratioY=((scalePer-1)/scalePer)
@@ -311,17 +309,6 @@ const Editor=()=>
     }
     const onmousemove=(e,type)=>
     {
-        if(action=='move')
-        {
-            const diffX=startTouchXY.x-e.touches[0].clientX
-            const diffY=startTouchXY.y-e.touches[0].clientY
-            startTouchXY={x:canvasX-diffX+tempTouchXY.x,y:canvasY-diffY+tempTouchXY.y}
-            cy=canvasY-diffY
-            cx=canvasX-diffX
-            setCanvasY(cy)
-            setCanvasX(cx)
-            return
-        }
         const ratioX=((scalePer-1)/scalePer)
         const ratioY=((scalePer-1)/scalePer)
         var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX*(1/scalePer)-e.touches[0].clientX*ratioX
@@ -613,6 +600,12 @@ const Editor=()=>
     {
         client=null
         document.body.style.overflow = "hidden";
+        let vh = window.innerHeight * 0.01
+        document.documentElement.style.setProperty('--vh', `${vh}px`)
+        window.addEventListener('resize', () => {
+        let vh = window.innerHeight * 0.01
+        document.documentElement.style.setProperty('--vh', `${vh}px`)
+        })
     },[])
     useEffect(()=> {
         //프로필 불러오기//
@@ -626,34 +619,8 @@ const Editor=()=>
         canvas=document.getElementById('canvas');
         context=canvas.getContext('2d');
         window.addEventListener("wheel",function(e){e.preventDefault()},{passive: false})
-        const frame=document.getElementById('frame');
-        frame.addEventListener("wheel", function(e){
-            e.preventDefault();
-            if (e.ctrlKey) {
-                if(scp-e.deltaY/200>=0.2 && scp-e.deltaY/200<=5)
-                {
-                    const ratioX=((scp-1)/scp)
-                    const ratioY=((scp-1)/scp)
-                    const clientX=e.clientX-cx*(1/scp)-e.clientX*ratioX
-                    const clientY=e.clientY-cy*(1/scp)-e.clientY*ratioY
-    
-                    scp-=e.deltaY/200
-                    setScalePer(scp)
-                    cx+=(e.deltaY/200)*clientX
-                    cy+=(e.deltaY/200)*clientY
-                    setCanvasX(cx)
-                    setCanvasY(cy)
-                    
-                }        
-            } else {
-  
-                cx-=e.deltaX
-                cy-=e.deltaY
-                setCanvasY(cy)
-                setCanvasX(cx)
-
-            }
-          }, {passive: false})  
+        
+       
         //클라이언트 활성화//
         if(client===null && user_email!=='asd')
         {
@@ -687,16 +654,24 @@ const Editor=()=>
   }, []);
     
     return(
-        <div>
+        <div className='bg'>
             {loading?<Loading></Loading>:null}
             {
             <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${1000}px`}}>
+                <PanZoomMap
+                onPanZoom={(translation,zoom)=>{
+                    setCanvasX(translation.x)
+                    setCanvasY(translation.y)
+                    setScalePer(zoom)
+                   }}
+                controlMethod={device?"trackpad":"mouse"}
+                 >
                 <div id="test" style={{
                         width:`${1000*(595.28/841.89)}px`,
                         height:`${1000*(pageNum+newPage)}px`,
                         zIndex:'1',
-                        transformOrigin: 'top left',
-                        transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
+                        //transformOrigin: 'top left',
+                        //transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
                 }}>
                    
                 <button onClick={()=>{
@@ -705,24 +680,28 @@ const Editor=()=>
                         root.pages=root.pages+1
                         });}} 
                 style={{width:`${1000*(595.28/841.89)}px`, position:'absolute',zIndex:'6',transform:`translateY(${1000*(pageNum+newPage)}px)`}}>Add Page</button>
-                <canvas
-                style={{
-                    position:'absolute',
-                    zIndex:'5',
-                    width:`${1000*(595.28/841.89)}px`,
-                    height:`${1000*(pageNum+newPage)}px`,
-                    display:`${loading?'none':'block'}`,
-                    }}
-                id="canvas"
-                width={1000*(595.28/841.89)*window.devicePixelRatio}
-                height={(1000*(pageNum+newPage))*window.devicePixelRatio}
-                onMouseDown={(e)=>{onmousedown(e,'des')}}        
-                onMouseMove={(e)=>{onmousemove(e,'des')}}
-                onMouseUp={(e)=>{onmouseup(e,'des')}}
-                onTouchStart={(e)=>{onmousedown(e,'mob')}}
-                onTouchMove={(e)=>{onmousemove(e,'mob')}}
-                onTouchEnd={(e)=>{onmouseup(e,'mob')}} >  
-                </canvas>   
+                
+                        <canvas
+                        style={{
+                            position:'absolute',
+                            zIndex:'5',
+                            width:`${1000*(595.28/841.89)}px`,
+                            height:`${1000*(pageNum+newPage)}px`,
+                            display:`${loading?'none':'block'}`,
+                          
+                            }}
+                        id="canvas"
+                        width={1000*(595.28/841.89)*window.devicePixelRatio}
+                        height={(1000*(pageNum+newPage))*window.devicePixelRatio}
+                        onMouseDown={(e)=>{onmousedown(e,'des')}}        
+                        onMouseMove={(e)=>{onmousemove(e,'des')}}
+                        onMouseUp={(e)=>{onmouseup(e,'des')}}
+                        onTouchStart={(e)=>{onmousedown(e,'mob')}}
+                        onTouchMove={(e)=>{onmousemove(e,'mob')}}
+                        onTouchEnd={(e)=>{onmouseup(e,'mob')}} >  
+                        </canvas>   
+                      
+        
 
                 <MyDocument pdf={myPdf} pageNums={newPage}></MyDocument>
                 {
@@ -765,7 +744,9 @@ const Editor=()=>
                                 <img style={{borderRadius:'100px',position:'relative', top:'15px',right:'15px',}} width={20} height={20} src={profiles[idx]}></img>
                             </div>)})}
                 </div> 
+                
                 </div>
+                </PanZoomMap> 
             </div>
             }
              
