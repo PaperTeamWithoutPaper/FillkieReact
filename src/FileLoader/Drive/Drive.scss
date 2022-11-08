@@ -5,10 +5,12 @@
     &-flex{
         position: relative;
         display: flex;
-        flex-wrap: wrap;
+        
         z-index: 2;
         overflow-y: auto;
         height:calc(100vh - 65px);
+        flex-wrap: wrap;
+        row-gap:50px;
     }
     &-bg{
         background-color: rgb(255, 208, 0);

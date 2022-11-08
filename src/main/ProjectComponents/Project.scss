@@ -88,11 +88,11 @@
     }
 }
 
-.lds-dual-ring {
+.lds-dual-ringb {
     position: absolute;
     transform: translate(calc(64px),-80px);
 }
-.lds-dual-ring:after {
+.lds-dual-ringb:after {
     content: " ";
     display: block;
     width: 20px;
@@ -102,7 +102,7 @@
     border-color: rgb(2, 120, 255) transparent rgb(2, 120, 255) transparent;
     animation: lds-dual-ring 1.2s ease-in-out infinite;
 }
-@keyframes lds-dual-ring {
+@keyframes lds-dual-ringb {
     0% {
     transform: rotate(0deg);
     }

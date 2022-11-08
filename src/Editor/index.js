@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router';
 import { setUserInfo } from '../reducer/user_reducer'
 import { springAxios } from '../apis/api'
 import { useLocation } from 'react-router-dom';
+import {listenWindowResize} from 'react-size'
 var client=null;
 var doc= null;
 var canvas= null;
@@ -20,13 +21,18 @@ var context=null;
 var pencilR=null;
 var pencilStart=null;
 var myFont=null;
+
+var tempTouchXY={x:0,y:0}
+var startTouchXY={x:0,y:0}
 const Editor=()=>
 {
-
+    let cx=0
+    let cy=0
+    //move//
+    const [isMove,setIsMove]=useState(-1)
     //navigate//
     const location = useLocation();
-    const myPdf=location.state.pdf;
-    console.log(myPdf)
+    const myPdf=location.state?location.state.pdf:null;
     //redux//
     const dispatch=useDispatch()
     const { user_email, user_profile } = useSelector(state => ({
@@ -109,11 +115,8 @@ const Editor=()=>
     const [newPage,setNewPage]=useState(0)
     //canvas position//
     const [canvasX,setCanvasX]=useState(0)
-    var cx=0
-    var tcx=0
+
     const [canvasY,setCanvasY]=useState(0)
-    var cy=0
-    var tcy=0
     //scale//
     var scp=1
     const [scalePer,setScalePer]=useState(1)
@@ -211,11 +214,18 @@ const Editor=()=>
 
     const onmousedown=(e,type)=>
     {
+        if(isMove==1 && type=='mob') 
+        {
+            tempTouchXY={x:e.touches[0].clientX-canvasX,y:e.touches[0].clientY-canvasY}
+            startTouchXY={x:e.touches[0].clientX,y:e.touches[0].clientY}
+            setAction('move')
+            return
+        }
         if(textRef.current) return
         const ratioX=((scalePer-1)/scalePer)
         const ratioY=((scalePer-1)/scalePer)
-        var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX
-        var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.touches[0].clientY-canvasY
+        var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX*(1/scalePer)-e.touches[0].clientX*ratioX
+        var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.touches[0].clientY-canvasY*(1/scalePer)-e.touches[0].clientY*ratioY
 
         setDownPosition({x:clientX,y:clientY})  
         const id = doc.getRoot().shapes.length;
@@ -301,11 +311,21 @@ const Editor=()=>
     }
     const onmousemove=(e,type)=>
     {
-        e.preventDefault();
+        if(action=='move')
+        {
+            const diffX=startTouchXY.x-e.touches[0].clientX
+            const diffY=startTouchXY.y-e.touches[0].clientY
+            startTouchXY={x:canvasX-diffX+tempTouchXY.x,y:canvasY-diffY+tempTouchXY.y}
+            cy=canvasY-diffY
+            cx=canvasX-diffX
+            setCanvasY(cy)
+            setCanvasX(cx)
+            return
+        }
         const ratioX=((scalePer-1)/scalePer)
         const ratioY=((scalePer-1)/scalePer)
-        var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX
-        var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.touches[0].clientY-canvasY
+        var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX*(1/scalePer)-e.touches[0].clientX*ratioX
+        var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.touches[0].clientY-canvasY*(1/scalePer)-e.touches[0].clientY*ratioY
             doc.update((root) => {
                 
                 root.mouses[client.getID()].x=clientX
@@ -384,10 +404,15 @@ const Editor=()=>
     }
     const onmouseup=(e,type)=>
     {
+        if(action=='move')
+        {
+            setAction('')
+            return
+        }
         const ratioX=((scalePer-1)/scalePer)
         const ratioY=((scalePer-1)/scalePer)
-        var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX
-        var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.touches[0].clientY-canvasY
+        var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.changedTouches[0].clientX-canvasX*(1/scalePer)-e.changedTouches[0].clientX*ratioX
+        var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.changedTouches[0].clientY-canvasY*(1/scalePer)-e.changedTouches[0].clientY*ratioY
         const elements=doc.getRoot().shapes
         if(action==='selecting')
         {
@@ -575,6 +600,7 @@ const Editor=()=>
                     setProfiles((before)=>[...before,presence.image])
                   }
                 setMouses(doc.getRoot().mouses)
+                console.log('changed!')
                 
             } else if (event.type === 'stream-connection-status-changed') {
                 
@@ -583,6 +609,11 @@ const Editor=()=>
             
         
     }
+    useLayoutEffect(()=>
+    {
+        client=null
+        document.body.style.overflow = "hidden";
+    },[])
     useEffect(()=> {
         //프로필 불러오기//
         springAxios.get('/user/profile').then((response)=>{dispatch(setUserInfo(response.data.data.userName,response.data.data.userImage))}).catch(()=>{dispatch(setUserInfo('test@email.com','https://picsum.photos/200'))})
@@ -612,14 +643,14 @@ const Editor=()=>
                     cy+=(e.deltaY/200)*clientY
                     setCanvasX(cx)
                     setCanvasY(cy)
+                    
                 }        
             } else {
   
                 cx-=e.deltaX
                 cy-=e.deltaY
-
-              setCanvasY(cy)
-              setCanvasX(cx)
+                setCanvasY(cy)
+                setCanvasX(cx)
 
             }
           }, {passive: false})  
@@ -656,7 +687,7 @@ const Editor=()=>
   }, []);
     
     return(
-        <div >
+        <div>
             {loading?<Loading></Loading>:null}
             {
             <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${1000}px`}}>
@@ -740,8 +771,8 @@ const Editor=()=>
              
             <div className="participants">
                 <div className="participants-desc">사용자</div>    
-                {emails.map((user,idx,key)=>{console.log(idx);return(
-                <div key={user} className="participants-box">
+                {emails.map((user,idx,key)=>{return(
+                <div className="participants-box">
                      <img className="participants-box-img" src={profiles[idx]}>
                     </img>
                     <div className="participants-box-desc">
@@ -773,6 +804,7 @@ const Editor=()=>
                 <button className="toolBox-button" onClick={()=>{toPdf(document.getElementById('test'))}}>
                 <img className="toolBox-icon" src={require("./Icons/tool-download.png")}></img>
                 </button>
+                <button onClick={()=>{setIsMove(isMove*(-1))}}>test</button>
 
 
             </div>
