@@ -1,0 +1,43 @@
+diff --git a/node_modules/react-quick-pinch-zoom/esm/PinchZoom/component.js b/node_modules/react-quick-pinch-zoom/esm/PinchZoom/component.js
+index 80ebca4..0c282d2 100644
+--- a/node_modules/react-quick-pinch-zoom/esm/PinchZoom/component.js
++++ b/node_modules/react-quick-pinch-zoom/esm/PinchZoom/component.js
+@@ -11,9 +11,7 @@ var abs = Math.abs,
+   sqrt = Math.sqrt;
+ var isSsr = typeof window === 'undefined';
+ var isMac = isSsr ? false : /(Mac)/i.test(navigator.platform);
+-var isDragInteraction = function (i) {
+-  return i === 'drag';
+-};
++
+ var isZoomInteraction = function (i) {
+   return i === 'zoom';
+ };
+@@ -359,14 +357,7 @@ var PinchZoom = /** @class */ (function (_super) {
+   PinchZoom.prototype._handleZoom = function (event, newScale) {
+     var touchCenter = getVectorAvg(this._getOffsetTouches(event));
+     var scale = newScale / this._lastScale;
+-    this._lastScale = newScale;
+-    // The first touch events are thrown away since they are not precise
+-    this._nthZoom += 1;
+-    if (this._nthZoom > 3) {
+-      this._scale(scale, touchCenter);
+-      this._drag(touchCenter, this._lastZoomCenter);
+-    }
+-    this._lastZoomCenter = touchCenter;
++
+   };
+   PinchZoom.prototype._handleZoomEnd = function () {
+     this.props.onZoomEnd();
+diff --git a/node_modules/react-quick-pinch-zoom/esm/utils.js b/node_modules/react-quick-pinch-zoom/esm/utils.js
+index b5d2a64..bb90c4a 100644
+--- a/node_modules/react-quick-pinch-zoom/esm/utils.js
++++ b/node_modules/react-quick-pinch-zoom/esm/utils.js
+@@ -1,6 +1,6 @@
+ var isSsr = typeof window === 'undefined';
+ export var isTouch = function () {
+-    return !isSsr && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
++    return false
+ };
+ export var make2dTransformValue = function (_a) {
+     var x = _a.x, y = _a.y, scale = _a.scale;
