@@ -13,7 +13,6 @@ import { useNavigate } from 'react-router';
 import { setUserInfo } from '../reducer/user_reducer'
 import { springAxios } from '../apis/api'
 import { useLocation } from 'react-router-dom';
-import PanZoomMap from "react-pan-zoom-map";
 import QuickPinchZoom from "../react-quick-pinch-zoom"
 var client=null;
 var doc= null;

@@ -10,7 +10,6 @@
     "@mui/material": "^5.10.11",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@react-oauth/google": "^0.2.6",
-    "@react-pdf/renderer": "^3.0.0",
     "@reduxjs/toolkit": "^1.8.3",
     "@skilitics/two-fingers": "^0.0.2",
     "@svgr/webpack": "^5.5.0",
@@ -67,12 +66,9 @@
     "react-cookie": "^4.1.1",
     "react-copy-to-clipboard": "^5.1.0",
     "react-countup": "^6.3.2",
-    "react-dev-utils": "^12.0.1",
     "react-dom": "^18.2.0",
-    "react-google-login": "^5.2.2",
     "react-oauth2-auth-code-flow": "^1.0.2",
-    "react-pan-zoom-map": "^0.2.0",
-    "react-pdf": "^5.7.2",
+    "react-pdf": "^6.0.2",
     "react-quick-pinch-zoom": "^4.5.0",
     "react-redux": "^8.0.2",
     "react-refresh": "^0.11.0",
@@ -80,7 +76,6 @@
     "react-router-dom": "^6.3.0",
     "react-size": "^0.1.1",
     "react-syntax-highlighter": "^15.5.0",
-    "react-zoom-pan-pinch": "^2.1.3",
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-logger": "^3.0.6",
@@ -94,7 +89,7 @@
     "terser-webpack-plugin": "^5.2.5",
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4",
-    "webpack": "^5.64.4",
+    "webpack": "^5.74.0",
     "webpack-dev-server": "^4.6.0",
     "webpack-manifest-plugin": "^4.0.2",
     "workbox-webpack-plugin": "^6.4.1",
@@ -105,7 +100,8 @@
     "start-https": "sudo PORT=443 HTTPS=true node scripts/start.js",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "postinstall": "patch-package"
   },
   "eslintConfig": {
     "extends": [
@@ -182,6 +178,9 @@
     ]
   },
   "devDependencies": {
-    "copy-webpack-plugin": "^11.0.0"
+    "copy-webpack-plugin": "^11.0.0",
+    "patch-package": "^6.5.0",
+    "postinstall-postinstall": "^2.1.0",
+    "react-dev-utils": "^12.0.1"
   }
 }
