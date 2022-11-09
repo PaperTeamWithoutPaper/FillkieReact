@@ -54,7 +54,6 @@ const Drive=()=>
             nodeAxios.get(`/dir?projectId=${id}&folderId=${dirId}`).then((response)=>{
                 dispatch(setFileInfo(dirId,response.data.data));
                 dispatch(fileLoading(0))
-                console.log(response.data)
 
                })
         })

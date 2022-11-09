@@ -21,7 +21,7 @@ const App=()=>
     <Routes>
       <Route path="/" element={<WelcomeComponent></WelcomeComponent>}/>
       <Route path="/hello" element={<Login_browser></Login_browser>}/>
-      <Route path="/main" element={<MainComponent></MainComponent>}/>
+      <Route path="/mains" element={<MainComponent></MainComponent>}/>
       <Route path="/loginapi" element={<Login_api></Login_api>}/>
       <Route exact path="/meeting/:docKey" element={<DocLoader></DocLoader>}/>
       <Route exact path="/welcome/:id" element={<InviteComponent></InviteComponent>}/>
