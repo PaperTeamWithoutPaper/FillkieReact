@@ -12,7 +12,7 @@ import DocLoader from "./Editor"
 import Loading from "./Loading/Loading"
 import PermissionComponent from "./Permission"
 import FileUpload from "./FIleUpload"
-import WelcomeComponent from 'WelcomeComponent'
+import WelcomeComponent from './WelcomeComponent'
 //import DocLoader from "./Editor"
 const App=()=>
 {
