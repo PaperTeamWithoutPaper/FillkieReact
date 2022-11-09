@@ -14,7 +14,7 @@ import { setUserInfo } from '../reducer/user_reducer'
 import { springAxios } from '../apis/api'
 import { useLocation } from 'react-router-dom';
 import PanZoomMap from "react-pan-zoom-map";
-import {useMediaQuery} from 'react-responsive'
+import QuickPinchZoom from "../react-quick-pinch-zoom"
 var client=null;
 var doc= null;
 var canvas= null;
@@ -23,15 +23,13 @@ var pencilR=null;
 var pencilStart=null;
 var myFont=null;
 
-var tempTouchXY={x:0,y:0}
-var startTouchXY={x:0,y:0}
 const Editor=()=>
 {
+    
+    //canvasXVScale/
+    const canvasRef=useRef()
     //responsive//
-    const device=useMediaQuery({ query: '(min-width: 800px)' })
-    console.log(device)
-    let cx=0
-    let cy=0
+    
     //move//
     const [isMove,setIsMove]=useState(-1)
     //navigate//
@@ -619,8 +617,7 @@ const Editor=()=>
         canvas=document.getElementById('canvas');
         context=canvas.getContext('2d');
         window.addEventListener("wheel",function(e){e.preventDefault()},{passive: false})
-        
-       
+
         //클라이언트 활성화//
         if(client===null && user_email!=='asd')
         {
@@ -658,20 +655,23 @@ const Editor=()=>
             {loading?<Loading></Loading>:null}
             {
             <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${1000}px`}}>
-                <PanZoomMap
-                onPanZoom={(translation,zoom)=>{
-                    setCanvasX(translation.x)
-                    setCanvasY(translation.y)
-                    setScalePer(zoom)
-                   }}
-                controlMethod={device?"trackpad":"mouse"}
-                 >
-                <div id="test" style={{
+                <QuickPinchZoom
+                tapZoomFactor={0}
+                zoomOutFactor={0}
+                minZoom={0.1}
+                onUpdate={({scale,x,y})=>{
+
+                    setCanvasX(x*scale)
+                    setCanvasY(y*scale)
+                    setScalePer(scale)
+                    }}>
+                
+                <div ref={canvasRef} id="test" style={{
                         width:`${1000*(595.28/841.89)}px`,
                         height:`${1000*(pageNum+newPage)}px`,
                         zIndex:'1',
-                        //transformOrigin: 'top left',
-                        //transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
+                        transformOrigin: 'top left',
+                        transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
                 }}>
                    
                 <button onClick={()=>{
@@ -746,7 +746,8 @@ const Editor=()=>
                 </div> 
                 
                 </div>
-                </PanZoomMap> 
+             
+                </QuickPinchZoom>
             </div>
             }
              
@@ -785,8 +786,6 @@ const Editor=()=>
                 <button className="toolBox-button" onClick={()=>{toPdf(document.getElementById('test'))}}>
                 <img className="toolBox-icon" src={require("./Icons/tool-download.png")}></img>
                 </button>
-                <button onClick={()=>{setIsMove(isMove*(-1))}}>test</button>
-
 
             </div>
             {/*사이드 툴바 */}

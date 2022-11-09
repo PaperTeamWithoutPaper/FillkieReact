@@ -1,0 +1,80 @@
+{
+  "name": "react-quick-pinch-zoom",
+  "version": "4.5.0",
+  "main": "cmj/index.js",
+  "module": "esm/index.js",
+  "types": "esm/index.d.ts",
+  "peerDependencies": {
+    "react": ">=16.4.0",
+    "react-dom": ">=16.4.0",
+    "tslib": ">=2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "tslib": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "speller": "yaspeller-ci *.md docs/**/*.md",
+    "docs": "npx doctoc docs/api/README.md",
+    "ci": "yarn speller && yarn size && yarn test",
+    "test": "jest --silent",
+    "presize": "yarn build",
+    "size": "size-limit",
+    "prebuild": "rm -rf esm cmj",
+    "build": "tsc --module ES2020 --declaration true --outDir esm && tsc --module CommonJS --outDir cmj",
+    "postbuild": "prettier --write cmj/**/*.js esm/**/*.js esm/**/*.d.ts",
+    "prepublishOnly": "yarn run build"
+  },
+  "resolutions": {
+    "cheerio": "1.0.0-rc.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-react": "^7.17.12",
+    "@babel/preset-typescript": "^7.17.12",
+    "@size-limit/preset-small-lib": "^7.0.8",
+    "@types/jest": "^28.1.1",
+    "@types/react": "^18.0.11",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.7",
+    "babel-jest": "^28.1.0",
+    "enzyme": "^3.11.0",
+    "jest": "^28.1.0",
+    "jest-environment-jsdom": "^28.1.0",
+    "jest-environment-jsdom-global": "^3.1.2",
+    "prettier": "^2.6.2",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "size-limit": "^7.0.8",
+    "tslib": "^2.4.0",
+    "typescript": "^4.7.3",
+    "yaspeller-ci": "^1.0.2"
+  },
+  "files": [
+    "cmj",
+    "esm",
+    "!*.test.*"
+  ],
+  "description": "A react component that providing multi-touch gestures for zooming and dragging on any DOM element.",
+  "author": "David Nrb <offantik@gmail.com>",
+  "license": "MIT",
+  "repository": "retyui/react-quick-pinch-zoom",
+  "keywords": [
+    "drag",
+    "gesture",
+    "pan",
+    "pinch",
+    "pinchzoom",
+    "react",
+    "reactjs",
+    "touch",
+    "zoom"
+  ]
+}
