@@ -182,8 +182,6 @@
     ]
   },
   "devDependencies": {
-    "copy-webpack-plugin": "^11.0.0",
-    "patch-package": "^6.5.0",
-    "postinstall-postinstall": "^2.1.0"
+    "copy-webpack-plugin": "^11.0.0"
   }
 }
