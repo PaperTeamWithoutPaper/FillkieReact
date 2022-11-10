@@ -170,6 +170,7 @@ var PinchZoom = /** @class */ (function (_super) {
       _this._updateInteraction(touchEndEvent);
     });
     _this._handlerOnTouchStart = _this._handlerIfEnable(function (
+      
       touchStartEvent,
     ) {
       _this._firstMove = true;
@@ -194,6 +195,7 @@ var PinchZoom = /** @class */ (function (_super) {
         );
       } else {
         if (isZoomInteraction(_this._interaction)) {
+          
           if (
             _this._startTouches &&
             _this._startTouches.length === 2 &&
@@ -387,6 +389,7 @@ var PinchZoom = /** @class */ (function (_super) {
   };
   PinchZoom.prototype._handleZoomEnd = function () {
     this.props.onZoomEnd();
+    
     this._end();
   };
   PinchZoom.prototype._handleDoubleTap = function (event) {
@@ -536,6 +539,7 @@ var PinchZoom = /** @class */ (function (_super) {
       x: (scale - 1) * (center.x + this._offset.x),
       y: (scale - 1) * (center.y + this._offset.y),
     });
+   
     this.props.onZoomUpdate();
   };
   PinchZoom.prototype._scaleZoomFactor = function (scale) {
@@ -779,6 +783,7 @@ var PinchZoom = /** @class */ (function (_super) {
       var x = -_this._offset.x / scale;
       var y = -_this._offset.y / scale;
       _this.props.onUpdate({ scale: scale, x: x, y: y });
+      
     };
     if (options === null || options === void 0 ? void 0 : options.isAnimation) {
       return updateFrame();
@@ -802,10 +807,12 @@ var PinchZoom = /** @class */ (function (_super) {
     };
   };
   PinchZoom.prototype._setInteraction = function (newInteraction, event) {
+
     var interaction = this._interaction;
     if (interaction !== newInteraction) {
       if (interaction && !newInteraction) {
         if (isZoomInteraction(interaction)) {
+          
           this._handleZoomEnd();
         } else if (isDragInteraction(interaction)) {
           this._handleDragEnd();
@@ -813,6 +820,7 @@ var PinchZoom = /** @class */ (function (_super) {
       }
       if (isZoomInteraction(newInteraction)) {
         this._handleZoomStart();
+        
       } else if (isDragInteraction(newInteraction)) {
         this._handleDragStart(event);
       }
@@ -833,12 +841,12 @@ var PinchZoom = /** @class */ (function (_super) {
     return false;
   };
   PinchZoom.prototype._updateInteraction = function (event) {
+    
     var fingers = this._fingers;
     if (fingers === 2) {
       return this._setInteraction('zoom', event);
     }
-   
-    this._setInteraction(null, event);
+    return this._setInteraction(null, event);
   };
  
   PinchZoom.prototype.simulate = function (fn) {

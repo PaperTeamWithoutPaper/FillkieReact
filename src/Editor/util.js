@@ -216,7 +216,7 @@ export const drawElement=(context, element)=>
             for(var i=0; i<element.points.length;i++)
             {
                 const tempXY={}
-                tempXY.x=element.points[i].x+element.moveXY.x
+                tempXY.x=element.points[i].x+element.moveXY.x-4
                 tempXY.y=element.points[i].y+element.moveXY.y
                 XY.push(tempXY)
             }

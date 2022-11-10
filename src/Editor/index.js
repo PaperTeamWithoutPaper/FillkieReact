@@ -14,6 +14,7 @@ import { setUserInfo } from '../reducer/user_reducer'
 import { springAxios } from '../apis/api'
 import { useLocation } from 'react-router-dom';
 import QuickPinchZoom from "../react-quick-pinch-zoom"
+import {useMediaQuery} from 'react-responsive'
 var client=null;
 var doc= null;
 var canvas= null;
@@ -21,14 +22,16 @@ var context=null;
 var pencilR=null;
 var pencilStart=null;
 var myFont=null;
-
+var handle=null;
 const Editor=()=>
 {
     
+    //ratioScale//
+    const [ratioScale,setRatioScale]=useState(1)
     //canvasXVScale/
     const canvasRef=useRef()
     //responsive//
-    
+    const resp= useMediaQuery({ query: '(max-width: 1224px)' })
     //move//
     const [isMove,setIsMove]=useState(-1)
     //navigate//
@@ -61,9 +64,9 @@ const Editor=()=>
                 drawAll();
                 if(flag=='each')
                 {
-                    context.scale(window.devicePixelRatio,window.devicePixelRatio)    
+                    
                     drawSelectedBox({tool,x1:newX,y1:newY,x2:newX+width,y2:newY+height},context)
-                    context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+
                 }
                 
             }
@@ -75,9 +78,9 @@ const Editor=()=>
                 drawAll();
                 if(flag=='each')
                 {
-                context.scale(window.devicePixelRatio,window.devicePixelRatio)    
+       
                 drawSelectedBox({tool,x1:x1+clientX-pencilStart.x,y1:y1+clientY-pencilStart.y,x2:null,y2:null,width:element.width},context)
-                context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+
                 }
 
             }
@@ -92,13 +95,13 @@ const Editor=()=>
 
                 if(flag=='each')
                 {
-                context.scale(window.devicePixelRatio,window.devicePixelRatio)    
+         
                 drawSelectedBox(element,context,{
                     x1:pencilR.x1+clientX-pencilStart.x,
                     y1:pencilR.y1+clientY-pencilStart.y,
                     x2:pencilR.x2+clientX-pencilStart.x,
                     y2:pencilR.y2+clientY-pencilStart.y})
-                context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+
                 }
 
             }
@@ -106,9 +109,9 @@ const Editor=()=>
         {
             const diffX=downPosition.x-clientX
             const diffY=downPosition.y-clientY
-            context.scale(window.devicePixelRatio,window.devicePixelRatio)   
+          
             drawSelectedBox({tool:'rectangle',x1:selectedObjPosition.x1-diffX,y1:selectedObjPosition.y1-diffY,x2:selectedObjPosition.x2-diffX,y2:selectedObjPosition.y2-diffY},context)
-            context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+
         }
     }
     //canvas pages//
@@ -221,7 +224,13 @@ const Editor=()=>
         const ratioY=((scalePer-1)/scalePer)
         var clientX=type=="des"?e.clientX-canvasX*(1/scalePer)-e.clientX*ratioX:e.touches[0].clientX-canvasX*(1/scalePer)-e.touches[0].clientX*ratioX
         var clientY=type=="des"?e.clientY-canvasY*(1/scalePer)-e.clientY*ratioY:e.touches[0].clientY-canvasY*(1/scalePer)-e.touches[0].clientY*ratioY
-
+        if(type=='mob')
+        {
+            if(e.touches.length>1)
+            {
+                return
+            }
+        }
         setDownPosition({x:clientX,y:clientY})  
         const id = doc.getRoot().shapes.length;
         drawAll()
@@ -233,9 +242,9 @@ const Editor=()=>
                     && selectedObjPosition.y1<clientY && clientY<selectedObjPosition.y2)
                     {
                         setAction('reselect')
-                        context.scale(window.devicePixelRatio,window.devicePixelRatio)   
+                
                         drawSelectedBox({tool:'rectangle',...selectedObjPosition},context)
-                        context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+
                         return
                     }
             }
@@ -249,18 +258,18 @@ const Editor=()=>
                 {
                     pencilStart={x:clientX,y:clientY}
 
-                    context.scale(window.devicePixelRatio,window.devicePixelRatio)
+
                     drawSelectedBox(element,context,pencilRange)
-                    context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+
                     const offsetX=pencilRange.x1-element.moveXY.x+(clientX-pencilRange.x1);
                     const offsetY=pencilRange.y1-element.moveXY.y+(clientY-pencilRange.y1);;
                     setSelectedElement({...element,offsetX,offsetY})
                 }
 
                 else{
-                    context.scale(window.devicePixelRatio,window.devicePixelRatio)
+
                     drawSelectedBox(element,context,pencilRange)
-                    context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+
                     const offsetX=clientX-element.x1;
                     const offsetY=clientY-element.y1;
                     setSelectedElement({...element,offsetX,offsetY})
@@ -327,9 +336,9 @@ const Editor=()=>
             }
             else{ //이전에 드래그 선택이 됐을 때
                 drawAll()
-                context.scale(window.devicePixelRatio,window.devicePixelRatio)    
+  
                 createSelectingBox(context,downPosition.x,downPosition.y,clientX,clientY)
-                context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+
             }
         }
         if(action==='selected' || action==='reselect')
@@ -379,9 +388,9 @@ const Editor=()=>
             const {x1,y1,x2,y2} = resizeCoordinates(clientX,clientY,selectedPosition,coordinates);
             updateElement(index, x1,y1,x2,y2, tool);
             drawAll();
-            context.scale(window.devicePixelRatio,window.devicePixelRatio)    
+ 
             drawSelectedBox({tool,x1,y1,x2,y2},context)
-            context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+  
         }
        
         
@@ -430,9 +439,9 @@ const Editor=()=>
             html2canvas(document.body,{x:spx,y:spy,width:epx-spx,height:epy-spy}).then(function(canvas) {
                 document.body.appendChild(canvas);
             }); CAPTURE CODE*/
-            context.scale(window.devicePixelRatio,window.devicePixelRatio)   
+
             drawSelectedBox({tool:'rectangle',x1:minX,y1:minY,x2:maxX,y2:maxY},context)
-            context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
+
             setAction('selected')
             return
         }
@@ -504,9 +513,7 @@ const Editor=()=>
         img.onload = function(){
         context.drawImage(img, 10, 10);
         }*/
-        context.scale(window.devicePixelRatio,window.devicePixelRatio)
         root.shapes.forEach(element => drawElement(context, element));
-        context.scale(1/(window.devicePixelRatio),1/(window.devicePixelRatio))
         setMouses(doc.getRoot().mouses)
     }
     //api call//
@@ -617,6 +624,7 @@ const Editor=()=>
         context=canvas.getContext('2d');
         window.addEventListener("wheel",function(e){e.preventDefault()},{passive: false})
 
+
         //클라이언트 활성화//
         if(client===null && user_email!=='asd')
         {
@@ -648,24 +656,35 @@ const Editor=()=>
     const handleResizeHeight = useCallback(() => {
         textRef.current.style.height = textRef.current.scrollHeight + "px";
   }, []);
-    
+    var onScroll = function(callback) {
+        if (handle) {
+            clearTimeout(handle);
+        }
+        handle = setTimeout(callback, 200); // default 200 ms
+    };
+
     return(
         <div className='bg'>
             {loading?<Loading></Loading>:null}
             {
-            <div id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${1000}px`}}>
+            <div 
+            
+            id="frame" style={{transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${1000}px`}}>
                 <QuickPinchZoom
+                onZoomEnd={()=>{console.log('e')}}
                 tapZoomFactor={0}
                 zoomOutFactor={0}
                 minZoom={0.1}
                 onUpdate={({scale,x,y})=>{
-
+                    onScroll(()=>{setRatioScale(scale)})
                     setCanvasX(x*scale)
                     setCanvasY(y*scale)
                     setScalePer(scale)
-                    }}>
+                    }}
+                    >
                 
-                <div ref={canvasRef} id="test" style={{
+                <div 
+                ref={canvasRef} id="test" style={{
                         width:`${1000*(595.28/841.89)}px`,
                         height:`${1000*(pageNum+newPage)}px`,
                         zIndex:'1',
@@ -690,8 +709,8 @@ const Editor=()=>
                           
                             }}
                         id="canvas"
-                        width={1000*(595.28/841.89)*window.devicePixelRatio}
-                        height={(1000*(pageNum+newPage))*window.devicePixelRatio}
+                        width={1000*(595.28/841.89)}
+                        height={(1000*(pageNum+newPage))}
                         onMouseDown={(e)=>{onmousedown(e,'des')}}        
                         onMouseMove={(e)=>{onmousemove(e,'des')}}
                         onMouseUp={(e)=>{onmouseup(e,'des')}}
@@ -750,7 +769,9 @@ const Editor=()=>
             </div>
             }
              
-            <div className="participants">
+            <div className="participants"
+            style={{transform: resp?'translateY(calc(100vh - 100% - 20px))':'none'}}
+            >
                 <div className="participants-desc">사용자</div>    
                 {emails.map((user,idx,key)=>{return(
                 <div className="participants-box">
@@ -763,22 +784,21 @@ const Editor=()=>
             </div>
             
             <div className="toolBox">
+                <button className={tool==='selection'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('selection')}}>
+                <img className={tool==='selection'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-select.png")}></img>
+                </button>
                 <button className={tool==='pencil'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('pencil')}}>
                     <img className={tool==='pencil'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-draw.png")}></img>
                 </button>
                 <button className={tool==='line' || tool==='rectangle'?"toolBox-button-active":"toolBox-button"} onClick={()=>{selectedShape===0?setTool('line'):setTool('rectangle')}}>
                     <img className={tool==='line' || tool==='rectangle'? "toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-shape.png")}></img>
                 </button>
-                {<button className={tool==='text'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('text')}}>
-                    <img className={tool==='text'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-text.png")}></img>
-                </button>}
-                <button className={tool==='selection'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('selection')}}>
-                <img className={tool==='selection'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-select.png")}></img>
-                </button>
                 <button className={tool==='eraser'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('eraser')}}>
                 <img className={tool==='eraser'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-eraser.png")}></img>
                 </button>
-                
+                {<button className={tool==='text'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('text')}}>
+                    <img className={tool==='text'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-text.png")}></img>
+                </button>}
                 <button className="toolBox-button" onClick={()=>{doc.update((root)=>root.shapes=[]);drawAll()}} >
                 <img className="toolBox-icon" src={require("./Icons/tool-recycle.png")}></img>
                 </button>
@@ -789,7 +809,8 @@ const Editor=()=>
             </div>
             {/*사이드 툴바 */}
             {tool!=='selection' && tool!=='eraser'?
-            <div className="toolDetail">
+            <div className="toolDetail"
+            style={{transform: resp?'translateY(calc(100vh - 100% - 20px))':'none'}}>
                 {tool==='line' || tool==='rectangle'?
                 <div className="toolDetail-detailBox">
                         <div className="toolDetail-detailBox-desc">도형</div>
