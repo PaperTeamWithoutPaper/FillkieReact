@@ -95,7 +95,14 @@
                 border-radius: 5px;
                 border: 0;
                 margin: 5px 5px 0px 0px;
-                transition: all ease 0.2s;
+                
+            }
+            &-button:hover{
+                cursor: pointer;
+               
+            }
+            &-button:active{
+                outline: solid 1px gray
             }
             &-activeButton{
                 width:30px;
