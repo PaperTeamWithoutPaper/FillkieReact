@@ -372,6 +372,7 @@ var PinchZoom = /** @class */ (function (_super) {
   };
   PinchZoom.prototype._handleZoomEnd = function () {
     this.props.onZoomEnd();
+    console.log('end')
     this._end();
   };
   PinchZoom.prototype._handleDoubleTap = function (event) {
@@ -522,6 +523,7 @@ var PinchZoom = /** @class */ (function (_super) {
       y: (scale - 1) * (center.y + this._offset.y),
     });
     this.props.onZoomUpdate();
+    
   };
   PinchZoom.prototype._scaleZoomFactor = function (scale) {
     var originalZoomFactor = this._zoomFactor;
@@ -787,6 +789,7 @@ var PinchZoom = /** @class */ (function (_super) {
     };
   };
   PinchZoom.prototype._setInteraction = function (newInteraction, event) {
+    console.log(newInteraction)
     var interaction = this._interaction;
     if (interaction !== newInteraction) {
       if (interaction && !newInteraction) {

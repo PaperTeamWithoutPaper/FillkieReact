@@ -97,67 +97,70 @@ export const getMinMaxXY=(elements,indexList)=>
     }
     return {minX,minY,maxX,maxY}
 }
-export const createSelectingBox=(context,x1,y1,x2,y2)=>
+export const createSelectingBox=(context,x1,y1,x2,y2,ratioScale)=>
 {
 
 
     context.fillStyle="rgba(0,60,255,0.1)"
-    context.fillRect(x1,y1,x2-x1,y2-y1);
+    context.fillRect(x1*ratioScale,y1*ratioScale,(x2-x1)*ratioScale,(y2-y1)*ratioScale);
   
 }
-const drawCircle=(x,y,context)=>
+const drawCircle=(x,y,context,r)=>
 {
     context.setLineDash([0]) 
     context.beginPath();
-    context.arc(x, y, 4, 0, Math.PI * 2);
+    context.arc(x, y, r, 0, Math.PI * 2);
     context.strokeStyle="rgb(0,0,0)"
     context.fillStyle="white"
     context.fill()
     context.stroke();
 }
-export const drawSelectedBox=(element,context,pencilRange)=>
+export const drawSelectedBox=(element,context,pencilRange,ratioScale)=>
 {
     
     //draw circle//
     if(!element) return;
     const {tool,x1,y1,x2,y2}=element;
-    context.setLineDash([5]) 
+    context.setLineDash([10]) 
     if(tool =='rectangle')
     {  
-    context.lineWidth = 1; // 선 굵기 10픽셀
+    context.lineWidth = 2; // 선 굵기 10픽셀
     context.strokeStyle="rgb(0, 0, 0)";
-    context.strokeRect(x1-5,y1-5,x2-x1+10,y2-y1+10);
+    context.strokeRect(x1*ratioScale,y1*ratioScale,(x2-x1)*ratioScale,(y2-y1)*ratioScale);
+    context.fillStyle ="rgba(204, 203, 248, 0.3)";
+    context.fillRect(x1*ratioScale,y1*ratioScale,(x2-x1)*ratioScale,(y2-y1)*ratioScale);
 
-    drawCircle(x1-5,y1-5,context)
-    drawCircle(x2+5,y2+5,context)
-    drawCircle(x1-5,y2+5,context)
-    drawCircle(x2+5,y1-5,context)
-    drawCircle((x2-x1)/2+x1,y1-20,context)
+    drawCircle(x1*ratioScale,y1*ratioScale,context,Math.max(6,2*ratioScale))
+    drawCircle(x2*ratioScale,y2*ratioScale,context,Math.max(6,2*ratioScale))
+    drawCircle(x1*ratioScale,y2*ratioScale,context,Math.max(6,2*ratioScale))
+    drawCircle(x2*ratioScale,y1*ratioScale,context,Math.max(6,2*ratioScale))
 
     }
     if(tool==='line')
     {
         context.beginPath();
-        context.moveTo(x1,y1)
-        context.lineTo(x2,y2)
-        context.lineWidth = 1
+        context.moveTo(x1*ratioScale,y1*ratioScale)
+        context.lineTo(x2*ratioScale,y2*ratioScale)
+        context.lineWidth = 2
         context.strokeStyle = "rgb(0, 0, 0)"
         context.stroke();
-        drawCircle(x1,y1,context)
-        drawCircle(x2,y2,context)
+        drawCircle(x1*ratioScale,y1*ratioScale,context,Math.max(6,2*ratioScale))
+        drawCircle(x2*ratioScale,y2*ratioScale,context,Math.max(6,2*ratioScale))
     }
     if(tool==='pencil')
     {
         
         context.lineWidth = 1; // 선 굵기 10픽셀
         context.strokeStyle="rgb(0, 0, 0)";
-        context.strokeRect(pencilRange.x1,pencilRange.y1,pencilRange.x2-pencilRange.x1,pencilRange.y2-pencilRange.y1);
+        context.fillStyle ="rgba(204, 203, 248, 0.3)";
+        context.fillRect(pencilRange.x1*ratioScale,pencilRange.y1*ratioScale,(pencilRange.x2-pencilRange.x1)*ratioScale,(pencilRange.y2-pencilRange.y1)*ratioScale);
+        context.strokeRect(pencilRange.x1*ratioScale,pencilRange.y1*ratioScale,(pencilRange.x2-pencilRange.x1)*ratioScale,(pencilRange.y2-pencilRange.y1)*ratioScale);
     }
     if(tool==='text')
     {
         context.lineWidth = 1; // 선 굵기 10픽셀
         context.strokeStyle = "rgb(0, 0, 0)"
-        context.strokeRect(x1,y1,element.width,element.height);
+        context.strokeRect(x1*ratioScale,y1*ratioScale,element.width*ratioScale,element.height*ratioScale);
 
     }
     context.setLineDash([0]) 
@@ -173,7 +176,7 @@ export const createElement=(index,x1,y1,x2,y2,tool,strokeColor,fillColor,strokeW
         case 'rectangle':
         return {index,x1,y1,x2,y2,tool,removed:false,strokeColor,fillColor,strokeWidth}
         case 'pencil':
-            return {index, points: [{x:x1,y:y1}],tool,moveXY:{x:4,y:0},removed:false,strokeColor,strokeWidth}
+            return {index, points: [{x:x1,y:y1}],tool,moveXY:{x:0,y:0},removed:false,strokeColor,strokeWidth}
         case 'text':
             return {index, x1,y1,tool,removed:false,text:'',width:0,height:30,fillColor,fontSize,font}
         default:

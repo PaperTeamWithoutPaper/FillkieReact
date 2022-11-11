@@ -1,0 +1,31 @@
+.background{
+    width:100vw;
+    height:100vh;
+    background-color: rgba(93, 97, 133, 0.281);
+    position:absolute;
+    z-index:1
+}
+.lds-dual-ringb{
+    position: absolute;
+    transform: translate(calc(50vw - 50%),calc(50vh - 50%));
+    z-index:10202
+}
+.lds-dual-ringb:after {
+    content: " ";
+    display: block;
+    width:100px;
+    height:100px;
+    border-radius: 50%;
+    border: 10px solid #fff;
+    border-color: rgb(0, 0, 0) transparent rgb(0, 0, 0) transparent;
+    animation: lds-dual-ring 1.2s ease-in-out infinite;
+}
+@keyframes lds-dual-ringb {
+    0% {
+    transform: rotate(0deg);
+    }
+    100% {
+    transform: rotate(360deg);
+    }
+}
+
