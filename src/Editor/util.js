@@ -44,6 +44,8 @@ export const getElementsAtPosition=(elements,x1,y1,x2,y2)=>
             case 'line':
                 
             case 'rectangle':
+          
+                
                 if(element.x1>=x1 && element.x2<=x2 && element.y1>=y1 && element.y2<=y2) returnIndex=[...returnIndex,element.index]
                 break;
             case 'text':
@@ -101,7 +103,7 @@ export const createSelectingBox=(context,x1,y1,x2,y2,ratioScale)=>
 {
 
 
-    context.fillStyle="rgba(0,60,255,0.1)"
+    context.fillStyle="rgba(204, 203, 248, 0.3)"
     context.fillRect(x1*ratioScale,y1*ratioScale,(x2-x1)*ratioScale,(y2-y1)*ratioScale);
   
 }
@@ -184,8 +186,10 @@ export const createElement=(index,x1,y1,x2,y2,tool,strokeColor,fillColor,strokeW
 
     }
 }
+
 export const drawElement=(context, element)=>
 {
+    
     const {x1,y1,x2,y2,removed}=element;
     if(removed) return;
     switch (element.tool)
@@ -202,9 +206,6 @@ export const drawElement=(context, element)=>
 
             break;
         case 'rectangle':
-
-            
-            
             context.lineWidth = element.strokeWidth;
             context.strokeStyle=element.strokeColor;
             context.strokeRect(x1,y1,x2-x1,y2-y1);
@@ -216,11 +217,15 @@ export const drawElement=(context, element)=>
         case 'pencil':
             context.fillStyle=element.strokeColor
             var XY=[]
-            for(var i=0; i<element.points.length;i++)
+            if(element.points.length==1) return
+            for(var i=0; i<element.points.length-1;i++)
             {
                 const tempXY={}
+
                 tempXY.x=element.points[i].x+element.moveXY.x
                 tempXY.y=element.points[i].y+element.moveXY.y
+
+
                 XY.push(tempXY)
             }
             const stroke = getSvgPathFromStroke(getStroke(XY,{size:element.strokeWidth}))
@@ -235,8 +240,10 @@ export const drawElement=(context, element)=>
             for (var i = 0; i<lines.length; i++)
                 context.fillText(lines[i], element.x1, element.y1 + (i*(element.fontSize+element.fontSize/3.5)) );
             break;
+        
         default:
             throw new Error(`Type not recognized: ${element.tool}`)
+        
 
     }
 }

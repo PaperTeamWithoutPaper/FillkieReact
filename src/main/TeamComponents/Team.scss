@@ -5,28 +5,40 @@
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: 'GmarketSansBold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+    font-weight: bold;
+    font-style: bold;
+}
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: medium;
+    font-style: medium;
+}
 @mixin ModalStyle {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    background-color: white;
-    box-shadow: 0px 2px 10px rgb(90, 90, 90);
+
     clear: both;
-    height:100px;
-    border-radius: 5px;
-    transform: translateY(-15%);
+    border-radius: 20px;
     width:180px;
+    height:80px;
     margin: 0 auto;
-    overflow-y: auto;   
-    overflow-x: hidden; 
     transform: translateY(40px);
+    font-family: 'GmarketSansMedium';
+    
 }
 @mixin IconStyle{
-    
-    margin: 10px 10px 0px 10px;
-    border-radius: 5px;
+    border-radius: 20px;
     text-align: center;
-    padding:10px;
+    padding: 15px 0px 15px 0px;
+    margin:7.5px 10px 7.5px 0px;
+    width:50px;
+    
+    font-family: 'GmarketSansBold';
 
     transition: all ease 0.2s
 
@@ -37,11 +49,11 @@
 .MainGrid{
     &-big{
         display:grid;
-        grid-template-columns: 60px 230px calc(100vw - 290px);
+        grid-template-columns: 80px 230px calc(100vw - 310px);
     }
     &-small{
         display:grid;
-        grid-template-columns: 60px 100vw;
+        grid-template-columns: 80px 100vw;
     }
 
 }
@@ -50,7 +62,7 @@
         display: inline-block;
         flex:left;
         display:block;
-
+        height:calc(100vh - 80px);
         width:230px;
        
 
@@ -58,31 +70,31 @@
 }
 .TeamList{
     &-bg{
-        background-color: rgb(51, 60, 83);
-        height:calc(100vh - 65px);
+        background-color: rgb(250, 250, 250);
+        height:calc(100vh - 80px);
 
     }
     &-body{
         width:140px;
         margin:0 auto;
         transform: translateY(30px);
-        font-family: 'S-CoreDream-3Light';
-        border: 1px solid rgb(255, 255, 255);
-
+        font-family: 'GmarketSansMedium';
+        border: 1px solid rgb(116, 116, 116);
+        background-color: rgb(250, 250, 250);
         padding: 13px;
         text-align: center;
-        border-radius: 5px;
+        border-radius: 10px;
         font-size:15px;
         height:50px;
         
     }
     &-body:hover{
-        border: 1px solid rgb(255, 174, 0);
+        border: 1px solid rgb(159,141,247);
         cursor:pointer
     }
 
     &-name{
-        color: white;
+        color: rgb(116, 116, 116);
         float:left;
     }
     &-icon-lower{
@@ -107,7 +119,7 @@
         margin-top: 13px;
         clear: both;
         float:left;
-        color:rgb(255, 186, 59);
+        color:rgb(159,141,247);
     }
 
 }
@@ -130,9 +142,9 @@
         flex:1;
         padding:13px;
         width:100%;
-        font-size: 15px;
+        font-size: 12px;
         color:rgb(114, 114, 114);
-        background-color: rgb(255, 255, 255);
+        background-color: rgb(250, 250, 250);
         transition: all ease 0.2s;
     }
     &-menu-active{
@@ -141,35 +153,37 @@
         flex:1;
         padding:13px;
         width:100%;
-        font-size: 15px;
-        color:rgb(255, 166, 0);
-        background-color: rgb(255, 255, 255);
+        font-size: 12px;
+        color:rgb(159,141,247);
+        background-color: rgb(250, 250, 250);
     }
 }
 .TeamCreate{
-    width:60px;
-    height:calc(100vh - 65px);
-    background-color: rgb(51, 60, 83);
+
+    height:calc(100vh - 90px);
+    background-color: rgb(250, 250, 250);
+    padding-left: 15px;
+    padding-top: 10px;
     flex:left;
 
     &-icon{
         background-color: rgb(233, 233, 233);
+        color:rgb(90, 90, 90);
         @include IconStyle;
     }
     &-icon:hover{
         cursor: pointer;
-        background-color: rgb(255, 255, 255);
+        background-color: rgb(219, 219, 219);
         @include IconStyle;
     }
     &-icon-active{
-        color:white;
-        background-color: rgb(255, 166, 0);
+        color:rgb(159,141,247);
+        background-color: rgba(204, 203, 248, 0.884);
         @include IconStyle;
     }
     &-icon-active:hover{
-        color:white;
         cursor: pointer;
-        background-color: rgb(255, 186, 59);
+        background-color: rgb(198, 197, 247);
         @include IconStyle;
     }
 }
@@ -184,14 +198,14 @@
     font-size: 13pt;
     margin-left: auto;
     &-body-active{
-        border: 1px solid rgb(240, 240, 240);
+        border: 1px solid rgb(107, 107, 107);
         color: rgb(236, 236, 236);
         @include InviteUserStyle
     }
     &-body-active:hover{
         cursor: pointer;
-        border: 1px solid rgb(255, 153, 0);
-        color: rgb(255, 153, 0);
+        border: 1px solid rgb(159,141,247);
+        color: rgb(159,141,247);
 
     }
 

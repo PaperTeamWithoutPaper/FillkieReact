@@ -16,7 +16,7 @@ const ModalButton=(props)=>
         await springAxios.get(`/team/invite/${teamList[teamIdx]['teamId']}`).then((response)=>{dispatch(setInviteUrl(response.data.data.url))})
     }
     return (
-        <div style={{width:'100%'}}>
+        <div style={{}}>
         {props.type===0?
         <div 
             onClick={getUrl}
@@ -29,7 +29,7 @@ const ModalButton=(props)=>
             onMouseOver={()=>{setIshover(1)}} 
             onMouseOut={()=>{setIshover(0)}}>
         <Link 
-            style={{width:'100%',height:'100px',display:'block',textDecoration:'none',transition:'all ease 0.2s',color:`${ishover?'orange':'gray'}`}}
+            style={{width:'100%',height:'14.5px',display:'block',textDecoration:'none',transition:'all ease 0.2s',color:`${ishover?'rgb(159,141,247);':'gray'}`}}
             to={teamList[teamIdx]!=undefined?`/permission/${teamList[teamIdx]['teamId']}`:'/error'}
             
             >

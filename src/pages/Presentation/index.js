@@ -137,9 +137,7 @@ function Presentation() {
         <Information />
 
         <Pages />
-        <Container sx={{ mt: 6 }}>
-          <BuiltByDevelopers />
-        </Container>
+ 
         <Container>
           <Grid container spacing={3}>
    

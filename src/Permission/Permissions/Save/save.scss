@@ -1,7 +1,7 @@
 .save{
     &-body{
-        background-color: rgb(43, 43, 43);
-        height:100px;
+        background-color: rgb(238, 238, 238);
+        height:90px;
         width:calc(100vw - 490px);
         display: flex;
         align-items: center;
@@ -18,8 +18,11 @@
         transform: scale(0.95,0.95);
         transition: transform ease 0.2s, background-color ease 0.2s;
     }
+    &-body:hover{
+        cursor: pointer;
+    }
     &-icon{
-        filter: brightness(50%) saturate(1000%) hue-rotate(120deg) invert(83%);
+        filter: invert(59%) sepia(21%) saturate(1137%) hue-rotate(209deg) brightness(98%) contrast(97%);
         height:50px;
         width:50px;
     }

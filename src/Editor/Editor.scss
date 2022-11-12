@@ -8,11 +8,11 @@
     top:10px;
     background-color: rgba(255, 255, 255, 0.904);
     display:flex;
-    z-index:3;
+    
 
-    border-radius: 10px;
+    border-radius: 100px;
     justify-content: center;
-    box-shadow: 0px 1px 5px 1px rgb(238, 238, 238);
+    box-shadow: 0px 5px 5px 1px rgba(211, 211, 211, 0.37);
     left: 50vw;
     transform: translateX(-50%);
     padding:3px;
@@ -23,9 +23,9 @@
         width:40px;
         height:40px;
         border: 0;
-        border-radius: 10px;
+        border-radius: 20px;
         margin-right:5px;
-        
+        transition: background-color ease 0.5s;
         color:rgb(0, 0, 0);
         
     }
@@ -33,21 +33,19 @@
         cursor: pointer;
         background-color: rgba(0, 0, 0, 0.034);
     }
-    &-button:active{
-        outline: solid 1px gray
-    }
+
     &-button-active{
         width:40px;
         height:40px;
         margin-right:5px;
-        border-radius: 10px;
+        border-radius: 20px;
         background-color: rgba(204, 203, 248, 0.616);
-       
         border: 0;
         color:rgb(255, 255, 255);
-        transition: all ease 0.2s;
+        transition: all ease 0.5s;
        
     }
+
     &-colorBox{
         margin: 5px 5px 0px 0px;
         &-desc{
@@ -69,13 +67,15 @@
     
 }
 .toolDetail{
+    backdrop-filter: blur(2px);
     position: fixed;
     top:10px;
     left:10px;
     color: rgb(75, 75, 75);
-    background-color: rgba(255, 255, 255, 0.774);
-    box-shadow: 0px 1px 3px 1px rgb(221, 221, 221);
-    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.911);
+    box-shadow: 0px 5px 3px 1px rgba(221, 221, 221, 0.5);
+    border: solid 1px rgba(214, 214, 214, 0.534);
+    border-radius: 20px;
     display:flex;
     flex-direction: column;
     &-detailBox{
@@ -91,27 +91,30 @@
             &-button{
                 width:30px;
                 height:30px;
-                background-color: rgb(221, 221, 221);
-                border-radius: 5px;
+                background-color: rgb(238, 238, 238);
+                border-radius: 100px;
                 border: 0;
                 margin: 5px 5px 0px 0px;
+                padding:5px;
                 
             }
             &-button:hover{
+                background-color: rgb(226, 226, 226);
                 cursor: pointer;
                
             }
             &-button:active{
-                outline: solid 1px gray
+            
             }
             &-activeButton{
                 width:30px;
                 height:30px;
                 background-color: rgba(204, 203, 248, 0.884);
-                border-radius: 5px;
+                border-radius: 100px;
                 border: 0;
                 margin: 5px 5px 0px 0px;
                 transition: all ease 0.2s;
+                padding:5px;
 
             }
         }
@@ -119,13 +122,15 @@
 
 }
 .participants{
+    backdrop-filter: blur(2px);
     position: fixed;
+    border: solid 1px rgba(214, 214, 214, 0.534);
     top:10px;
     right:10px;
-  
+    color:rgb(65, 65, 65);
     background-color: rgba(255, 255, 255, 0.774);
-    box-shadow: 0px 1px 3px 1px rgb(221, 221, 221);
-    border-radius: 10px;
+    box-shadow: 0px 5px 3px 1px rgba(221, 221, 221, 0.534);
+    border-radius: 20px;
     display:flex;
     flex-direction: column;
     padding:10px;
@@ -137,6 +142,8 @@
         margin-top:10px;
         display:flex;
         flex-direction: row;
+
+        
         &-img{
             width: 40px;
             height:40px;
@@ -150,4 +157,16 @@
         }
     }
     
+}
+.addPageButton{
+    background-color: rgb(255, 255, 255);
+    border: 0;
+    height: 60px;
+    border-radius: 100px;
+    color: rgb(148, 148, 148);
+    font-size: 50px;
+}
+.addPageButton:hover{
+    cursor: pointer;
+    background-color: rgb(247, 247, 247);
 }

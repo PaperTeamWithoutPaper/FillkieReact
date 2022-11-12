@@ -5,8 +5,9 @@
   }
 .ProjectComponent{
     
-    height:90vh;
-    transform: translateX(10px);
+    height:calc(100vh - 80px);
+    overflow-y: auto;
+    background-color: rgb(250, 250, 250);
     &-desc{
         padding-top: 30px;
         font-family: "Tway";
@@ -17,6 +18,7 @@
     &-flex{
         display:flex;
         flex-wrap: wrap;
+        
     }
     &-noteam-desc{
         font-family: "Tway";
@@ -28,81 +30,68 @@
 }
 .Card{
     &-body{
-        width: 160px;
-        height: 140px;
-        background-color: rgb(255, 255, 255);
+        width: 130px;
+        height: 150px;
+
         border-radius: 10px 10px 0px 0px;
-        box-shadow: 0px 2px 3px lightgray;
+        
         margin:10px;
+        color: rgb(105, 105, 105);
+        font-family: 'GmarketSansMedium';
     }
    
     &-body:hover{
         cursor: pointer;
     }
     &-icon{
-        position:absolute;
-        font-size: 120px;
-        transform: translateX(15px);
+     
+        font-size: 70px;
         text-align: center;
     }
     &-title{
-        width:140px;
+        width:auto;
         height:auto;
-        background-color: white;
+        background-color: rgb(250, 250, 250);
         word-break: break-all;
-        border-radius: 0px 0px 10px 10px;
-        box-shadow: 0px 2px 3px lightgray;
+        border-radius: 100px;
+        box-shadow: 0px 0px 3px lightgray;
         padding: 10px;
+        transform: translateY(-10px);
+        font-size: 13px;
+        transition: all ease 0.2s;
     }
-    &-desc-active{
-        position:absolute;
-        transform:translateY(15px);
-        margin:10px;
-        color:gray;
-        font-size: 10pt;  
-        transition: all ease 0.3s;
+    &-title-active{
+        width:auto;
+        height:auto;
+        background-color: rgb(250, 250, 250);
+        word-break: break-all;
+        border-radius: 100px;
+        box-shadow: 0px 0px 3px lightgray;
+        padding: 10px;
+        font-size: 13px;
+        color: rgb(159,141,247);
+        transform: translateY(-10px) scale(1.1);
+        transition: all ease 0.2s;
     }
-    &-desc-hidden{
-        position:absolute;
-        transform:translateY(15px);
-        margin:10px;
-        color:rgba(126, 126, 126, 0);
-        font-size: 10pt;  
-        transition: all ease 0.3s;
-    }
-    &-shadow-active{
-        position:relative;
-        width:160px;
-        height:140px;
-        background-color: rgba(0, 0, 0, 0.4);
-        border-radius: 10px 10px 0px 0px;
-        transition: all ease 0.3s;
-    }
-    &-shadow-hidden{
-        position:relative;
-        width:160px;
-        height:140px;
-        background-color: rgba(0, 0, 0, 0);
-        border-radius: 10px 10px 0px 0px;
-        transition: all ease 0.3s;
-    }
+   
+
 }
 
-.lds-dual-ringb {
+.lds-dual-ringc {
     position: absolute;
-    transform: translate(calc(64px),-80px);
+    transform: translate(calc(50px),-70px);
 }
-.lds-dual-ringb:after {
+.lds-dual-ringc:after {
     content: " ";
     display: block;
     width: 20px;
     height: 20px;
     border-radius: 50%;
     border: 6px solid #fff;
-    border-color: rgb(2, 120, 255) transparent rgb(2, 120, 255) transparent;
+    border-color: rgb(59, 59, 59) transparent rgb(61, 61, 61) transparent;
     animation: lds-dual-ring 1.2s ease-in-out infinite;
 }
-@keyframes lds-dual-ringb {
+@keyframes lds-dual-ringc {
     0% {
     transform: rotate(0deg);
     }

@@ -5,7 +5,7 @@ const Modal=(props)=>
     const ModalButtonOption=[{title:'Team Invite',type:0},{title:'Team Manage',type:1}]
     const listopen=props.listopen;
     return(
-        <div className={listopen==1?"Modal-active" : "Modal-hidden"}>
+        <div className="Modal-active">
             {ModalButtonOption.map((option)=>{return(<ModalButton type={option.type} data={option.title}></ModalButton>)})}
         </div>
     )

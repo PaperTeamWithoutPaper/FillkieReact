@@ -23,11 +23,10 @@ const Appbar=(props)=>
         </div>
         <div className="Appbar-active">  
             
-            <a href="/main" className="node"><div className='Appbar-icon' style={{textDecoration:'none'}}>Fillkie</div></a>
+            <a href="/main" className="node"><div className='Appbar-icon' style={{textDecoration:'none'}}>fillkie</div></a>
             
                   
-            <img src={require('./Icon/alarm.png')} className="Appbar-alarm"></img> 
-            <img onMouseLeave={()=>{setModal(0)}} onMouseMove={(e)=>{setModal(1);setMouseXY({x:e.clientX,y:e.clientY})}} src={require('./Icon/info.png')} className="Appbar-info"></img> 
+
             {type==0?<div className='Appbar-login_require'>로그인 해주세요.</div>:<img className='Appbar-user_profile' src={user_profile} alt="" aria-hidden="true" data-noaft="" data-atf="1" data-frt="0"/>}
              
             <div style={{width:'10px'}}></div> 

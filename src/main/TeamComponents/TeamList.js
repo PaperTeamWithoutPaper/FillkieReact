@@ -29,7 +29,7 @@ const TeamList=()=>
                     <div className="TeamList-users">{teamNum}-users</div>
                 </div>
             </div>:null}
-            {teamNum!=0?<Modal listopen={listopen}></Modal>:null}
+            <Modal listopen={listopen}></Modal>
             
         </div>
     )
