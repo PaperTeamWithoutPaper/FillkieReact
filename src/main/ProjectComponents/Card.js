@@ -5,6 +5,7 @@ import { IsCreateProject } from "../../reducer/project_reducer";
 import { useNavigate } from "react-router";
 import { nodeAxios } from "../../apis/api";
 import { setFileInfo,fileLoading, setCurDir, setDragFrom } from "../../reducer/file_reducer";
+import '../../Editor/Loading'
 const Card=(props)=>
 {
     const [ishover,setIshover]=useState(0)
@@ -121,10 +122,10 @@ const Card=(props)=>
                 console.log('a')}}>
 
                 <div className="Card-icon">{getIcon()}</div>
-                <div className={ishover?"Card-shadow-active":"Card-shadow-hidden"}></div>
-                <div className={ishover?"Card-desc-active":"Card-desc-hidden"}>{props.desc}</div>
-                {myImage && <div className="lds-dual-ringb"></div>}
-                <div className="Card-title">{getIcon()} {props.title.length>30?props.title.slice(0,30)+'...':props.title}</div>
+                <div className="Card-shadow-hidden"></div>
+             
+                {myImage && <div className="lds-dual-ringc"></div>}
+                <div className={ishover?"Card-title-active":"Card-title"}>{getIcon()} {props.title.length>30?props.title.slice(0,30)+'...':props.title}</div>
 
             
         

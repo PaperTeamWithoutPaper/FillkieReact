@@ -68,7 +68,7 @@ const MainComponent=()=>
     }},[teamList])
     useEffect(()=> {async function fetchData(){
       setProjectLoading(1)
-      await springAxios.get('/user/profile').then((response)=>{dispatch(setUserInfo(response.data.data.userName,response.data.data.userImage))}).catch(()=>{navigate('/')})
+      await springAxios.get('/user/profile').then((response)=>{dispatch(setUserInfo(response.data.data.userName,response.data.data.userImage))}).catch(()=>{/*navigate('/')*/})
       await springAxios.get('/team/list').then((response)=>{dispatch(setTeamInfo(response.data.data))})}
       fetchData();
     },[teamID])
@@ -77,7 +77,7 @@ const MainComponent=()=>
 
     return(
       <div>
-        <FloatingButton></FloatingButton>
+
         {alarm?<Alarm desc="복사되었습니다."></Alarm>:null}
         {inviting?<InviteUserModal></InviteUserModal>:null}
         {creating?<CreateTeamModal></CreateTeamModal>:null}
@@ -101,7 +101,7 @@ type={1}></Appbar>
               <TeamCreate></TeamCreate>
               {responsiveTeam?<TeamComponent></TeamComponent>:null}
               
-              {<div style={{transition: 'all ease 0.3s', opacity:`${100-projectLoading*50}%`}}><ProjectComponent ></ProjectComponent></div>}
+              <ProjectComponent ></ProjectComponent>
           </div>      
         </div>
       </div>

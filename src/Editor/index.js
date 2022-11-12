@@ -26,6 +26,8 @@ var myFont=null;
 var handle=null;
 var temp=0
 var _ratioScale=0;
+var saveCanvasX=0;
+var saveCanvasY=0;
 const Editor=()=>
 {
     //selectBox//
@@ -670,6 +672,13 @@ const Editor=()=>
         _ratioScale=ratioScale
         drawAll();
     },[ratioScale,pageNum])
+    useEffect(()=>
+    {
+        console.log(saveCanvasX,saveCanvasY)
+        setCanvasX(saveCanvasX)
+        setCanvasY(saveCanvasY)
+        drawAll();
+    },[newPage])
     //textarea resize//
 
     const handleResizeHeight = useCallback(() => {
@@ -692,6 +701,7 @@ const Editor=()=>
             
             id="frame" style={{position:'absolute',transform:'translateY(0px)',overflow:'hidden', backgroundColor:'lightgray',width:`${window.innerWidth}px`, height:`${window.innerHeight}px`}}>
                 <QuickPinchZoom
+                maxZoom={3}
                 tapZoomFactor={0}
                 zoomOutFactor={0}
                 minZoom={0.1}
@@ -714,12 +724,16 @@ const Editor=()=>
                         transform: `translate(${canvasX}px,${canvasY}px) scale(${scalePer})`,
                 }}>
                    
-                <button onClick={()=>{
+                <button 
+                className="addPageButton"
+                onClick={()=>{
+                    saveCanvasX=canvasX
+                    saveCanvasY=canvasY
                     setNewPage(newPage+1);
                     doc.update((root) => {
                         root.pages=root.pages+1
                         });}} 
-                style={{width:`${1000*(595.28/841.89)}px`, position:'absolute',zIndex:'6',transform:`translateY(${1000*(pageNum+newPage)}px)`}}>Add Page</button>
+                style={{width:`${1000*(595.28/841.89)}px`, position:'absolute',zIndex:'6',transform:`translateY(${1000*(pageNum+newPage)+10}px)`}}>+</button>
                 
                         <canvas
                         style={{
@@ -792,7 +806,7 @@ const Editor=()=>
             
              
             <div className="participants"
-            style={{transform: resp?'translateY(calc(100vh - 100% - 20px))':'none'}}
+            style={{transform: resp?'translateY(calc(55px))':'none'}}
             >
                 <div className="participants-desc">사용자</div>    
                 {emails.map((user,idx,key)=>{return(
@@ -827,6 +841,7 @@ const Editor=()=>
                 <button className="toolBox-button" onClick={()=>{toPdf(document.getElementById('test'))}}>
                 <img className="toolBox-icon" src={require("./Icons/tool-download.png")}></img>
                 </button>
+
              
                
 
@@ -834,16 +849,16 @@ const Editor=()=>
             {/*사이드 툴바 */}
             {tool!=='selection' && tool!=='eraser'?
             <div className="toolDetail"
-            style={{transform: resp?'translateY(calc(100vh - 100% - 20px))':'none'}}>
+            style={{transform: resp?'translateY(calc(55px))':'none'}}>
                 {tool==='line' || tool==='rectangle'?
                 <div className="toolDetail-detailBox">
                         <div className="toolDetail-detailBox-desc">도형</div>
                         <div className="toolDetail-detailBox-buttonBox">
                             <button className={selectedShape===0?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setSelectedShape(0);setTool('line')}}>
-                                <div style={{width:'18px', height:'3px', backgroundColor:selectedShape==0?'rgb(159,141,247)':'black'}}></div>
+                                <div style={{borderRadius:'100px',width:'20px', height:'3px', backgroundColor:selectedShape==0?'rgb(159,141,247)':'rgb(110, 110, 110)'}}></div>
                             </button>
                             <button className={selectedShape===1?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setSelectedShape(1); setTool('rectangle')}}>
-                                <div style={{width:'18px', height:'18px', outline: selectedShape==1?'solid 2px rgb(159,141,247)':'solid 2px black'}}></div>
+                                <div style={{borderRadius:'2px',margin:'2.5px',width:'15px', height:'15px', outline: selectedShape==1?'solid 2px rgb(159,141,247)':'solid 2px rgb(110, 110, 110)'}}></div>
                             </button>
                             
                         </div>
@@ -854,16 +869,16 @@ const Editor=()=>
                     <div className="toolDetail-detailBox-desc">굵기</div>
                     <div className="toolDetail-detailBox-buttonBox">
                         <button className={selectedStrokeWidth===0?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setStrokeWidth(1); setSelectedStrokeWidth(0)}}>
-                            <div style={{width:'18px', height:'1px', backgroundColor:selectedStrokeWidth==0?'rgb(159,141,247)':'black'}}></div>
+                            <div style={{borderRadius:'100px',width:'20px', height:'1px', backgroundColor:selectedStrokeWidth==0?'rgb(159,141,247)':'rgb(110, 110, 110)'}}></div>
                         </button>
                         <button className={selectedStrokeWidth===1?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setStrokeWidth(3);setSelectedStrokeWidth(1)}}>
-                            <div style={{width:'18px', height:'3px', backgroundColor:selectedStrokeWidth==1?'rgb(159,141,247)':'black'}}></div>
+                            <div style={{borderRadius:'100px',width:'20px', height:'3px', backgroundColor:selectedStrokeWidth==1?'rgb(159,141,247)':'rgb(110, 110, 110)'}}></div>
                         </button>
                         <button className={selectedStrokeWidth===2?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setStrokeWidth(5);setSelectedStrokeWidth(2)}}>
-                            <div style={{width:'18px', height:'5px', backgroundColor:selectedStrokeWidth==2?'rgb(159,141,247)':'black'}}></div>
+                            <div style={{borderRadius:'100px',width:'20px', height:'5px', backgroundColor:selectedStrokeWidth==2?'rgb(159,141,247)':'rgb(110, 110, 110)'}}></div>
                         </button>
-                        <button className={selectedStrokeWidth===3?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setStrokeWidth(20);setSelectedStrokeWidth(3)}}>
-                            <div style={{width:'18px', height:'20px', backgroundColor:selectedStrokeWidth==3?'rgb(159,141,247)':'black'}}></div>
+                        <button className={selectedStrokeWidth===3?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setStrokeWidth(10);setSelectedStrokeWidth(3)}}>
+                            <div style={{borderRadius:'100px',width:'20px', height:'10px', backgroundColor:selectedStrokeWidth==3?'rgb(159,141,247)':'rgb(110, 110, 110)'}}></div>
                         </button>
                     </div>
                 </div>
@@ -872,7 +887,7 @@ const Editor=()=>
                     <div className="toolDetail-detailBox-desc">선 색상</div>
                         <div className="toolDetail-detailBox-buttonBox">
                             <div className="toolBox-colorBox">
-                            <button onClick={()=>{setStrokePicker(1)}} style={{borderRadius: '5px', width:30,height:30,border:'1px solid lightgray',backgroundColor:`${strokeColor}`}}></button>
+                            <button onClick={()=>{setStrokePicker(1)}} style={{borderRadius: '100px', width:30,height:30,border:'1px solid lightgray',backgroundColor:`${strokeColor}`}}></button>
                             {strokePicker?
                                 <div >
                                     <div onClick={()=>{setStrokePicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
@@ -888,7 +903,7 @@ const Editor=()=>
                     <div className="toolDetail-detailBox-desc">{tool==='text'?'텍스트 색':'배경 색'}</div>
                         <div className="toolDetail-detailBox-buttonBox">
                             <div className="toolBox-colorBox">
-                                <button onClick={()=>{setFillPicker(1)}} style={{borderRadius: '5px', width:30,height:30,border:'1px solid lightgray',backgroundColor:`${fillColor}`}}></button>
+                                <button onClick={()=>{setFillPicker(1)}} style={{borderRadius: '100px', width:30,height:30,border:'1px solid lightgray',backgroundColor:`${fillColor}`}}></button>
                                 {fillPicker?
                                     <div>
                                         <div onClick={()=>{setFillPicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>

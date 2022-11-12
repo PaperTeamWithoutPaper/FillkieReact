@@ -28,7 +28,7 @@ const DirectoryPath=()=>
     {
         setDragging(1)
         if(e.clientX>100){
-        dispatch(setDirWidth(e.clientX-35))
+        dispatch(setDirWidth(e.clientX-50))
         }
     }
     const readFile=()=>

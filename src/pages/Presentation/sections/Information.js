@@ -39,18 +39,17 @@ function Information() {
             <RotatingCard>
               <RotatingCardFront
                 image={bgFront}
-                icon="touch_app"
+                icon=""
                 title={
                   <>
-                    Feel the
-                    <br />
-                    Material Kit
+                    Fillkie,
                   </>
                 }
                 description="All the MUI components that you need in a development have been re-design with the new look."
               />
               <RotatingCardBack
                 image={bgBack}
+                
                 title="Discover More"
                 description="You will save a lot of time going from prototyping to full-functional code because all elements are implemented."
                 action={{
@@ -65,16 +64,15 @@ function Information() {
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <DefaultInfoCard
-                  icon="content_copy"
-                  title="Full Documentation"
-                  description="Built by developers for developers. Check the foundation and you will find
-                    everything inside our documentation."
+                  icon=""
+                  title="구글 드라이브"
+                  description="synchronizing your Google Drive..."
                 />
               </Grid>
               <Grid item xs={12} md={6}>
                 <DefaultInfoCard
-                  icon="flip_to_front"
-                  title="MUI Ready"
+                  icon=""
+                  title="쉬운 팀 관리"
                   description="The world's most popular react components library for building user interfaces."
                 />
               </Grid>
@@ -82,15 +80,15 @@ function Information() {
             <Grid container spacing={3} sx={{ mt: { xs: 0, md: 6 } }}>
               <Grid item xs={12} md={6}>
                 <DefaultInfoCard
-                  icon="price_change"
-                  title="Save Time & Money"
+                  icon=""
+                  title="실시간 공유노트"
                   description="Creating your design from scratch with dedicated designers can be very expensive. Start with our Design System."
                 />
               </Grid>
               <Grid item xs={12} md={6}>
                 <DefaultInfoCard
-                  icon="devices"
-                  title="Fully Responsive"
+                  icon=""
+                  title="화상 회의"
                   description="Regardless of the screen size, the website content will naturally fit the given resolution."
                 />
               </Grid>

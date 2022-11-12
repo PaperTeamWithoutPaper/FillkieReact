@@ -16,6 +16,12 @@ import WelcomeComponent from './WelcomeComponent'
 //import DocLoader from "./Editor"
 const App=()=>
 {
+  {
+    console.log = function no_console() {};
+    console.warn = function no_console() {};
+    console.error = function no_console() {};
+    console.info = function no_console() {};
+  }
   return (
     <div >
     <Routes>
