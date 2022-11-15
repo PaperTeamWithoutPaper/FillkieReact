@@ -30,11 +30,11 @@ const InviteUserModal=(props)=>
         <div className="InviteUserModal-box">
             <div className={loading?"InviteUserModal-bg":"InviteUserModal-bg-loading"} onClick={()=>{ setLoading(0);setTimeout(()=>removeComponent(),300)}}></div>
             <div className= {loading?"InviteUserModal-body":"InviteUserModal-body-loading"}>
-                <div className="InviteUserModal-title">Invite members</div>
-                <div className="InviteUserModal-desc">Share this URL to your team members</div>
+                <div className="InviteUserModal-title">팀원 초대</div>
+                <div className="InviteUserModal-desc">이 링크 주소를 팀원에게 공유하세요.</div>
                 <div className="InviteUserModal-inputbox">
                     <input onChange={()=>{}} value={url} className="InviteUserModal-urlinput"></input>
-                    <button onClick={copyText} className="InviteUserModal-copybutton">Copy</button>
+                    <button onClick={copyText} className="InviteUserModal-copybutton">복사</button>
                 </div>
             </div>
             

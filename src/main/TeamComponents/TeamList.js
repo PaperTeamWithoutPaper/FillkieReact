@@ -26,7 +26,7 @@ const TeamList=()=>
                     <img src={require('./icon/arrow.png')} className={listopen==-1?"TeamList-icon-lower":"TeamList-icon-upper"}></img>
                 </div>
                 <div className="TeamList-lowerblock">
-                    <div className="TeamList-users">{teamNum}-users</div>
+                    <div className="TeamList-users">{teamNum}명</div>
                 </div>
             </div>:null}
             <Modal listopen={listopen}></Modal>

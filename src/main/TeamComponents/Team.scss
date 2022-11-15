@@ -79,7 +79,8 @@
         margin:0 auto;
         transform: translateY(30px);
         font-family: 'GmarketSansMedium';
-        border: 1px solid rgb(116, 116, 116);
+        //border: 1px solid rgb(116, 116, 116);
+
         background-color: rgb(250, 250, 250);
         padding: 13px;
         text-align: center;
@@ -88,10 +89,7 @@
         height:50px;
         
     }
-    &-body:hover{
-        border: 1px solid rgb(159,141,247);
-        cursor:pointer
-    }
+  
 
     &-name{
         color: rgb(116, 116, 116);
@@ -138,22 +136,24 @@
         transform: translateY(25px) scale(0.8,0.8) ;   
     }
     &-menu-normal{
+
         text-decoration: none;
         flex:1;
         padding:13px;
-        width:100%;
-        font-size: 12px;
+        width:150px;
+        font-size: 14px;
         color:rgb(114, 114, 114);
         background-color: rgb(250, 250, 250);
         transition: all ease 0.2s;
     }
     &-menu-active{
+
         text-decoration: none;
         cursor: pointer;
         flex:1;
         padding:13px;
-        width:100%;
-        font-size: 12px;
+        width:150px;
+        font-size: 14px;
         color:rgb(159,141,247);
         background-color: rgb(250, 250, 250);
     }
@@ -165,6 +165,7 @@
     padding-left: 15px;
     padding-top: 10px;
     flex:left;
+    
 
     &-icon{
         background-color: rgb(233, 233, 233);
@@ -186,27 +187,4 @@
         background-color: rgb(198, 197, 247);
         @include IconStyle;
     }
-}
-@mixin InviteUserStyle{
-
-    border-radius: 10px;
-    transition: all ease 0.2s;
-    font-family: 'S-CoreDream-3Light';
-    width:140px;
-}
-.InviteUser{
-    font-size: 13pt;
-    margin-left: auto;
-    &-body-active{
-        border: 1px solid rgb(107, 107, 107);
-        color: rgb(236, 236, 236);
-        @include InviteUserStyle
-    }
-    &-body-active:hover{
-        cursor: pointer;
-        border: 1px solid rgb(159,141,247);
-        color: rgb(159,141,247);
-
-    }
-
 }

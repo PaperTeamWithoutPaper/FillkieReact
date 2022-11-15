@@ -17,7 +17,7 @@ import WelcomeComponent from './WelcomeComponent'
 const App=()=>
 {
   {
-    console.log = function no_console() {};
+    //console.log = function no_console() {};
     console.warn = function no_console() {};
     console.error = function no_console() {};
     console.info = function no_console() {};

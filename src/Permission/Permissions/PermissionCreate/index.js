@@ -43,15 +43,15 @@ const PermissionCreate=({name})=>
                     <div className="PermissionCard-padd"></div>
                     <div style={{width:'20px'}}></div>
                     <div className="PermissionCard-box">
-                        <div className="PermissionCard-desc"> GROUP</div>
-                        <input onChange={(e)=>{setGroupName(e.target.value)}} value={groupName} placeholder="Set Name" className="PermissionCard-groupNameInput"></input>
+                        <div className="PermissionCard-desc">그룹</div>
+                        <input onChange={(e)=>{setGroupName(e.target.value)}} value={groupName} placeholder="그룹 이름" className="PermissionCard-groupNameInput"></input>
                     </div>
                     <div style={{width:'30px'}}></div>
                     <div className="PermissionCard-padd2"></div>
               
                     <div onClick={createGroup} className="PermissionChangeComponent-createBox-box">
                         <img src={require('../../Icon/create.png')} className="PermissionChangeComponent-createBox-icon"></img>
-                        <div ref={scrollRef} className="PermissionChangeComponent-createBox-desc">Create New Group</div>
+                        <div ref={scrollRef} className="PermissionChangeComponent-createBox-desc">그룹 생성</div>
                     </div>
             </div>
     )

@@ -30,6 +30,7 @@
         font-size:13px;
         padding-left: 20px;
         overflow-y: auto;
+        overflow-x: hidden;
         
     }
     &-title{
@@ -66,7 +67,6 @@
         background-color: rgb(250,250,250);
     }
     &-files{
-        overflow: auto;
         float:left;
     }
     &-dragbar{

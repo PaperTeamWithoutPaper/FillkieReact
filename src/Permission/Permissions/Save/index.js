@@ -47,7 +47,7 @@ const SaveButton=()=>
     return(
         <div className="save-body" onClick={onclick}>
             <img draggable={false} className="save-icon" src={require('./Icon/check.png')}></img>
-            <div className="save-desc">save</div>
+            <div className="save-desc">저장</div>
         </div>
     )
 }

@@ -28,7 +28,7 @@ const PermissionCard=({idx,id,name})=>
         
     }
 
-    const permission=['READ','WRITE','CREATE','DELETE','BAN','INVITE']
+    const permission=['읽기','쓰기','생성','제거','추방','초대']
     return(
         <div 
         onDragOver={ondragover}
@@ -39,7 +39,7 @@ const PermissionCard=({idx,id,name})=>
 
             <div style={{width:'20px'}}></div>
             <div className="PermissionCard-box">
-                <div className="PermissionCard-desc"> GROUP</div>
+                <div className="PermissionCard-desc">그룹</div>
                 <div className="PermissionCard-groupName">{name}</div>
             </div>
             
