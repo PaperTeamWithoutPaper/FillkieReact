@@ -125,8 +125,8 @@ const Card=(props)=>
                 <div className="Card-shadow-hidden"></div>
              
                 {myImage && <div className="lds-dual-ringc"></div>}
-                <div className={ishover?"Card-title-active":"Card-title"}>{getIcon()} {props.title.length>30?props.title.slice(0,30)+'...':props.title}</div>
-
+                <div className={ishover?"Card-title-active":"Card-title"}>{props.title.length>30?props.title.slice(0,30)+'...':props.title}</div>
+                
             
         
         </div>

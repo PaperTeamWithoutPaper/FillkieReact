@@ -27,7 +27,7 @@ const DirectoryPath=()=>
     const setWidth=(e)=>
     {
         setDragging(1)
-        if(e.clientX>100){
+        if(e.clientX>130){
         dispatch(setDirWidth(e.clientX-50))
         }
     }

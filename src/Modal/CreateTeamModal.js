@@ -53,15 +53,15 @@ const CreateTeamModal=(props)=>
             
             <div className={loading?"CreateTeamModal-bg":"CreateTeamModal-bg-loading"} onClick={()=>{ setLoading(0);setTimeout(()=>removeComponent(),300)}}></div>
             <div className= {loading?"CreateTeamModal-body":"CreateTeamModal-body-loading"}>
-                <div className="CreateTeamModal-title">Create Team</div>
-                <div className="CreateTeamModal-desc">Set your team name</div>
-                <input onChange={(e)=>{setTeamName(e.target.value)}} value={teamName} placeholder="Enter team name" className="CreateTeamModal-teaminput"></input>
+                <div className="CreateTeamModal-title">팀 생성</div>
+                <div className="CreateTeamModal-desc">팀 이름을 정해주세요</div>
+                <input onChange={(e)=>{setTeamName(e.target.value)}} value={teamName} placeholder="팀 이름" className="CreateTeamModal-teaminput"></input>
                 <div className="CreateTeamModal-buttonbox">
                     <div className="CreateTeamModal-accept" onClick={createTeam}>
-                        {(apiloading==0)?<div>Continue</div>:
+                        {(apiloading==0)?<div>완료</div>:
                         <Loading></Loading>}
                     </div>
-                    <div className="CreateTeamModal-no" onClick={()=>{ setLoading(0);setTimeout(()=>removeComponent(),300)}}>Cancel</div>
+                    <div className="CreateTeamModal-no" onClick={()=>{ setLoading(0);setTimeout(()=>removeComponent(),300)}}>취소</div>
                 </div>
             </div>
             

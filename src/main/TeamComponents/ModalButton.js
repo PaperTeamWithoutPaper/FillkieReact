@@ -29,7 +29,7 @@ const ModalButton=(props)=>
             onMouseOver={()=>{setIshover(1)}} 
             onMouseOut={()=>{setIshover(0)}}>
         <Link 
-            style={{width:'100%',height:'14.5px',display:'block',textDecoration:'none',transition:'all ease 0.2s',color:`${ishover?'rgb(159,141,247);':'gray'}`}}
+            style={{width:'100%',height:'14.5px',display:'block',textDecoration:'none',transition:'all ease 0.2s',color:`${ishover?'rgb(159,141,247)':'gray'}`}}
             to={teamList[teamIdx]!=undefined?`/permission/${teamList[teamIdx]['teamId']}`:'/error'}
             
             >

@@ -16,6 +16,9 @@ import { useLocation } from 'react-router-dom';
 import QuickPinchZoom from "../react-quick-pinch-zoom"
 import {useMediaQuery} from 'react-responsive'
 import { contextType } from 'react-copy-to-clipboard'
+import PencilTool from './sideTool/PencilTool'
+import ShapeTool from './sideTool/ShapeTool'
+import TextTool from './sideTool/TextTool'
 var client=null;
 var doc= null;
 var canvas= null;
@@ -37,7 +40,7 @@ const Editor=()=>
     //canvasXVScale/
     const canvasRef=useRef()
     //responsive//
-    const resp= useMediaQuery({ query: '(max-width: 1224px)' })
+    const resp= useMediaQuery({ query: '(max-width: 800px)' })
     //move//
     const [isMove,setIsMove]=useState(-1)
     //navigate//
@@ -129,6 +132,9 @@ const Editor=()=>
 
         }
     }
+    //tool detail//
+    const [toolUp,setToolUp]=useState(0)
+
     //canvas pages//
     const pageNum=useSelector(state=>state.pdf_reducer.pages)
     const [newPage,setNewPage]=useState(0)
@@ -492,6 +498,7 @@ const Editor=()=>
             const {x1,y1,x2,y2}=adjustElementCoordinates(doc.getRoot().shapes[index]);
             updateElement(index, x1,y1,x2,y2,tool)
             setTool('selection')
+            setToolUp(0)
         }
         if( action ==='resizing')
         {
@@ -806,7 +813,7 @@ const Editor=()=>
             
              
             <div className="participants"
-            style={{transform: resp?'translateY(calc(55px))':'none'}}
+            style={{transform: resp?'translateY(calc(100vh - 100% - 20px))':'none'}}
             >
                 <div className="participants-desc">사용자</div>    
                 {emails.map((user,idx,key)=>{return(
@@ -820,25 +827,67 @@ const Editor=()=>
             </div>
             
             <div className="toolBox">
-                <button className={tool==='selection'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('selection')}}>
+                <button className={tool==='selection'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('selection');setToolUp(0)}}>
                 <img className={tool==='selection'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-select.png")}></img>
                 </button>
-                <button className={tool==='pencil'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('pencil')}}>
-                    <img className={tool==='pencil'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-draw.png")}></img>
-                </button>
-                <button className={tool==='line' || tool==='rectangle'?"toolBox-button-active":"toolBox-button"} onClick={()=>{selectedShape===0?setTool('line'):setTool('rectangle')}}>
-                    <img className={tool==='line' || tool==='rectangle'? "toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-shape.png")}></img>
-                </button>
-                <button className={tool==='eraser'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('eraser')}}>
+                <div>
+                    <button className={tool==='pencil'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('pencil');setToolUp(0);if(tool==='pencil')toolUp==1?setToolUp(0):setToolUp(1)}}>
+                        <img className={tool==='pencil'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-draw.png")}></img>
+                    </button>
+                    {toolUp==1?<PencilTool 
+                    selectedStrokeWidth={selectedStrokeWidth}
+                    setStrokeWidth={setStrokeWidth}
+                    setSelectedStrokeWidth={setSelectedStrokeWidth}
+                    strokePicker={strokePicker}
+                    setStrokePicker={setStrokePicker}
+                    strokeColor={strokeColor}
+                    setStrokeColor={setStrokeColor}></PencilTool>:null}
+                </div>
+                <div>
+                    <button className={tool==='line' || tool==='rectangle'?"toolBox-button-active":"toolBox-button"} onClick={()=>{selectedShape===0?setTool('line'):setTool('rectangle');setToolUp(0);if(tool==='line' || tool==='rectangle')toolUp==2?setToolUp(0):setToolUp(2)}}>
+                        <img className={tool==='line' || tool==='rectangle'? "toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-shape.png")}></img>      
+                    </button>
+                    {toolUp==2?<ShapeTool 
+                    selectedStrokeWidth={selectedStrokeWidth}
+                    setStrokeWidth={setStrokeWidth}
+                    setSelectedStrokeWidth={setSelectedStrokeWidth}
+                    strokePicker={strokePicker}
+                    setStrokePicker={setStrokePicker}
+                    strokeColor={strokeColor}
+                    setStrokeColor={setStrokeColor}
+                    selectedShape={selectedShape}
+                    setSelectedShape={setSelectedShape}
+                    setTool={setTool}
+                    tool={tool}
+                    fillPicker={fillPicker}
+                    setFillColor={setFillColor}
+                    setFillPicker={setFillPicker}
+                    fillColor={fillColor}
+
+                    ></ShapeTool>:null}
+                </div>
+                <button className={tool==='eraser'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('eraser');setToolUp(0)}}>
                 <img className={tool==='eraser'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-eraser.png")}></img>
                 </button>
-                {<button className={tool==='text'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('text')}}>
-                    <img className={tool==='text'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-text.png")}></img>
-                </button>}
-                <button className="toolBox-button" onClick={()=>{doc.update((root)=>root.shapes=[]);drawAll()}} >
+                <div>
+
+                    <button className={tool==='text'?"toolBox-button-active":"toolBox-button"} onClick={()=>{setTool('text');setToolUp(0);if(tool==='text')toolUp==3?setToolUp(0):setToolUp(3)}}>
+                        <img className={tool==='text'?"toolBox-icon-active":"toolBox-icon"} src={require("./Icons/tool-text.png")}></img>
+                    </button>
+                    {toolUp==3?<TextTool
+                    selectedTextSize={selectedTextSize}
+                    setSelectedTextSize={setSelectedTextSize}
+                    setTextSize={setTextSize}
+                    fillColor={fillColor}
+                    setFillColor={setFillColor}
+                    setFillPicker={setFillPicker}
+                    fillPicker={fillPicker}
+                    ></TextTool>:null}
+                </div>
+                <button className="toolBox-button" onClick={()=>{doc.update((root)=>root.shapes=[]);drawAll();setToolUp(0)}} >
                 <img className="toolBox-icon" src={require("./Icons/tool-recycle.png")}></img>
                 </button>
-                <button className="toolBox-button" onClick={()=>{toPdf(document.getElementById('test'))}}>
+                <button className="toolBox-button" onClick={()=>{toPdf(document.getElementById('test'));;setToolUp(0)}}>
                 <img className="toolBox-icon" src={require("./Icons/tool-download.png")}></img>
                 </button>
 
@@ -846,94 +895,8 @@ const Editor=()=>
                
 
             </div>
-            {/*사이드 툴바 */}
-            {tool!=='selection' && tool!=='eraser'?
-            <div className="toolDetail"
-            style={{transform: resp?'translateY(calc(55px))':'none'}}>
-                {tool==='line' || tool==='rectangle'?
-                <div className="toolDetail-detailBox">
-                        <div className="toolDetail-detailBox-desc">도형</div>
-                        <div className="toolDetail-detailBox-buttonBox">
-                            <button className={selectedShape===0?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setSelectedShape(0);setTool('line')}}>
-                                <div style={{borderRadius:'100px',width:'20px', height:'3px', backgroundColor:selectedShape==0?'rgb(159,141,247)':'rgb(110, 110, 110)'}}></div>
-                            </button>
-                            <button className={selectedShape===1?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setSelectedShape(1); setTool('rectangle')}}>
-                                <div style={{borderRadius:'2px',margin:'2.5px',width:'15px', height:'15px', outline: selectedShape==1?'solid 2px rgb(159,141,247)':'solid 2px rgb(110, 110, 110)'}}></div>
-                            </button>
-                            
-                        </div>
-                </div>:null
-                }
-                
-                <div className="toolDetail-detailBox">
-                    <div className="toolDetail-detailBox-desc">굵기</div>
-                    <div className="toolDetail-detailBox-buttonBox">
-                        <button className={selectedStrokeWidth===0?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setStrokeWidth(1); setSelectedStrokeWidth(0)}}>
-                            <div style={{borderRadius:'100px',width:'20px', height:'1px', backgroundColor:selectedStrokeWidth==0?'rgb(159,141,247)':'rgb(110, 110, 110)'}}></div>
-                        </button>
-                        <button className={selectedStrokeWidth===1?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setStrokeWidth(3);setSelectedStrokeWidth(1)}}>
-                            <div style={{borderRadius:'100px',width:'20px', height:'3px', backgroundColor:selectedStrokeWidth==1?'rgb(159,141,247)':'rgb(110, 110, 110)'}}></div>
-                        </button>
-                        <button className={selectedStrokeWidth===2?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setStrokeWidth(5);setSelectedStrokeWidth(2)}}>
-                            <div style={{borderRadius:'100px',width:'20px', height:'5px', backgroundColor:selectedStrokeWidth==2?'rgb(159,141,247)':'rgb(110, 110, 110)'}}></div>
-                        </button>
-                        <button className={selectedStrokeWidth===3?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setStrokeWidth(10);setSelectedStrokeWidth(3)}}>
-                            <div style={{borderRadius:'100px',width:'20px', height:'10px', backgroundColor:selectedStrokeWidth==3?'rgb(159,141,247)':'rgb(110, 110, 110)'}}></div>
-                        </button>
-                    </div>
-                </div>
-                {tool!=='text'?
-                <div className="toolDetail-detailBox">
-                    <div className="toolDetail-detailBox-desc">선 색상</div>
-                        <div className="toolDetail-detailBox-buttonBox">
-                            <div className="toolBox-colorBox">
-                            <button onClick={()=>{setStrokePicker(1)}} style={{borderRadius: '100px', width:30,height:30,border:'1px solid lightgray',backgroundColor:`${strokeColor}`}}></button>
-                            {strokePicker?
-                                <div >
-                                    <div onClick={()=>{setStrokePicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
-                                    <div style={{position:'absolute',transform:'translate(0px,0px)'}}><SketchPicker color={strokeColor} onChange={(color)=>{setStrokeColor(`rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${color.rgb.a})`)}}></SketchPicker></div>
-                                </div>:null
-                            }
-                            </div>
-                        </div>
-                </div>:null
-                }   
-                
-                {tool==='rectangle' || tool==='text'?<div className="toolDetail-detailBox">
-                    <div className="toolDetail-detailBox-desc">{tool==='text'?'텍스트 색':'배경 색'}</div>
-                        <div className="toolDetail-detailBox-buttonBox">
-                            <div className="toolBox-colorBox">
-                                <button onClick={()=>{setFillPicker(1)}} style={{borderRadius: '100px', width:30,height:30,border:'1px solid lightgray',backgroundColor:`${fillColor}`}}></button>
-                                {fillPicker?
-                                    <div>
-                                        <div onClick={()=>{setFillPicker(0)}} style={{left:0, top:0,position:'fixed',width:'100vw',height:'100vh'}}></div>
-                                        <div style={{position:'absolute',transform:'translate(0px, 0px)'}}><SketchPicker color={fillColor} onChange={(color)=>{setFillColor(`rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${color.rgb.a})`)}}></SketchPicker></div>
-                                    </div>:null
-                                }
-                            </div>
-                        </div>
-                </div>:null}
-                {tool==='text'?<div className="toolDetail-detailBox">
-                    <div className="toolDetail-detailBox-desc">텍스트 크기</div>
-                    <div className="toolDetail-detailBox-buttonBox">
-                        <button className={selectedTextSize===0?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setTextSize(10); setSelectedTextSize(0)}}>
-                            <div style={{fontWeight:'bold', color:selectedTextSize===0?'rgb(159,141,247)':'black'}}>S</div>
-                        </button>
-                        <button className={selectedTextSize===1?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setTextSize(15);setSelectedTextSize(1)}}>
-                            <div style={{fontWeight:'bold',color:selectedTextSize===1?'rgb(159,141,247)':'black'}}>M</div>
-                        </button>
-                        <button className={selectedTextSize===2?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setTextSize(20);setSelectedTextSize(2)}}>
-                            <div style={{fontWeight:'bold',color:selectedTextSize===2?'rgb(159,141,247)':'black'}}>L</div>
-                        </button>
-                        <button className={selectedTextSize===3?"toolDetail-detailBox-buttonBox-activeButton":"toolDetail-detailBox-buttonBox-button"} onClick={()=>{setTextSize(25);setSelectedTextSize(3)}}>
-                            <div style={{fontWeight:'bold',color:selectedTextSize===3?'rgb(159,141,247)':'black'}}>XL</div>
-                        </button>
-                    </div>
-                        
-                </div>:null}
-            </div>
-            :null}
-         
+            
+           
         </div>
     )
 }
