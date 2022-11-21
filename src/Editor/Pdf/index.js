@@ -1,15 +1,16 @@
 
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack5';
+import { Document, Page } from 'react-pdf';
 import { pdfjs } from 'react-pdf';
 import testPdf from './test.pdf'
 import {useSelector,useDispatch} from 'react-redux'
-import pdfjsWorker from 'react-pdf/src/pdf.worker.entry.js'
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-
 import {setPdfPages} from '../../reducer/pdf_reducer'
+import 'react-pdf/dist/esm/Page/TextLayer.css';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 
 const MyDocument=({pdf, pageNums})=> {
+  
   const [numPages, setNumPages] = useState([]);
   const [newPages, setNewPages]=useState([])
   const [pageNumber, setPageNumber] = useState(1);
@@ -41,7 +42,7 @@ const MyDocument=({pdf, pageNums})=> {
   }
   useLayoutEffect(()=>{
   
-    pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+    
 
     if(pdf=='none' || pdf==null)
     {

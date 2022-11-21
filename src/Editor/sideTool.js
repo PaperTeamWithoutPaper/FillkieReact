@@ -1,10 +1,10 @@
-const sideTool=()=>
+const sideTool=({tool,})=>
 {
     return(
-        {/*사이드 툴바 */}
+        <div>
             {tool!=='selection' && tool!=='eraser'?
             <div className="toolDetail"
-            style={{transform: `translate(${sideToolX}px,55px)`}}>
+            style={{transform: `translate(0px,55px)`}}>
                 {tool==='line' || tool==='rectangle'?
                 <div className="toolDetail-detailBox">
                         <div className="toolDetail-detailBox-desc">도형</div>
@@ -88,7 +88,9 @@ const sideTool=()=>
                 </div>:null}
                 </div>
                 :null}
+                </div>
              
 
     )
 }
+export default sideTool

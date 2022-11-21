@@ -23,7 +23,7 @@ const Appbar=(props)=>
         </div>
         <div className="Appbar-active">  
             
-            <a href="/main" className="node"><div className='Appbar-icon' style={{textDecoration:'none'}}>fillkie</div></a>
+            <a href="/mains" className="node"><div className='Appbar-icon' style={{textDecoration:'none'}}>fillkie</div></a>
             
                   
 

@@ -552,7 +552,7 @@ const Editor=()=>
         context.drawImage(img, 10, 10);
         }*/
         context.scale(_ratioScale,_ratioScale)
-        root.shapes.forEach(element => drawElement(context, element));
+        root.shapes.forEach(element => drawElement(context, element, canvasX,canvasY,scalePer));
         context.scale(1/_ratioScale,1/_ratioScale)
         setMouses(doc.getRoot().mouses)
     }
@@ -585,7 +585,7 @@ const Editor=()=>
         
         doc.subscribe((event) => {
             if (event.type === 'remote-change') {
-                //setNewPage(doc.getRoot().pages)
+                setNewPage(doc.getRoot().pages)
                 
                 drawAll()
             }
@@ -890,6 +890,23 @@ const Editor=()=>
                 <button className="toolBox-button" onClick={()=>{toPdf(document.getElementById('test'));;setToolUp(0)}}>
                 <img className="toolBox-icon" src={require("./Icons/tool-download.png")}></img>
                 </button>
+                <button onClick={()=>{
+                    
+                    var img=new Image()
+                    img.src ='https://i.picsum.photos/id/668/200/200.jpg?hmac=mVqr1fc4nHFre2QMZp5cuqUKLIRSafUtWt2vwlA9jG0'
+                    img.onload = function(){
+                        const element=createElement(12333,200,200,null,null,'image',null,null,null,null,null,'');
+                        drawAll();
+                        console.log('click')
+                        doc.update((root)=>{
+                            root.shapes.push(element);
+                        }
+                    )
+                        
+                      }
+                    
+
+                }}>img</button>
 
              
                

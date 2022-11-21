@@ -23,7 +23,7 @@ const Login_api=()=>
             sameSite: "none"
           })
       }
-      navigate('/main')
+      navigate('/mains')
       window.location.reload();
     },[])
     return(
