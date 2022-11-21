@@ -1,3 +1,4 @@
+import { scale } from 'chroma-js';
 import getStroke from 'perfect-freehand'
 import { useState } from 'react';
 //pencil
@@ -170,10 +171,11 @@ export const drawSelectedBox=(element,context,pencilRange,ratioScale)=>
     
     
 }
-export const createElement=(index,x1,y1,x2,y2,tool,strokeColor,fillColor,strokeWidth,fontSize,font)=>
+export const createElement=(index,x1,y1,x2,y2,tool,strokeColor,fillColor,strokeWidth,fontSize,font,img)=>
 {
     switch (tool)
     {
+        
         case "line":
         case 'rectangle':
         return {index,x1,y1,x2,y2,tool,removed:false,strokeColor,fillColor,strokeWidth}
@@ -181,13 +183,17 @@ export const createElement=(index,x1,y1,x2,y2,tool,strokeColor,fillColor,strokeW
             return {index, points: [{x:x1,y:y1}],tool,moveXY:{x:0,y:0},removed:false,strokeColor,strokeWidth}
         case 'text':
             return {index, x1,y1,tool,removed:false,text:'',width:0,height:30,fillColor,fontSize,font}
+        case 'image':
+            
+            return {index, x1,y1,tool,width:30,height:30,removed:false,img};
+                
         default:
             throw new Error(`Type not recognized: ${tool}`)
 
     }
 }
 
-export const drawElement=(context, element)=>
+export const drawElement=(context, element,canvasX,canvasY,scalePer)=>
 {
     
     const {x1,y1,x2,y2,removed}=element;
@@ -240,6 +246,12 @@ export const drawElement=(context, element)=>
             for (var i = 0; i<lines.length; i++)
                 context.fillText(lines[i], element.x1, element.y1 + (i*(element.fontSize+element.fontSize/3.5)) );
             break;
+        case 'image':
+            console.log(element.img,element.x1)
+            context.drawImage(element.img, 0,0,200*scalePer, 200*scalePer);
+            break;
+
+
         
         default:
             throw new Error(`Type not recognized: ${element.tool}`)

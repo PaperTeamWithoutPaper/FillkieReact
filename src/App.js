@@ -12,7 +12,7 @@ import DocLoader from "./Editor"
 import Loading from "./Loading/Loading"
 import PermissionComponent from "./Permission"
 import FileUpload from "./FIleUpload"
-import WelcomeComponent from './WelcomeComponent'
+import Landing from './Landing'
 //import DocLoader from "./Editor"
 const App=()=>
 {
@@ -25,8 +25,7 @@ const App=()=>
   return (
     <div >
     <Routes>
-      <Route path="/" element={<WelcomeComponent></WelcomeComponent>}/>
-      <Route path="/hello" element={<Login_browser></Login_browser>}/>
+      <Route path="/" element={<Landing></Landing>}/>
       <Route path="/mains" element={<MainComponent></MainComponent>}/>
       <Route path="/loginapi" element={<Login_api></Login_api>}/>
       <Route exact path="/meeting/:docKey" element={<DocLoader></DocLoader>}/>
