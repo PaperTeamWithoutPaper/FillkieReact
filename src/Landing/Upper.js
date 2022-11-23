@@ -4,8 +4,10 @@ import qs from "querystring";
 import { useNavigate } from "react-router-dom";
 import cid from '../config';
 import { setCookie } from '../cookie';
+import {useState} from 'react'
 const Upper=()=>
 {
+    const [isArrow,setIsArrow]=useState(1)
     const navigate=useNavigate();
     const jwt=['bearer%20eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MmY0YjM4ZDcyNWRiNjZjYWFiNTVmYzUiLCJpYXQiOjE2NjkwMTk2NzcsImV4cCI6MTY2OTA0ODQ3N30.yrEvnKPKZ9cfhHhYt0apHrx8hTTbU_R-_1v03TkcbmM','asd','asd']
     const onGoogleLogin=()=>{
@@ -35,26 +37,43 @@ const Upper=()=>
         //window.location.reload();
     }
     return (
-    <div className="Upper-container">
-        <div style={{transform:'translateY(30vh)'}}>
-        <Fade down>
-        <div className="Upper-bg">
-            <div className="Upper-title">
-                Fillkie
+    <div className="Upper-box">
+    <div className="Upper-container"
+    onWheel={()=>{if(window.scrollY>10) {setIsArrow(0)}else{setIsArrow(1)}}}
+    >
+        
+        <Fade bottom
+        delay={0}>
+            <div className="Upper-bg">
+                <div className="Upper-title">
+                    Fillkie
+                </div>
+                <div className="Upper-subtitle">
+                Collaborative Note For All
+                </div>
+                <img style={{filter:'brightness(0)', transform:'translate(-15px,-20px)'}} src={require('./lines.png')} width={300} height={30}></img>
+                <div className="Upper-desc">
+                Teams that desire concurrent communication, personal storage, various writing tools while non-face-to-face working, Fillkie offers all desired features for its successful management.
+                </div>
+                <div className="Upper-buttonbox">
+                    <div className="Upper-button" onClick={onGoogleLogin} >Sign In with Google</div>
+                    <div className="Upper-button" onClick={onTestLogin}>Sign in with Test</div>
+                </div>
+                
             </div>
-            <div className="Upper-subtitle">
-            Collaborative Tool Only For You
-            </div>
-            <div className="Upper-desc">
-            Teams that desire concurrent communication, personal storage, various writing tools while non-face-to-face working, Fillkie offers all desired features for its successful management.
-            </div>
-            <div className="Upper-buttonbox">
-                <div className="Upper-button" onClick={onGoogleLogin} >Sign In with Google</div>
-                <div className="Upper-button" onClick={onTestLogin}>Sign in with Test</div>
-            </div>
-        </div>
+            
+            
         </Fade>
-        </div>
+        <Fade bottom
+        delay={200}>
+            <div style={{width: '500px',margin: '0 auto'}}>
+            <img className="Upper-img" src="https://opendoodles.s3-us-west-1.amazonaws.com/zombieing.png"></img>
+            </div>
+        </Fade>
+   
+
+  
+    </div>
     </div>
     )
 }
