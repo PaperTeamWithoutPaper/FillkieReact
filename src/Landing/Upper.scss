@@ -10,37 +10,62 @@
     font-weight: bold;
     font-style: bold;
 }
+@font-face {
+    font-family: 'Handletter';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/naverfont_05@1.0/Handletter.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 .Upper{
+    &-box{
+        background-color: rgb(255, 235, 245);
+        height:100vh;
+
+    }
+
+    &-img{
+        padding-top: 30px;
+        width:500px;
+        margin: 0 auto;
+        
+        
+    }
     &-subtitle{
-        font-family: 'GmarketSansBold';
-        text-align: center;
-        font-size: 20px;
+        color:rgb(0, 0, 0);
+        font-family: 'Handletter';
+      
+        font-size: 30px;
         font-weight: bold;
         padding-bottom: 15px;
     }
     &-container{
-        background-color: rgb(255, 226, 253);
-        height:100vh;
+        display: grid;
+        grid-template-columns: 600px 800px;
+        padding-top: 100px;
+        margin: 0 auto;
+        width: 1200px;
+        
     }
     &-bg{
-        transform: translateY(calc(70vh - 100%));
-        width:fit-content;
         margin: 0 auto;
+        padding-top: 100px;
+        width:fit-content;
+       
     }
 
     &-title{
        
         font-family: 'GmarketSansBold';
-        text-align: center;
-        font-size: 40px;
+        
+        font-size: 50px;
         font-weight: bold;
-        padding-bottom: 15px;
+        padding-bottom: 0px;
     }
     &-desc{
         color: rgb(83, 83, 83);
         font-family: 'GmarketSansMedium';
         width:500px;
-        text-align: center;
+        transform: translateY(-20px);
         padding-bottom: 15px;
     }
     &-buttonbox{
@@ -54,16 +79,18 @@
         padding:15px 0px 15px 0px;
         text-align: center;
         background-color: rgb(0, 0, 0);
-        color: white;
-        border-radius: 100px;
+        color: rgb(255, 255, 255);
+        border-radius: 20px;
         margin: 2px;
         transition: transform ease 0.2s;
+        margin-bottom: 20px;
     }
     &-button:hover{
         cursor: pointer;
         transform:scale(1.03);
         transition: transform ease 0.2s;
     }
+    
 }
 @font-face {
     font-family: 'GmarketSansMedium';
@@ -99,6 +126,7 @@
         width:500px;
         text-align: center;
         padding-bottom: 15px;
+        margin: 0 auto;
         
     }
     &-Cardbox-4x1{
@@ -115,15 +143,15 @@
     &-Cardbox-small-1x4{
         
         display:grid;
-        grid-template-columns: 100px 100px 100px 100px;
+        grid-template-columns: 220px 220px 220px 220px;
         grid-gap: 30px;
     }
     &-Cardbox-small-2x2{
         display:grid;
-        width:240px;
+        width:470px;
         margin: 0 auto;
-        grid-template-rows: 150px 100px;
-        grid-template-columns: 100px 100px;
+        grid-template-rows: 150px 150px;
+        grid-template-columns: 220px 220px;
         grid-gap: 30px;
         
 
@@ -148,3 +176,62 @@
     }
 
 }
+
+
+
+.arrow{
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    left: 50%;
+    
+    margin-left: -12px;
+    border-left: 5px solid rgb(255,87,120);
+    border-bottom: 5px solid rgb(255,87,120);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-animation: sdb 1s infinite;
+    animation: sdb 1s infinite;
+    box-sizing: border-box;
+    transition: all ease 0.2s;
+  }
+.arrow-invisible{
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    left: 50%;
+    
+    margin-left: -12px;
+    border-left: 5px solid rgba(0, 0, 0, 0);
+    border-bottom: 5px solid rgba(0, 0, 0, 0);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-animation: sdb 1s infinite;
+    animation: sdb 1s infinite;
+    box-sizing: border-box;
+    transition: all ease 0.2s;
+  
+
+}
+  @-webkit-keyframes sdb {
+    0% {
+      -webkit-transform: rotate(-45deg) translate(0, 0);
+    }
+    20% {
+      -webkit-transform: rotate(-45deg) translate(-10px, 10px);
+    }
+    40% {
+      -webkit-transform: rotate(-45deg) translate(0, 0);
+    }
+  }
+  @keyframes sdb {
+    0% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+    20% {
+      transform: rotate(-45deg) translate(-10px, 10px);
+    }
+    40% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+  }

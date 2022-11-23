@@ -11,30 +11,34 @@
     font-style: bold;
 }
 .CircleCard{
+
     &-img{
-        width:100px;
-        height:100px;
-        background-color: rgb(202, 202, 202);
-        border-radius: 100px;
+        display: block;
+        margin: 0 auto;
+        width:50px;
+        height:50px;
+        padding:10px;
     }
     &-title{
-        padding-top: 10px;
-        width:100px;
+     
+        width:200px;
         font-size:15px;
         text-align: center;
         font-family: 'GmarketSansBold';
     }
     &-desc{
-        width:100px;
+        font-size: 12px;
+        width:200px;
         color:gray;
         text-align: center;
+        font-family: 'GmarketSansMedium';
     }
 }
 .RectCard{
     &-grid{
-        width:600px;
+        width:520px;
         display:grid;
-        grid-template-columns: 320px 300px;
+        grid-template-columns: 320px 200px;
     }
     &-img{
         width:300px;
@@ -51,10 +55,13 @@
     &-title{
         font-size:25px;
         font-weight: bold;
+        font-family: 'GmarketSansBold';
 
     }
     &-desc{
-        color:gray;
+        color:rgb(180, 180, 180);
+        font-size: 12px;
+        font-family: 'GmarketSansMedium';
 
     }
 }
