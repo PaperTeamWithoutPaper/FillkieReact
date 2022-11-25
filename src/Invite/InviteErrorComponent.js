@@ -9,7 +9,7 @@ const InviteErrorComponent=()=>
     const navigate=useNavigate()
     const goback=()=>
     {
-        navigate('/main')
+        navigate('/mains')
     }
     return(
         <div>
