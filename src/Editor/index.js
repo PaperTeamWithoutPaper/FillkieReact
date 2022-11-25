@@ -890,23 +890,7 @@ const Editor=()=>
                 <button className="toolBox-button" onClick={()=>{toPdf(document.getElementById('test'));;setToolUp(0)}}>
                 <img className="toolBox-icon" src={require("./Icons/tool-download.png")}></img>
                 </button>
-                <button onClick={()=>{
-                    
-                    var img=new Image()
-                    img.src ='https://i.picsum.photos/id/668/200/200.jpg?hmac=mVqr1fc4nHFre2QMZp5cuqUKLIRSafUtWt2vwlA9jG0'
-                    img.onload = function(){
-                        const element=createElement(12333,200,200,null,null,'image',null,null,null,null,null,'');
-                        drawAll();
-                        console.log('click')
-                        doc.update((root)=>{
-                            root.shapes.push(element);
-                        }
-                    )
-                        
-                      }
-                    
-
-                }}>img</button>
+                
 
              
                

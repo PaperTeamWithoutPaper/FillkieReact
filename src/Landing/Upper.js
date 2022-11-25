@@ -9,7 +9,8 @@ const Upper=()=>
 {
     const [isArrow,setIsArrow]=useState(1)
     const navigate=useNavigate();
-    const jwt=['bearer%20eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MmY0YjM4ZDcyNWRiNjZjYWFiNTVmYzUiLCJpYXQiOjE2NjkwMTk2NzcsImV4cCI6MTY2OTA0ODQ3N30.yrEvnKPKZ9cfhHhYt0apHrx8hTTbU_R-_1v03TkcbmM','asd','asd']
+    const jwt=['bearer%20eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzgwMDg3MTgzNDZhMjNlNGIzNzhkZGYiLCJpYXQiOjE2NjkzMzUxNTMsImV4cCI6MTY2OTM2Mzk1M30.6gjPmtmOMVyHMQhOD-RbKO0de9Lv-HfPPHyehU7F_Ag',
+    'bearer%20eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2Mzc0ZTg0YWQwZDFlMDM5YThjNTAyYTgiLCJpYXQiOjE2NjkzMzUyMzQsImV4cCI6MTY2OTM2NDAzNH0.sBAKAmgJyNhdHp6rPtlPJ4TcoKPOJZQip7eg9If2dak']
     const onGoogleLogin=()=>{
         
         const OATUH_HOST = 'https://accounts.google.com/o/oauth2/auth';
@@ -31,9 +32,9 @@ const Upper=()=>
         window.location.href = AUTHORIZE_URI;
     
     }
-    const onTestLogin=()=>
+    const onTestLogin=(id)=>
     {
-        navigate('/loginapi?access='+jwt[0])
+        navigate('/loginapi?access='+jwt[id])
         //window.location.reload();
     }
     return (
@@ -57,7 +58,8 @@ const Upper=()=>
                 </div>
                 <div className="Upper-buttonbox">
                     <div className="Upper-button" onClick={onGoogleLogin} >Sign In with Google</div>
-                    <div className="Upper-button" onClick={onTestLogin}>Sign in with Test</div>
+                    <div className="Upper-button" onClick={()=>{onTestLogin(0)}}>Sign in with Test1</div>
+                    <div className="Upper-button" onClick={()=>{onTestLogin(1)}}>Sign in with Test2</div>
                 </div>
                 
             </div>
