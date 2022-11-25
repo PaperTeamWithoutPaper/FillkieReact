@@ -12,7 +12,7 @@ const InviteComponent=()=>
     const navigate=useNavigate()
     const accept=()=>
     {   
-        springAxios.post('/team/invite/accept',{url:id}).then(()=>navigate('/main'))
+        springAxios.post('/team/invite/accept',{url:id}).then(()=>navigate('/mains'))
     }
     
     useEffect(()=>
