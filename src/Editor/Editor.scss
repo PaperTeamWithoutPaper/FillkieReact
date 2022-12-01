@@ -42,7 +42,17 @@
         background-color: rgba(204, 203, 248, 0.616);
         border: 0;
         color:rgb(255, 255, 255);
-        transition: all ease 0.5s;
+        transition: all ease 0.2s;
+       
+    }
+    &-button-active:hover{
+        cursor: pointer;
+    }
+    &-button-active:active{
+        background-color: rgba(204, 203, 248, 0.616);
+
+        transform: scale(1.1,1.1);
+        transition: all ease 0.2s;
        
     }
 
