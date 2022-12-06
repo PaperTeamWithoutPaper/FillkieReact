@@ -197,6 +197,7 @@ const Editor=()=>
     const updateElement=(index,x1,y1,x2,y2,tool,text)=>
     {
         console.log(tool);
+       
         switch (tool)
         {
            
