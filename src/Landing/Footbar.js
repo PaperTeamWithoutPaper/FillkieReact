@@ -2,8 +2,8 @@ const Footbar=()=>
 {
     return(
         <div className="Footbar-bg">
-            <div className="Footbar-copyright">© 2022 PWPT, Crafted With Software Maestro</div>
-            <div className="Footbar-contact">Contact: fillkie.team@gmail.com</div>
+            <div className="Footbar-copyright">© 2022 SPGT</div>
+            <div className="Footbar-contact">Contact: sjf471@korea.ac.kr</div>
         </div>
 
     )

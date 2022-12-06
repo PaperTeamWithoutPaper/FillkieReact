@@ -9,8 +9,8 @@ const Upper=()=>
 {
     const [isArrow,setIsArrow]=useState(1)
     const navigate=useNavigate();
-    const jwt=['bearer%20eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzgwMDg3MTgzNDZhMjNlNGIzNzhkZGYiLCJpYXQiOjE2Njk5Mzg2MTksImV4cCI6MTY2OTk2NzQxOX0.bMbsqYKrCt0vzZfsPhovTSJxzXbDMnf4tQLOPR2M5xc',
-    'bearer%20eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2Mzc0ZTg0YWQwZDFlMDM5YThjNTAyYTgiLCJpYXQiOjE2Njk5Mzg2NTIsImV4cCI6MTY2OTk2NzQ1Mn0.v5uAgLLxF4Bh1ydGYHbf3BQV-o64SGD2O8NjAb9pxqw']
+    const jwt=['bearer%20eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2Mzc0ZTg0YWQwZDFlMDM5YThjNTAyYTgiLCJpYXQiOjE2NzAzMzU5ODYsImV4cCI6MTY3MDM2NDc4Nn0._zQzVwMFYI68GUqtYcoSpO5FD5yYzIDs87roOUX0SRg',
+    'bearer%20eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzgwMDg3MTgzNDZhMjNlNGIzNzhkZGYiLCJpYXQiOjE2NzAzMzYwMTcsImV4cCI6MTY3MDM2NDgxN30.hr7RD1SzwxaetiTkK3NkgsrTQ2lRaqVnAJ42Qa7LhCg']
     const onGoogleLogin=()=>{
         
         const OATUH_HOST = 'https://accounts.google.com/o/oauth2/auth';
@@ -47,7 +47,7 @@ const Upper=()=>
         delay={0}>
             <div className="Upper-bg">
                 <div className="Upper-title">
-                    Fillkie
+                    coBoard
                 </div>
                 <div className="Upper-subtitle">
                 Collaborative Note For All
