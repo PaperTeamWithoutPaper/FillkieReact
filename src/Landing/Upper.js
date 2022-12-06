@@ -54,7 +54,7 @@ const Upper=()=>
                 </div>
                 <img style={{filter:'brightness(0)', transform:'translate(-15px,-20px)'}} src={require('./lines.png')} width={300} height={30}></img>
                 <div className="Upper-desc">
-                Teams that desire concurrent communication, personal storage, various writing tools while non-face-to-face working, Fillkie offers all desired features for its successful management.
+                Teams that desire concurrent communication, personal storage, various writing tools while non-face-to-face working, coBoard offers all desired features for its successful management.
                 </div>
                 <div className="Upper-buttonbox">
                     <div className="Upper-button" onClick={onGoogleLogin} >Sign In with Google</div>
